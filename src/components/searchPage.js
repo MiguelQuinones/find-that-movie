@@ -50,26 +50,30 @@ export default class searchPage extends Component {
         // Try and catch blocks -- send request to API via Axios, catch any errors that occur
         try {
             var key = process.env.REACT_APP_API_KEY;
-            console.log( "Sending request..." );
+            const result = [];
             axios.get( "http://www.omdbapi.com/?apikey=" + key + "&t=" + title )
+            // Take data from JSON response and insert into an array -- GET REST TOMORROW
             //.then( response => console.log( response ) )
-            // Take data from JSON response and insert into an array
-            .then( ( { data } ) => {
-                const result = [];
-                Object.keys( data ).forEach( key => {
-                    result.push( data[ key ] )
-                })
-                console.log( result )
+            .then( response => {
+                const newItem = {
+                    actors : response.data.Actors,
+                    awards : response.data.Awards
+                };
+                result.push( newItem );
+                console.log( result );
             })
             .catch( function( error ) {
                 console.log( error )
             });
-            console.log( "Request sent, printing populated movie list..." );
-            console.log( "Done!" );
         }
         catch( error ) {
             console.error( "An error has occurred.", error );
         }
+    }
+
+    // Function to dynamically generate table from given array of movie info
+    generateTable() {
+
     }
 
     // Function to render form to user and response from API
