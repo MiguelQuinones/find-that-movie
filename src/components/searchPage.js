@@ -47,26 +47,24 @@ export default class searchPage extends Component {
 
     // Function to send request to OMDB API and display response to user
     onComponentDidMount( title ) {
-        // Try and catch blocks -- send request to API via Axios, catch any errors that occur -- keep trying to store JSON into array, otherwise just display info similarly to how I did in weather applicaiton
+        // Try and catch blocks -- send request to API via Axios, catch any errors that occur
         try {
-            let movieInfo = [];
+            var key = process.env.REACT_APP_API_KEY;
             console.log( "Sending request..." );
-            axios.post( "http://www.omdbapi.com/?apikey=17dbbd83&t=" + title )
-            .then( res => console.log( res.data ) )
-            .then( res => {
-                const newItem = {
-                    actors: res.data.Actors
-                };
-                movieInfo.push( newItem );
+            axios.get( "http://www.omdbapi.com/?apikey=" + key + "&t=" + title )
+            //.then( response => console.log( response ) )
+            // Take data from JSON response and insert into an array
+            .then( ( { data } ) => {
+                const result = [];
+                Object.keys( data ).forEach( key => {
+                    result.push( data[ key ] )
+                })
+                console.log( result )
             })
             .catch( function( error ) {
                 console.log( error )
             });
             console.log( "Request sent, printing populated movie list..." );
-
-            movieInfo.forEach( ( element ) => {
-                console.log( element )
-            });
             console.log( "Done!" );
         }
         catch( error ) {
