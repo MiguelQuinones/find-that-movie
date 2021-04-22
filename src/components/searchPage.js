@@ -45,7 +45,7 @@ export default class searchPage extends Component {
         });
     }
 
-    // Function to send request to OMDB API and display response to user
+    // Function to send request to OMDB API and display response to user -- retrieve poster image from TMDB API
     onComponentDidMount( title ) {
         // Try and catch blocks -- send request to API via Axios, catch any errors that occur
         try {
