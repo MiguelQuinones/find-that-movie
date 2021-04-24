@@ -45,36 +45,80 @@ export default class searchPage extends Component {
         });
     }
 
-    // Function to send request to OMDB API and display response to user -- retrieve poster image from TMDB API
-    onComponentDidMount( title ) {
+    // Function to send request to TMDB API and display response to user
+    async onComponentDidMount( title ) {
         // Try and catch blocks -- send request to API via Axios, catch any errors that occur
         try {
-            var key = process.env.REACT_APP_API_KEY;
+            var key = process.env.REACT_APP_API_KEY_2; // Change to REACT_APP_API_KEY later, not working now for some reason
+            
+            // Empty array that will hold values from API call
             const result = [];
-            axios.get( "http://www.omdbapi.com/?apikey=" + key + "&t=" + title )
-            // Take data from JSON response and insert into an array
-            //.then( response => console.log( response ) )
-            .then( response => {
-                const newItem = {
-                    actors : response.data.Actors,
-                    awards : response.data.Awards,
-                    boxOffice : response.data.BoxOffice,
-                    director : response.data.Director,
-                    genre : response.data.Genre,
-                    metascore : response.data.Metascore,
-                    plot : response.data.Plot,
-                    rated : response.data.Rated,
-                    released : response.data.Released,
-                    runtime : response.data.Runtime,
-                    imdbRating : response.data.imdbRating
-                };
-                result.push( newItem );
-                console.log( result );
-                this.generateTable( result );
-            })
-            .catch( function( error ) {
-                console.log( error )
-            });
+
+            // Search for the given movie title within the TMDB API to retrieve its unique ID for more detailed requests
+            let response = await axios.get( "https://api.themoviedb.org/3/search/movie?api_key=" + key + "&query=" + title )
+            var id = response.data.results[0].id;
+
+            // Using the movie ID retrieved from previous call, query for more details about the given movie
+            let detailedResponse = await axios.get( "https://api.themoviedb.org/3/movie/" + id + "?api_key=" + key + "&append_to_response=credits,release_dates,videos");
+            console.log( "Detailed response below:" );
+            var movieData = detailedResponse.data;
+            console.log( movieData );
+
+            // Get associated genres from movie
+            var movieGenres = "";
+            for( var genreIndex = 0; genreIndex < movieData.genres.length; genreIndex++ ) {
+                var genreTitle = movieData.genres[ genreIndex ].name + " ";
+                movieGenres += genreTitle;
+            }
+
+            // Get first five actors from movie
+            var movieActors = "";
+            for( var actorIndex = 0; actorIndex < 5; actorIndex++ ) {
+                var actor = movieData.credits.cast[ actorIndex ].name + " ";
+                movieActors += actor;
+            }
+
+            // Get the director of the movie
+            var movieDirector = "";
+            for( var directorIndex = 0; directorIndex < movieData.credits.crew.length; directorIndex++ ) {
+                if( movieData.credits.crew[ directorIndex ].job === "Director" ) {
+                    var director = movieData.credits.crew[ directorIndex ].name;
+                }
+                movieDirector = director;
+            }
+
+            // Get the rating of the movie for the US only
+            var movieRating = "";
+            for( var ratingIndex = 0; ratingIndex < movieData.release_dates.results.length; ratingIndex++ ) {
+                if( movieData.release_dates.results[ ratingIndex ].iso_3166_1 === "US" ) {
+                    var rating = movieData.release_dates.results[ ratingIndex ].release_dates[ 0 ].certification;
+                }
+                movieRating = rating;
+            }
+
+            // Save links for poster and trailer to use later
+            var posterLink = movieData.poster_path;
+            var videoLink = movieData.videos.results[0].id;
+            
+            // Place values from detailed response into object 
+            const values = {
+                title : movieData.title,
+                tagline : movieData.tagline,
+                plot : movieData.overview,
+                genres : movieGenres,
+                actors : movieActors,
+                releaseDate : movieData.release_date,
+                revenue : movieData.revenue,
+                runtime : movieData.runtime,
+                rating : movieRating,
+                director : movieDirector
+            };
+
+            // Push values to array to be used for table generation
+            result.push( values );
+            console.log( "Array result below:" );
+            console.log( result );
+            this.generateTable( result, posterLink, videoLink );
         }
         catch( error ) {
             console.error( "An error has occurred.", error );
@@ -82,14 +126,14 @@ export default class searchPage extends Component {
     }
 
     // Function to dynamically generate table from given array of movie info -- DISPLAY MOVIE POSTER WHEN RETURNING TO PROJECT
-    generateTable( array ) {
+    generateTable( array, poster, video ) {
         // Start off by creating a table to later be appended
         console.log( array );
          var table = document.createElement( "table" );
 
          // Array of headers to be displayed as table headers
-         var headers = [ "Actors", "Awards", "Box Office", "Director", "Genre", "ImdbRating",
-                         "Plot", "Rated", "Released", "Runtime", "Metascore" ];
+         var headers = [ "Title", "Tagline", "Plot", "Genres", "Actors", 
+                         "Release Date", "Revenue", "Runtime", "Rating", "Director" ];
          var tr = table.insertRow( -1 );
 
          // Add headers to table
@@ -116,6 +160,15 @@ export default class searchPage extends Component {
          var divShowData = document.getElementsByClassName( "showData" );
          divShowData.innerHTML = "";
          divShowData[0].appendChild( table );
+
+         // Add movie poster to page using given poster link
+         var posterImage = "https://image.tmdb.org/t/p/w500" + poster;
+         var html = [
+             '<img src=' + posterImage + ' />'
+         ].join( '\n' );
+         document.getElementById( "showPoster" ).innerHTML = html;
+
+         // Add video for trailer to page -- WORK ON THIS WHEN RETURING TO PROJECT
     }
 
     // Function to render form to user and response from API
@@ -137,6 +190,8 @@ export default class searchPage extends Component {
                     </div>
                 </form>
                 <p className = "showData"> </p>
+                <div id = "showPoster"> </div>
+                <div id = "showVideo"> </div>
             </div>
         )
     }
