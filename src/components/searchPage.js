@@ -1,3 +1,4 @@
+/* eslint-disable no-loop-func */
 // This page will host the search bar and the table displaying movie info
 
 // Necessary imports
@@ -49,7 +50,7 @@ export default class searchPage extends Component {
     async onComponentDidMount( title ) {
         // Try and catch blocks -- send request to API via Axios, catch any errors that occur
         try {
-            var key = process.env.REACT_APP_API_KEY_2; // Change to REACT_APP_API_KEY later, not working now for some reason
+            var key = process.env.REACT_APP_API_KEY; // Change to REACT_APP_API_KEY later, not working now for some reason
             
             // Empty array that will hold values from API call
             const result = [];
@@ -98,7 +99,7 @@ export default class searchPage extends Component {
 
             // Save links for poster and trailer to use later
             var posterLink = movieData.poster_path;
-            var videoLink = movieData.videos.results[0].id;
+            var videoLink = movieData.videos.results[0].key;
             
             // Place values from detailed response into object 
             const values = {
@@ -125,7 +126,7 @@ export default class searchPage extends Component {
         }
     }
 
-    // Function to dynamically generate table from given array of movie info -- DISPLAY MOVIE POSTER WHEN RETURNING TO PROJECT
+    // Function to dynamically generate table from given array of movie info
     generateTable( array, poster, video ) {
         // Start off by creating a table to later be appended
         console.log( array );
@@ -168,8 +169,46 @@ export default class searchPage extends Component {
          ].join( '\n' );
          document.getElementById( "showPoster" ).innerHTML = html;
 
-         // Add video for trailer to page -- WORK ON THIS WHEN RETURING TO PROJECT
+         // Add video for trailer to page by embedding it -- code based on help from StackOverflow
+        var videos = document.getElementsByClassName( "showVideo" );
+
+        for( var videoIndex = 0; videoIndex < videos.length; videoIndex++ ) {
+            var youtube = videos[ videoIndex ];
+            var videoId = video;
+
+            // Find YouTube thumbnail using given id
+            var img = document.createElement( "img" );
+            img.setAttribute( "src", "http://i.ytimg.com/vi/"
+                          + videoId + "/hqdefault.jpg" );
+            img.setAttribute( "class", "thumb" );
+
+
+            // Overlay the Play icon to make it look like a video player
+            var circle = document.createElement( "div" );
+            circle.setAttribute( "class","circle" );
+
+            youtube.appendChild( img );
+            youtube.appendChild( circle );
+
+            // Attach an onclick event to the YouTube Thumbnail
+            youtube.onclick = function() {
+
+            // Create an iFrame with autoplay set to true
+            var iframe = document.createElement( "iframe" );
+            iframe.setAttribute( "src",
+                "https://www.youtube.com/embed/" + videoId
+                + "?autoplay=1&autohide=1&border=0&wmode=opaque&enablejsapi=1" );
+
+            // The height and width of the iFrame should be the same as parent
+            iframe.style.width  = this.style.width;
+            iframe.style.height = this.style.height;
+
+            // Replace the YouTube thumbnail with YouTube HTML5 Player
+            this.parentNode.replaceChild( iframe, this );
+
+        };
     }
+}
 
     // Function to render form to user and response from API
     render() {
@@ -191,7 +230,7 @@ export default class searchPage extends Component {
                 </form>
                 <p className = "showData"> </p>
                 <div id = "showPoster"> </div>
-                <div id = "showVideo"> </div>
+                <div class="showVideo" width = "560px" height = "315px"> </div>
             </div>
         )
     }
