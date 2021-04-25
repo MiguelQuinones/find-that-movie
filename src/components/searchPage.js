@@ -1,5 +1,6 @@
 /* eslint-disable no-loop-func */
 // This page will host the search bar and the table displaying movie info
+// WORK ON DARK MODE WHEN RETURNING, STYLING PAGE AS WELL
 
 // Necessary imports
 import React, { Component } from 'react';
@@ -229,8 +230,10 @@ export default class searchPage extends Component {
                     </div>
                 </form>
                 <p className = "showData"> </p>
-                <div id = "showPoster"> </div>
-                <div class="showVideo" width = "560px" height = "315px"> </div>
+                <div className = "posterAndVideo"> 
+                    <div id = "showPoster" style = {{ float : "left", marginLeft : "10%" }}> </div>
+                    <div class="showVideo" style = {{ width : "560px", height : "315px", float : "right", marginRight : "10%" }}> </div>
+                </div>
             </div>
         )
     }
