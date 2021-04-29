@@ -49,3 +49,60 @@ table, th, td {
 th {
     font-weight: bold;
 }
+
+/* Styling for Dark/Light themes */
+.buttonHolder {
+    display: flex;
+    float: right;
+    margin-right: 2%;
+}
+  
+.themeLight {
+    height: 25px;
+    width: 60px;
+    border-radius: 10%;
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-color: #cbd5e0;
+    color: #1a202c;
+}
+  
+.themeDark {
+    height: 25px;
+    width: 60px;
+    border-radius: 10%;
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-color: #2d3748;
+    color: #e2e8f0;
+}
+  
+.themeLight:hover {
+    background-color: #e2e8f0;
+}
+  
+.themeDark:hover {
+    background-color: #1a202c;
+}
+
+.navigationBarDark {
+    background-color: #2d3748;
+}
+
+.navigationBarLight {
+    background-color: gainsboro;
+}
+
+.navbarItemDark {
+    color: white;
+}
+
+.navbarItemLight {
+    color: black;
+}

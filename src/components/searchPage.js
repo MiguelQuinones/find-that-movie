@@ -1,6 +1,5 @@
 /* eslint-disable no-loop-func */
-// This page will host the search bar and the table displaying movie info
-// WORK ON DARK MODE WHEN RETURNING, STYLING PAGE AS WELL
+// This page will host the search bar, the table displaying movie info, and the trailer for the movie
 
 // Necessary imports
 import React, { Component } from 'react';
