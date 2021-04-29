@@ -1,5 +1,6 @@
 /* eslint-disable no-loop-func */
 // This page will host the search bar, the table displaying movie info, and the trailer for the movie
+// FIX HOW INFO IS DISPLAYED IN TABLE FOR RUNTIME (MINUTES), REVENUE ($), AND TAGLINE (ITALICS)
 
 // Necessary imports
 import React, { Component } from 'react';
