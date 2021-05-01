@@ -62,23 +62,27 @@ export default class searchPage extends Component {
 
             // Using the movie ID retrieved from previous call, query for more details about the given movie
             let detailedResponse = await axios.get( "https://api.themoviedb.org/3/movie/" + id + "?api_key=" + key + "&append_to_response=credits,release_dates,videos");
-            console.log( "Detailed response below:" );
             var movieData = detailedResponse.data;
-            console.log( movieData );
 
             // Get associated genres from movie
             var movieGenres = "";
-            for( var genreIndex = 0; genreIndex < movieData.genres.length; genreIndex++ ) {
-                var genreTitle = movieData.genres[ genreIndex ].name + " ";
+            // Add commas after every genre before the last one
+            for( var genreIndex = 0; genreIndex < movieData.genres.length - 1; genreIndex++ ) {
+                var genreTitle = movieData.genres[ genreIndex ].name + ", ";
                 movieGenres += genreTitle;
             }
+            // Add "and" preceding last genre for formatting purposes
+            movieGenres += "and " + movieData.genres[ movieData.genres.length - 1 ].name;
 
             // Get first five actors from movie
             var movieActors = "";
-            for( var actorIndex = 0; actorIndex < 5; actorIndex++ ) {
-                var actor = movieData.credits.cast[ actorIndex ].name + " ";
+            // Use loop to add first four actors followed by a comma
+            for( var actorIndex = 0; actorIndex < 4; actorIndex++ ) {
+                var actor = movieData.credits.cast[ actorIndex ].name + ", ";
                 movieActors += actor;
             }
+            // Add last actor preceded by "and" -- all done for formatting purposes
+            movieActors += "and " + movieData.credits.cast[ 4 ].name;
 
             // Get the director of the movie
             var movieDirector = "";
@@ -98,6 +102,30 @@ export default class searchPage extends Component {
                 movieRating = rating;
             }
 
+            // Get tagline for movie and italicize it for formatting purposes
+            var tagline = movieData.tagline.italics();
+
+            // Get release date from JSON and make it readable -- split into an array
+            var readableReleaseDate = movieData.release_date.split( '-' );
+            var year = readableReleaseDate[ 0 ];
+            // Array of months to be used
+            var months = [ undefined, "January", "February", "March", "April", "May",
+                           "June", "July", "August", "September", "October", "November",
+                           "December" ];
+            var monthIndex = parseInt( readableReleaseDate[ 1 ] );
+            var month = months[ monthIndex ];
+            // Get day from array and turn it into an int
+            var day = parseInt( readableReleaseDate[ 2 ] );
+            // Put everything together to make it readable to the user
+            var fullDate = month + " " + day + ", " + year;
+
+            // Get revenue from JSON data and add commas to it to make it readable
+            var revenue = movieData.revenue;
+            console.log( revenue );
+            var readableRevenue = revenue.toString().split( "." );
+            readableRevenue[0] = readableRevenue[0].replace( /\B(?=(\d{3})+(?!\d))/g, "," );
+            readableRevenue.join( "." );
+
             // Save links for poster and trailer to use later
             var posterLink = movieData.poster_path;
             var videoLink = movieData.videos.results[0].key;
@@ -105,21 +133,19 @@ export default class searchPage extends Component {
             // Place values from detailed response into object 
             const values = {
                 title : movieData.title,
-                tagline : movieData.tagline,
+                tagline : tagline,
                 plot : movieData.overview,
                 genres : movieGenres,
                 actors : movieActors,
-                releaseDate : movieData.release_date,
-                revenue : movieData.revenue,
-                runtime : movieData.runtime,
+                releaseDate : fullDate,
+                revenue : '$' + readableRevenue,
+                runtime : movieData.runtime + " minutes",
                 rating : movieRating,
                 director : movieDirector
             };
 
             // Push values to array to be used for table generation
             result.push( values );
-            console.log( "Array result below:" );
-            console.log( result );
             this.generateTable( result, posterLink, videoLink );
         }
         catch( error ) {
@@ -130,70 +156,65 @@ export default class searchPage extends Component {
     // Function to dynamically generate table from given array of movie info
     generateTable( array, poster, video ) {
         // Start off by creating a table to later be appended
-        console.log( array );
-         var table = document.createElement( "table" );
+        var table = document.createElement( "table" );
 
-         // Array of headers to be displayed as table headers
-         var headers = [ "Title", "Tagline", "Plot", "Genres", "Actors", 
-                         "Release Date", "Revenue", "Runtime", "Rating", "Director" ];
-         var tr = table.insertRow( -1 );
+        // Array of headers to be displayed as table headers
+        var headers = [ "Title", "Tagline", "Plot", "Genres", "Actors", 
+                        "Release Date", "Revenue", "Runtime", "Rating", "Director" ];
+        var tr = table.insertRow( -1 );
 
-         // Add headers to table
-         for( var index = 0; index < headers.length; index++ ) {
-             var th = document.createElement( "th" );
-             th.innerHTML = headers[ index ];
-             tr.appendChild( th );
-         }
+        // Add headers to table
+        for( var index = 0; index < headers.length; index++ ) {
+            var th = document.createElement( "th" );
+            th.innerHTML = headers[ index ];
+            tr.appendChild( th );
+        }
 
-         console.log( "Array length: " + array.length );
-         // Add data from JSON array to table
-         var newArray = array[0];
-         console.log( newArray );
-         let keys = Object.keys( newArray );
-         for( var index2 = 0; index2 < array.length; index2++ ) {
-             tr = table.insertRow( -1 );
-             for( var index3 = 0; index3 < headers.length; index3++ ) {
-                 var tableCell = tr.insertCell( -1 );
-                 tableCell.innerHTML = newArray[ keys[ index3 ] ];
-             }
-         }
+        // Add data from JSON array to table
+        var newArray = array[0];
+        let keys = Object.keys( newArray );
+        for( var index2 = 0; index2 < array.length; index2++ ) {
+            tr = table.insertRow( -1 );
+            for( var index3 = 0; index3 < headers.length; index3++ ) {
+                var tableCell = tr.insertCell( -1 );
+                tableCell.innerHTML = newArray[ keys[ index3 ] ];
+            }
+        }
 
-         // Add table to page
-         var divShowData = document.getElementsByClassName( "showData" );
-         divShowData.innerHTML = "";
-         divShowData[0].appendChild( table );
+        // Add table to page
+        var divShowData = document.getElementsByClassName( "showData" );
+        divShowData.innerHTML = "";
+        divShowData[0].appendChild( table );
 
-         // Add movie poster to page using given poster link
-         var posterImage = "https://image.tmdb.org/t/p/w500" + poster;
-         var html = [
-             '<img src=' + posterImage + ' />'
-         ].join( '\n' );
-         document.getElementById( "showPoster" ).innerHTML = html;
+        // Add movie poster to page using given poster link
+        var posterImage = "https://image.tmdb.org/t/p/w500" + poster;
+        var html = [
+            '<img src=' + posterImage + ' />'
+        ].join( '\n' );
+        var showPoster = document.getElementsByClassName( "showPoster" );
+        showPoster[0].innerHTML = html;
 
-         // Add video for trailer to page by embedding it -- code based on help from StackOverflow
-        var videos = document.getElementsByClassName( "showVideo" );
+        // Add video for trailer to page by embedding it -- code based on help from StackOverflow
+        var showVideo = document.getElementsByClassName( "showVideo" );
+        var youtube = showVideo[ 0 ];
+        var videoId = video;
 
-        for( var videoIndex = 0; videoIndex < videos.length; videoIndex++ ) {
-            var youtube = videos[ videoIndex ];
-            var videoId = video;
-
-            // Find YouTube thumbnail using given id
-            var img = document.createElement( "img" );
-            img.setAttribute( "src", "http://i.ytimg.com/vi/"
-                          + videoId + "/hqdefault.jpg" );
-            img.setAttribute( "class", "thumb" );
+        // Find YouTube thumbnail using given id
+        var img = document.createElement( "img" );
+        img.setAttribute( "src", "http://i.ytimg.com/vi/"
+                        + videoId + "/hqdefault.jpg" );
+        img.setAttribute( "class", "thumb" );
 
 
-            // Overlay the Play icon to make it look like a video player
-            var circle = document.createElement( "div" );
-            circle.setAttribute( "class","circle" );
+        // Overlay the Play icon to make it look like a video player
+        var circle = document.createElement( "div" );
+        circle.setAttribute( "class","circle" );
 
-            youtube.appendChild( img );
-            youtube.appendChild( circle );
+        youtube.appendChild( img );
+        youtube.appendChild( circle );
 
-            // Attach an onclick event to the YouTube Thumbnail
-            youtube.onclick = function() {
-
+        // Attach an onclick event to the YouTube Thumbnail
+        youtube.onclick = function() {
             // Create an iFrame with autoplay set to true
             var iframe = document.createElement( "iframe" );
             iframe.setAttribute( "src",
@@ -205,11 +226,14 @@ export default class searchPage extends Component {
             iframe.style.height = this.style.height;
 
             // Replace the YouTube thumbnail with YouTube HTML5 Player
-            this.parentNode.replaceChild( iframe, this );
-
-        };
+            this.parentNode.replaceChild( iframe, this );    
+        }
     }
-}
+
+    // Helper function to format certain aspects of the generated table
+    formatHelper( input ) {
+
+    }
 
     // Function to render form to user and response from API
     render() {
@@ -231,8 +255,8 @@ export default class searchPage extends Component {
                 </form>
                 <p className = "showData"> </p>
                 <div className = "posterAndVideo"> 
-                    <div id = "showPoster" style = {{ float : "left", marginLeft : "10%" }}> </div>
-                    <div class="showVideo" style = {{ width : "560px", height : "315px", float : "right", marginRight : "10%" }}> </div>
+                    <div className = "showPoster" style = {{ float : "left", marginLeft : "10%" }}> </div>
+                    <div className = "showVideo" style = {{ width : "560px", height : "315px", float : "right", marginRight : "10%" }}> </div>
                 </div>
             </div>
         )
