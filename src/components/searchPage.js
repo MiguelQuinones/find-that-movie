@@ -1,6 +1,6 @@
 /* eslint-disable no-loop-func */
 // This page will host the search bar, the table displaying movie info, and the trailer for the movie
-// FIX HOW INFO IS DISPLAYED IN TABLE FOR RUNTIME (MINUTES), REVENUE ($), AND TAGLINE (ITALICS)
+// FORMAT PAGE WHEN RETURNING -- LOOK AT EXAMPLES OF OTHER PAGES LIKE TMDB AND BASE OFF THAT, HAVE TABLE NOT SPAN ACROSS ENTIRE PAGE TOO
 
 // Necessary imports
 import React, { Component } from 'react';
@@ -121,10 +121,15 @@ export default class searchPage extends Component {
 
             // Get revenue from JSON data and add commas to it to make it readable
             var revenue = movieData.revenue;
-            console.log( revenue );
             var readableRevenue = revenue.toString().split( "." );
             readableRevenue[0] = readableRevenue[0].replace( /\B(?=(\d{3})+(?!\d))/g, "," );
             readableRevenue.join( "." );
+
+            // Get runtime in minutes from JSON data and convert to hours and minutes format instead
+            var runtime = movieData.runtime;
+            var hours = Math.floor( runtime / 60 );
+            var minutes = Math.round( ( ( runtime / 60 ) - hours ) * 60 );
+            var readableRuntime = hours + " hour(s) and " + minutes + " minute(s).";
 
             // Save links for poster and trailer to use later
             var posterLink = movieData.poster_path;
@@ -139,7 +144,7 @@ export default class searchPage extends Component {
                 actors : movieActors,
                 releaseDate : fullDate,
                 revenue : '$' + readableRevenue,
-                runtime : movieData.runtime + " minutes",
+                runtime : readableRuntime,
                 rating : movieRating,
                 director : movieDirector
             };
