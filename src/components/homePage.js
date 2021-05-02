@@ -1,3 +1,5 @@
+// FIGURE OUT HOW TO ADD SLIDING IMAGES OF UPCOMING MOVIES HERE -- FOLLOW SAVED EXAMPLE ON REDDIT
+
 import React, { Component } from 'react';
 
 export default class homePage extends Component {

@@ -40,7 +40,7 @@ th, td, p {
 }
 
 table, th, td {
-    border: solid 1px #ddd;
+    border: solid 1px black;
     border-collapse: collapse;
     padding: 2px 3px;
     text-align: center;
@@ -55,6 +55,7 @@ th {
     display: flex;
     float: right;
     margin-right: 2%;
+    margin-top: 0.5%;
 }
   
 .themeLight {
@@ -66,8 +67,10 @@ th {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    background-color: #cbd5e0;
+    background-color: gainsboro;
     color: #1a202c;
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
 }
   
 .themeDark {
@@ -81,6 +84,8 @@ th {
     cursor: pointer;
     background-color: #2d3748;
     color: #e2e8f0;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
 }
   
 .themeLight:hover {
@@ -105,4 +110,12 @@ th {
 
 .navbarItemLight {
     color: black;
+}
+
+/* Styling for submit button */
+.submitButton {
+    background-color: #eee;
+    border: 1px solid #ddd;
+    color: #333;
+    font-size: 1em;
 }

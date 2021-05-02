@@ -1,6 +1,6 @@
 /* eslint-disable no-loop-func */
 // This page will host the search bar, the table displaying movie info, and the trailer for the movie
-// FORMAT PAGE WHEN RETURNING -- LOOK AT EXAMPLES OF OTHER PAGES LIKE TMDB AND BASE OFF THAT, HAVE TABLE NOT SPAN ACROSS ENTIRE PAGE TOO
+// FORMAT PAGE WHEN RETURNING -- LOOK AT EXAMPLES OF OTHER PAGES LIKE TMDB AND BASE OFF THAT, HAVE TABLE NOT SPAN ACROSS ENTIRE PAGE TOO -- REFER TO DRAWING IN NOTEBOOK
 
 // Necessary imports
 import React, { Component } from 'react';
@@ -192,7 +192,7 @@ export default class searchPage extends Component {
         divShowData[0].appendChild( table );
 
         // Add movie poster to page using given poster link
-        var posterImage = "https://image.tmdb.org/t/p/w500" + poster;
+        var posterImage = "https://image.tmdb.org/t/p/w400" + poster;
         var html = [
             '<img src=' + posterImage + ' />'
         ].join( '\n' );
@@ -243,19 +243,21 @@ export default class searchPage extends Component {
     // Function to render form to user and response from API
     render() {
         return (
-            <div className = "form">
+            <div>
                 <form onSubmit = { this.onHandleSubmit }>
-                    <div className = "enterField">
-                        <h1> Search Page </h1>
-                        <label> Enter Movie Title: </label>
-                        <input type = "text"
-                               className = "enterField"
-                               placeholder = "Enter movie here!"
-                               value = { this.state.title }
-                               onChange = { this.onChangeMovieTitle } />
-                    </div>
-                    <div className = "submitField">
-                        <input type = "submit" value = "Submit" className = "submitButton"/>
+                    <div className = "fields">
+                        <div className = "enterField">
+                            <h1> Search Page </h1>
+                            <label> Enter Movie Title: </label>
+                            <input type = "text"
+                                   className = "enterField"
+                                   placeholder = "Enter movie here!"
+                                   value = { this.state.title }
+                                   onChange = { this.onChangeMovieTitle } />
+                        </div>
+                        <div className = "submitField">
+                                <input type = "submit" value = "Submit" className = "submitButton"/>
+                        </div>
                     </div>
                 </form>
                 <p className = "showData"> </p>
