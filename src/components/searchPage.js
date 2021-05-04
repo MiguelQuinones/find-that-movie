@@ -15,7 +15,7 @@ export default class searchPage extends Component {
         // Binding functions
         this.onChangeMovieTitle = this.onChangeMovieTitle.bind( this );
         this.onHandleSubmit = this.onHandleSubmit.bind( this );
-        this.onComponentDidMount = this.onComponentDidMount.bind( this );
+        this.onComponentDidMount = this.componentDidMount.bind( this );
 
         // Setting default state of values
         this.state = {
@@ -48,7 +48,7 @@ export default class searchPage extends Component {
     }
 
     // Function to send request to TMDB API and display response to user
-    async onComponentDidMount( title ) {
+    async componentDidMount( title ) {
         // Try and catch blocks -- send request to API via Axios, catch any errors that occur
         try {
             var key = process.env.REACT_APP_API_KEY; // Change to REACT_APP_API_KEY later, not working now for some reason
@@ -235,11 +235,6 @@ export default class searchPage extends Component {
         }
     }
 
-    // Helper function to format certain aspects of the generated table
-    formatHelper( input ) {
-
-    }
-
     // Function to render form to user and response from API
     render() {
         return (
@@ -255,17 +250,18 @@ export default class searchPage extends Component {
                                    value = { this.state.title }
                                    onChange = { this.onChangeMovieTitle } />
                         </div>
-                        <div className = "submitField">
-                                <input type = "submit" value = "Submit" className = "submitButton"/>
-                        </div>
+                        
                     </div>
                 </form>
+                <div className = "submitField">
+                                <input type = "submit" value = "Search" className = "submitButton"/>
+                        </div>
                 <p className = "showData"> </p>
                 <div className = "posterAndVideo"> 
                     <div className = "showPoster" style = {{ float : "left", marginLeft : "10%" }}> </div>
                     <div className = "showVideo" style = {{ width : "560px", height : "315px", float : "right", marginRight : "10%" }}> </div>
                 </div>
             </div>
-        )
+        );
     }
 }
