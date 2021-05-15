@@ -1,6 +1,6 @@
 /* eslint-disable no-loop-func */
 // This page will host the search bar, the table displaying movie info, and the trailer for the movie
-// FORMAT PAGE WHEN RETURNING -- LOOK AT EXAMPLES OF OTHER PAGES LIKE TMDB AND BASE OFF THAT, HAVE TABLE NOT SPAN ACROSS ENTIRE PAGE TOO -- REFER TO DRAWING IN NOTEBOOK
+// REMOVE generateTable(), CONTINUE FORMATTING PAGE TO RESEMBLE NOTEBOOK DRAWING 
 
 // Necessary imports
 import React, { Component } from 'react';
@@ -19,7 +19,8 @@ export default class searchPage extends Component {
 
         // Setting default state of values
         this.state = {
-            title : ""
+            title : "",
+            values : []
         }
     }
 
@@ -43,8 +44,9 @@ export default class searchPage extends Component {
 
         // Set default state of variable again
         this.setState( {
-            title : ""
-        });
+            title : "",
+            values : []
+        } );
     }
 
     // Function to send request to TMDB API and display response to user
@@ -54,7 +56,7 @@ export default class searchPage extends Component {
             var key = process.env.REACT_APP_API_KEY; // Change to REACT_APP_API_KEY later, not working now for some reason
             
             // Empty array that will hold values from API call
-            const result = [];
+            //const result = [];
 
             // Search for the given movie title within the TMDB API to retrieve its unique ID for more detailed requests
             let response = await axios.get( "https://api.themoviedb.org/3/search/movie?api_key=" + key + "&query=" + title )
@@ -63,6 +65,7 @@ export default class searchPage extends Component {
             // Using the movie ID retrieved from previous call, query for more details about the given movie
             let detailedResponse = await axios.get( "https://api.themoviedb.org/3/movie/" + id + "?api_key=" + key + "&append_to_response=credits,release_dates,videos");
             var movieData = detailedResponse.data;
+            console.log( movieData );
 
             // Get associated genres from movie
             var movieGenres = "";
@@ -102,9 +105,6 @@ export default class searchPage extends Component {
                 movieRating = rating;
             }
 
-            // Get tagline for movie and italicize it for formatting purposes
-            var tagline = movieData.tagline.italics();
-
             // Get release date from JSON and make it readable -- split into an array
             var readableReleaseDate = movieData.release_date.split( '-' );
             var year = readableReleaseDate[ 0 ];
@@ -136,29 +136,30 @@ export default class searchPage extends Component {
             var videoLink = movieData.videos.results[0].key;
             
             // Place values from detailed response into object 
-            const values = {
-                title : movieData.title,
-                tagline : tagline,
-                plot : movieData.overview,
-                genres : movieGenres,
-                actors : movieActors,
-                releaseDate : fullDate,
-                revenue : '$' + readableRevenue,
-                runtime : readableRuntime,
-                rating : movieRating,
-                director : movieDirector
-            };
-
-            // Push values to array to be used for table generation
-            result.push( values );
-            this.generateTable( result, posterLink, videoLink );
+            this.setState( {
+                values : [
+                    {
+                        id : movieData.id,
+                        title : movieData.title,
+                        tagline : movieData.tagline,
+                        plot : movieData.overview,
+                        genres : movieGenres,
+                        actors : movieActors,
+                        releaseDate : fullDate,
+                        revenue : '$' + readableRevenue,
+                        runtime : readableRuntime,
+                        rating : movieRating,
+                        director : movieDirector
+                    }
+                ]
+            } );
         }
         catch( error ) {
             console.error( "An error has occurred.", error );
         }
     }
 
-    // Function to dynamically generate table from given array of movie info
+    // Function to dynamically generate table from given array of movie info -- REMOVE THIS FUNCTION WHEN RETURNING
     generateTable( array, poster, video ) {
         // Start off by creating a table to later be appended
         var table = document.createElement( "table" );
@@ -237,30 +238,35 @@ export default class searchPage extends Component {
 
     // Function to render form to user and response from API
     render() {
+        const values = this.state.values;
         return (
             <div>
-                <form onSubmit = { this.onHandleSubmit }>
-                    <div className = "fields">
-                        <div className = "enterField">
-                            <h1> Search Page </h1>
-                            <label> Enter Movie Title: </label>
-                            <input type = "text"
-                                   className = "enterField"
-                                   placeholder = "Enter movie here!"
-                                   value = { this.state.title }
-                                   onChange = { this.onChangeMovieTitle } />
-                        </div>
-                        
-                    </div>
-                </form>
-                <div className = "submitField">
-                                <input type = "submit" value = "Search" className = "submitButton"/>
-                        </div>
-                <p className = "showData"> </p>
-                <div className = "posterAndVideo"> 
-                    <div className = "showPoster" style = {{ float : "left", marginLeft : "10%" }}> </div>
-                    <div className = "showVideo" style = {{ width : "560px", height : "315px", float : "right", marginRight : "10%" }}> </div>
+                <h1> Search Page </h1>
+                <div className = "formField">
+                    <form className = "form" onSubmit = { this.onHandleSubmit }>
+                        <input type = "text" className = "input" 
+                               placeholder = "Enter movie here!" value = { this.state.title } 
+                               onChange = { this.onChangeMovieTitle } />
+                        <button type = "submit" className = "submitButton" > 
+                            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="16" fill="currentColor" className="bi bi-search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                            </svg>
+                        </button>
+                    </form>
                 </div>
+
+                <div className = "resultsField">
+                    { values.map( value => (
+                        <div className = "results">
+                            <div key = { value.id }> 
+                                <p className = "title"> Title: <span className = "titleSpan"> { value.title } </span></p>
+                                <p className = "tagline"> Tagline: <span className = "taglineSpan"> <i> { value.tagline } </i> </span> </p>
+                            </div>
+                        </div>
+
+                    ))}
+                </div>
+                
             </div>
         );
     }
