@@ -1,3 +1,4 @@
+/* Styling for body */
 body {
     text-align: center;
 }
@@ -112,10 +113,37 @@ th {
     color: black;
 }
 
+/* Styling for input field */
+.input {
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+
 /* Styling for submit button */
 .submitButton {
     background-color: #eee;
     border: 1px solid #ddd;
     color: #333;
-    font-size: 1em;
+    border-bottom-right-radius: 15px;
+    border-top-right-radius: 15px;
+    cursor: pointer;
+}
+
+/* Styling for both input and submit fields */
+.input, .submitButton {
+    display: inline-block;
+    padding: 2px 5px;
+    font-size: 20px;
+    -webkit-appearance: none;
+}
+
+/* Styling for title, poster, and tagline portion of search page */
+.displayLeft {
+    float: left;
+    margin-left: 2%;
+}
+
+/* Styling for right side of page, which has rest of returned information */
+.displayRight {
+    margin-right: 2%
 }

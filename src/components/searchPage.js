@@ -1,6 +1,5 @@
 /* eslint-disable no-loop-func */
-// This page will host the search bar, the table displaying movie info, and the trailer for the movie
-// REMOVE generateTable(), CONTINUE FORMATTING PAGE TO RESEMBLE NOTEBOOK DRAWING 
+// This page will host the search bar and the field displaying movie info
 
 // Necessary imports
 import React, { Component } from 'react';
@@ -37,7 +36,7 @@ export default class searchPage extends Component {
         event.preventDefault();
 
         // Assign user input to variable for movie title
-        var title = this.state.title;
+        const title = this.state.title;
 
         // Call function to send request with given title to OMDB API
         this.onComponentDidMount( title );
@@ -53,43 +52,39 @@ export default class searchPage extends Component {
     async componentDidMount( title ) {
         // Try and catch blocks -- send request to API via Axios, catch any errors that occur
         try {
-            var key = process.env.REACT_APP_API_KEY; // Change to REACT_APP_API_KEY later, not working now for some reason
-            
-            // Empty array that will hold values from API call
-            //const result = [];
+            const key = process.env.REACT_APP_API_KEY; // Change to REACT_APP_API_KEY later, not working now for some reason
 
             // Search for the given movie title within the TMDB API to retrieve its unique ID for more detailed requests
             let response = await axios.get( "https://api.themoviedb.org/3/search/movie?api_key=" + key + "&query=" + title )
-            var id = response.data.results[0].id;
+            const id = response.data.results[0].id;
 
             // Using the movie ID retrieved from previous call, query for more details about the given movie
             let detailedResponse = await axios.get( "https://api.themoviedb.org/3/movie/" + id + "?api_key=" + key + "&append_to_response=credits,release_dates,videos");
-            var movieData = detailedResponse.data;
-            console.log( movieData );
+            const movieData = detailedResponse.data;
 
             // Get associated genres from movie
-            var movieGenres = "";
+            let movieGenres = "";
             // Add commas after every genre before the last one
-            for( var genreIndex = 0; genreIndex < movieData.genres.length - 1; genreIndex++ ) {
-                var genreTitle = movieData.genres[ genreIndex ].name + ", ";
+            for( let genreIndex = 0; genreIndex < movieData.genres.length - 1; genreIndex++ ) {
+                const genreTitle = movieData.genres[ genreIndex ].name + ", ";
                 movieGenres += genreTitle;
             }
             // Add "and" preceding last genre for formatting purposes
             movieGenres += "and " + movieData.genres[ movieData.genres.length - 1 ].name;
 
             // Get first five actors from movie
-            var movieActors = "";
+            let movieActors = "";
             // Use loop to add first four actors followed by a comma
-            for( var actorIndex = 0; actorIndex < 4; actorIndex++ ) {
-                var actor = movieData.credits.cast[ actorIndex ].name + ", ";
+            for( let actorIndex = 0; actorIndex < 4; actorIndex++ ) {
+                const actor = movieData.credits.cast[ actorIndex ].name + ", ";
                 movieActors += actor;
             }
             // Add last actor preceded by "and" -- all done for formatting purposes
             movieActors += "and " + movieData.credits.cast[ 4 ].name;
 
             // Get the director of the movie
-            var movieDirector = "";
-            for( var directorIndex = 0; directorIndex < movieData.credits.crew.length; directorIndex++ ) {
+            let movieDirector = "";
+            for( let directorIndex = 0; directorIndex < movieData.credits.crew.length; directorIndex++ ) {
                 if( movieData.credits.crew[ directorIndex ].job === "Director" ) {
                     var director = movieData.credits.crew[ directorIndex ].name;
                 }
@@ -97,8 +92,8 @@ export default class searchPage extends Component {
             }
 
             // Get the rating of the movie for the US only
-            var movieRating = "";
-            for( var ratingIndex = 0; ratingIndex < movieData.release_dates.results.length; ratingIndex++ ) {
+            let movieRating = "";
+            for( let ratingIndex = 0; ratingIndex < movieData.release_dates.results.length; ratingIndex++ ) {
                 if( movieData.release_dates.results[ ratingIndex ].iso_3166_1 === "US" ) {
                     var rating = movieData.release_dates.results[ ratingIndex ].release_dates[ 0 ].certification;
                 }
@@ -106,34 +101,34 @@ export default class searchPage extends Component {
             }
 
             // Get release date from JSON and make it readable -- split into an array
-            var readableReleaseDate = movieData.release_date.split( '-' );
-            var year = readableReleaseDate[ 0 ];
+            const readableReleaseDate = movieData.release_date.split( '-' );
+            const year = readableReleaseDate[ 0 ];
             // Array of months to be used
-            var months = [ undefined, "January", "February", "March", "April", "May",
+            const months = [ undefined, "January", "February", "March", "April", "May",
                            "June", "July", "August", "September", "October", "November",
                            "December" ];
-            var monthIndex = parseInt( readableReleaseDate[ 1 ] );
-            var month = months[ monthIndex ];
+            const monthIndex = parseInt( readableReleaseDate[ 1 ] );
+            const month = months[ monthIndex ];
             // Get day from array and turn it into an int
-            var day = parseInt( readableReleaseDate[ 2 ] );
+            const day = parseInt( readableReleaseDate[ 2 ] );
             // Put everything together to make it readable to the user
-            var fullDate = month + " " + day + ", " + year;
+            const fullDate = month + " " + day + ", " + year;
 
             // Get revenue from JSON data and add commas to it to make it readable
-            var revenue = movieData.revenue;
-            var readableRevenue = revenue.toString().split( "." );
+            const revenue = movieData.revenue;
+            const readableRevenue = revenue.toString().split( "." );
             readableRevenue[0] = readableRevenue[0].replace( /\B(?=(\d{3})+(?!\d))/g, "," );
             readableRevenue.join( "." );
 
             // Get runtime in minutes from JSON data and convert to hours and minutes format instead
-            var runtime = movieData.runtime;
-            var hours = Math.floor( runtime / 60 );
-            var minutes = Math.round( ( ( runtime / 60 ) - hours ) * 60 );
-            var readableRuntime = hours + " hour(s) and " + minutes + " minute(s).";
+            const runtime = movieData.runtime;
+            const hours = Math.floor( runtime / 60 );
+            const minutes = Math.round( ( ( runtime / 60 ) - hours ) * 60 );
+            const readableRuntime = hours + " hour(s) and " + minutes + " minute(s).";
 
             // Save links for poster and trailer to use later
-            var posterLink = movieData.poster_path;
-            var videoLink = movieData.videos.results[0].key;
+            const posterLink = movieData.poster_path;
+            const videoLink = movieData.videos.results[0].key;
             
             // Place values from detailed response into object 
             this.setState( {
@@ -149,71 +144,36 @@ export default class searchPage extends Component {
                         revenue : '$' + readableRevenue,
                         runtime : readableRuntime,
                         rating : movieRating,
-                        director : movieDirector
+                        director : movieDirector,
+                        poster : posterLink
                     }
                 ]
             } );
+
+            // Send video link to helper function to display to page
+            this.generateVideo( videoLink );
         }
         catch( error ) {
             console.error( "An error has occurred.", error );
         }
     }
 
-    // Function to dynamically generate table from given array of movie info -- REMOVE THIS FUNCTION WHEN RETURNING
-    generateTable( array, poster, video ) {
-        // Start off by creating a table to later be appended
-        var table = document.createElement( "table" );
-
-        // Array of headers to be displayed as table headers
-        var headers = [ "Title", "Tagline", "Plot", "Genres", "Actors", 
-                        "Release Date", "Revenue", "Runtime", "Rating", "Director" ];
-        var tr = table.insertRow( -1 );
-
-        // Add headers to table
-        for( var index = 0; index < headers.length; index++ ) {
-            var th = document.createElement( "th" );
-            th.innerHTML = headers[ index ];
-            tr.appendChild( th );
-        }
-
-        // Add data from JSON array to table
-        var newArray = array[0];
-        let keys = Object.keys( newArray );
-        for( var index2 = 0; index2 < array.length; index2++ ) {
-            tr = table.insertRow( -1 );
-            for( var index3 = 0; index3 < headers.length; index3++ ) {
-                var tableCell = tr.insertCell( -1 );
-                tableCell.innerHTML = newArray[ keys[ index3 ] ];
-            }
-        }
-
-        // Add table to page
-        var divShowData = document.getElementsByClassName( "showData" );
-        divShowData.innerHTML = "";
-        divShowData[0].appendChild( table );
-
-        // Add movie poster to page using given poster link
-        var posterImage = "https://image.tmdb.org/t/p/w400" + poster;
-        var html = [
-            '<img src=' + posterImage + ' />'
-        ].join( '\n' );
-        var showPoster = document.getElementsByClassName( "showPoster" );
-        showPoster[0].innerHTML = html;
-
-        // Add video for trailer to page by embedding it -- code based on help from StackOverflow
-        var showVideo = document.getElementsByClassName( "showVideo" );
-        var youtube = showVideo[ 0 ];
-        var videoId = video;
+    // Function to dynamically generate YouTube video for given movie using code from their video player API
+    generateVideo( video ) {
+        // Add video for trailer to page by embedding it
+        const showVideo = document.getElementsByClassName( "showVideo" );
+        const youtube = showVideo[ 0 ];
+        const videoId = video;
 
         // Find YouTube thumbnail using given id
-        var img = document.createElement( "img" );
+        const img = document.createElement( "img" );
         img.setAttribute( "src", "http://i.ytimg.com/vi/"
                         + videoId + "/hqdefault.jpg" );
         img.setAttribute( "class", "thumb" );
 
 
         // Overlay the Play icon to make it look like a video player
-        var circle = document.createElement( "div" );
+        const circle = document.createElement( "div" );
         circle.setAttribute( "class","circle" );
 
         youtube.appendChild( img );
@@ -222,7 +182,7 @@ export default class searchPage extends Component {
         // Attach an onclick event to the YouTube Thumbnail
         youtube.onclick = function() {
             // Create an iFrame with autoplay set to true
-            var iframe = document.createElement( "iframe" );
+            const iframe = document.createElement( "iframe" );
             iframe.setAttribute( "src",
                 "https://www.youtube.com/embed/" + videoId
                 + "?autoplay=1&autohide=1&border=0&wmode=opaque&enablejsapi=1" );
@@ -257,13 +217,27 @@ export default class searchPage extends Component {
 
                 <div className = "resultsField">
                     { values.map( value => (
-                        <div className = "results">
-                            <div key = { value.id }> 
-                                <p className = "title"> Title: <span className = "titleSpan"> { value.title } </span></p>
-                                <p className = "tagline"> Tagline: <span className = "taglineSpan"> <i> { value.tagline } </i> </span> </p>
+                        <div className = "results" key = { value.id } >
+                            <div className = "displayTotal"> 
+                                <div className = "displayLeft">
+                                    <p className = "title"> <span className = "titleSpan" style = { { fontSize : "35px", fontWeight : "bold" } }> { value.title } </span> </p>
+                                    <p className = "showPoster"> <img src= { "https://image.tmdb.org/t/p/w400" + value.poster } alt = "Poster" /> </p>
+                                    <p className = "tagline"> <span className = "taglineSpan" style = { { fontSize : "25px" } }> <i> { value.tagline } </i> </span> </p>
+                                </div>
+                                <br></br>
+                                <div className = "displayRight">
+                                    <p className = "plot"> <span className = "plotSpan" style = { { fontSize : "20px", fontWeight : "bold" } }> Plot: </span> { value.plot } </p>
+                                    <p className = "genres"> <span className = "genresSpan" style = { { fontSize : "20px", fontWeight : "bold" } }> Genres: </span> { value.genres } </p>
+                                    <p className = "actors"> <span className = "actorsSpan" style = { { fontSize : "20px", fontWeight : "bold" } }> Actors: </span> { value.actors } </p>
+                                    <p className = "director"> <span className = "directorSpan" style = { { fontSize : "20px", fontWeight : "bold" } }> Director: </span> { value.director } </p>
+                                    <p className = "releaseDate"> <span className = "releaseSpan" style = { { fontSize : "20px", fontWeight : "bold" } }> Release Date: </span> { value.releaseDate } </p>
+                                    <p className = "revenue"> <span className = "revenueSpan" style = { { fontSize : "20px", fontWeight : "bold" } }> Total Revenue: </span> { value.revenue } </p>
+                                    <p className = "runtime"> <span className = "runtimeSpan" style = { { fontSize : "20px", fontWeight : "bold" } }> Movie Runtime: </span> { value.runtime } </p>
+                                    <p className = "rating"> <span className = "ratingSpan" style = { { fontSize : "20px", fontWeight : "bold" } }> Movie Rating: </span> { value.rating } </p>
+                                </div>
                             </div>
+                            <div className = "showVideo" style = { { width : "560px", height : "315px", float : "right", marginRight : "18%" } }> </div>
                         </div>
-
                     ))}
                 </div>
                 
