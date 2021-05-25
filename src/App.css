@@ -35,22 +35,6 @@ li:hover {
     background-color: grey;
 }
 
-/* Styling for the dynamically generated table */
-th, td, p {
-    font: 15px 'Segoe UI';
-}
-
-table, th, td {
-    border: solid 1px black;
-    border-collapse: collapse;
-    padding: 2px 3px;
-    text-align: center;
-}
-
-th {
-    font-weight: bold;
-}
-
 /* Styling for Dark/Light themes */
 .buttonHolder {
     display: flex;

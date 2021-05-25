@@ -8,6 +8,7 @@ import homePage from './homePage';
 import searchPage from './searchPage';
 import watchLater from './watchLater';
 import favoritePage from './favoritePage';
+import loginRegister from './loginRegister';
 
 // Styling rules for Light/Dark mode
 const THEME_KEY = "THEME";
@@ -47,13 +48,13 @@ class Navbar extends Component {
       var navbar = document.getElementById( "navbar" );
       if( theme === THEMES.Dark ) {
         navbar.className = "navigationBarDark";
-        for( var darkIndex = 1; darkIndex < 5; darkIndex++ ) {
+        for( var darkIndex = 1; darkIndex < 6; darkIndex++ ) {
           var darkItem = document.getElementById( "navbarItem" + darkIndex );
           darkItem.className = "navbarItemDark";
         }
       } else if( theme === THEMES.Light ) {
         navbar.className = "navigationBarLight";
-        for( var lightIndex = 1; lightIndex < 5; lightIndex++ ) {
+        for( var lightIndex = 1; lightIndex < 6; lightIndex++ ) {
           var lightItem =document.getElementById( "navbarItem" + lightIndex );
           lightItem.className = "navbarItemLight";
         }
@@ -80,6 +81,9 @@ class Navbar extends Component {
                     <li className = "navbarItem">
                       <Link to = "/favorites" id = "navbarItem4" className = "navbarItemFour"> Favorites Page </Link>
                     </li>
+                    <li className = "navbarItem">
+                      <Link to = "/loginRegister" id = "navbarItem5" className = "navbarItemFive"> Login/Register Page </Link>
+                    </li>
                     <div className = "buttonHolder">
                         <div className = "themeDark" onClick = { () => this.themeSwitch( THEMES.Dark ) } > Dark </div>
                         <div className = "themeLight" onClick = { () => this.themeSwitch( THEMES.Light ) } > Light </div>
@@ -92,6 +96,7 @@ class Navbar extends Component {
               <Route path = "/searchPage" component = { searchPage } />
               <Route path = "/watchLater" component = { watchLater } />
               <Route path = "/favorites" component = { favoritePage } />
+              <Route path = "/loginRegister" component = { loginRegister } />
             </div>
           </Router>
       );
