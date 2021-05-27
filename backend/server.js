@@ -9,7 +9,8 @@ const mongoose = require('mongoose');
 const routes = express.Router();
 const PORT = 4000;
 
-// Import watchlist and favorites models
+// Import user, watchlist, and favorites models
+const User = require( './models/user.model' );
 
 // Integrate CORS into the app
 app.use(cors());

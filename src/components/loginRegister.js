@@ -40,6 +40,9 @@ export default class watchLater extends Component {
 
         // Display username and password to screen for now -- IMPLEMENT ACTUAL PROTOCOLS WHEN RETURNING
         alert( "Username: " + this.state.username + ", Password: " + this.state.password );
+
+        // On login, route user to search page
+        //this.props.history.push('/searchPage');
     }
 
     render() {
@@ -48,14 +51,13 @@ export default class watchLater extends Component {
                 <h1> Login / Register </h1>
                 <div className = "formField">
                     <form className = "form" onSubmit = { this.onHandleSubmit }>
-                        <input type = "text" className = "input" 
+                        <input type = "text" className = "loginInput" 
                                placeholder = "Enter username" value = { this.state.username } 
                                onChange = { this.onChangeUsername } />
-                        <input type = "text" className = "input" 
+                        <input type = "text" className = "loginInput" 
                                placeholder = "Enter password" value = { this.state.password } 
                                onChange = { this.onChangePassword } />
-                        <button type = "submit" className = "submitButtons" value = "Login/Register" > 
-                        </button>
+                        <button type = "submit" className = "submitButtons"> Login | Register </button> 
                     </form>
                 </div>
             </div>
