@@ -7,14 +7,17 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const routes = express.Router();
-const PORT = 4000;
+
+let corsOptions = {
+    orign : "http://localhost:4000"
+};
 
 // Import user, watchlist, and favorites models
-const User = require( './models/user.model' );
+const db = require( "./models" );
 
 // Integrate CORS into the app
-app.use(cors());
-app.use(bodyParser.json());
+app.use( cors( corsOptions ) );
+app.use( bodyParser.json() );
 
 // Connect to the MongoDB database moviedb
 mongoose.connect('mongodb://127.0.0.1:27017/moviedb', { useNewUrlParser: true });
@@ -24,6 +27,15 @@ connection.once('open', function() {
     console.log("MongoDB database connection established successfully!");
 })
 
-app.listen(PORT, function() {
+const PORT = process.env.PORT || 4000;
+app.listen( PORT, () => {
     console.log("Server is running on Port: " + PORT);
-});
+} );
+
+// Routing middleware
+app.get( "/", ( req, res ) => {
+    res.json( { message: "Welcome to the application." } );
+} );
+
+require('./app/routes/auth.routes')(app);
+require('./app/routes/user.routes')(app);
