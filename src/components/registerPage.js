@@ -1,8 +1,8 @@
-// This file holds the code for allowing users to register for / login to the application -- ADD MORE WHEN RETURNING TO PROJECT
+// This file holds the code for allowing users to register within the application -- ADD MORE WHEN RETURNING TO PROJECT
 
 import React, { Component } from 'react';
 
-export default class watchLater extends Component {
+export default class registerPage extends Component {
 
     // Constructor
     constructor( props ) {
@@ -39,16 +39,36 @@ export default class watchLater extends Component {
         event.preventDefault();
 
         // Display username and password to screen for now -- IMPLEMENT ACTUAL PROTOCOLS WHEN RETURNING
-        alert( "Username: " + this.state.username + ", Password: " + this.state.password );
+        //alert( "Username: " + this.state.username + ", Password: " + this.state.password );
 
-        // On login, route user to search page
-        //this.props.history.push('/searchPage');
+        // Log user into application -- ADD VALIDATION WHEN RETURNING
+        // Check username to make sure it is valid
+        const username = this.state.username;
+        if( !username ) {
+            alert( "Username field cannot be empty!" );
+        } else if( username.length < 3 || username.length > 20 ) {
+            alert( "Username must be longer than 3 characters and shorter than 20 characters!" );
+        }
+
+        // Check password to make sure it is valid
+        const password = this.state.password;
+        if( !password ) {
+            alert( "Password field cannot be empty!" );
+        } else if( password.length < 6 || password.length > 20 ) {
+            alert( "Password must be longer than 6 characters and shorter than 20 characters!" );
+        }
+
+        // If both are valid, register user within database
+        if( username && password ) {
+            alert( "Username: " + username + ", Password: " + password );
+
+        }
     }
 
     render() {
         return (
             <div>
-                <h1> Login / Register </h1>
+                <h1> Register </h1>
                 <div className = "formField">
                     <form className = "form" onSubmit = { this.onHandleSubmit }>
                         <input type = "text" className = "loginInput" 
@@ -57,7 +77,7 @@ export default class watchLater extends Component {
                         <input type = "text" className = "loginInput" 
                                placeholder = "Enter password" value = { this.state.password } 
                                onChange = { this.onChangePassword } />
-                        <button type = "submit" className = "submitButtons"> Login | Register </button> 
+                        <button type = "submit" className = "submitLoginButton"> Login </button> 
                     </form>
                 </div>
             </div>

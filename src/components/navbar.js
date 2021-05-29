@@ -3,12 +3,15 @@
 
 // Necessary imports
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { Switch, Route, Link } from 'react-router-dom';
+import AuthService from '../services/auth.service';
 import homePage from './homePage';
 import searchPage from './searchPage';
 import watchLater from './watchLater';
 import favoritePage from './favoritePage';
-import loginRegister from './loginRegister';
+import loginPage from './loginPage';
+import registerPage from './registerPage';
+import BoardUser from './board-user.component'
 
 // Styling rules for Light/Dark mode
 const THEME_KEY = "THEME";
@@ -20,6 +23,31 @@ const THEMES = {
 };
 
 class Navbar extends Component {
+    constructor( props ) {
+      super( props );
+      this.logUserOut = this.logUserOut.bind( this );
+
+      this.state = {
+        currentUser : undefined
+      };
+    }
+
+    componentDidMount() {
+      // Check to see if user is currently logged in
+      const user = AuthService.getCurrentUser();
+
+      // If user is found
+      if( user ) {
+        this.setState( {
+          currentUser : user
+        } );
+      }
+    }
+
+    // Function for logging user out of the application
+    logUserOut() {
+      AuthService.logout()
+    }
     // Saves chosen theme to web storage to persist across pages
     saveSettings( value ) {
       window.localStorage.setItem( THEME_KEY, value );
@@ -35,15 +63,7 @@ class Navbar extends Component {
       document.body.style.backgroundColor = theme;
       document.body.style.color = theme === THEMES.Dark ? THEMES.Light : THEMES.Dark;
       this.saveSettings( theme );
-      // Change theme of table to match -- if table exists on page, performs the changes
-      var tableSwitch = document.getElementById( "table" );
-      if( tableSwitch ) {
-        if( theme === THEMES.Dark ) {
-          tableSwitch.className = "table table-striped table-bordered table-hover table-dark"
-        } else if( theme === THEMES.Light ) {
-          tableSwitch.className = "table table-striped table-bordered table-hover"
-        }
-      }
+
       // Change theme of navbar to match
       var navbar = document.getElementById( "navbar" );
       if( theme === THEMES.Dark ) {
@@ -61,44 +81,70 @@ class Navbar extends Component {
       }
     }
 
-    // Rendering for the landing page
+    // START HERE WHEN RETURNING
     render() {
+      const { currentUser } = this.state;
       return (
-        <Router>
-            <div className = "app">
-              <nav className = "navigationBar">
-                <div className = "navigationBarList">
-                  <ul id = "navbar" className = "unorderedList">
-                    <li className = "navbarItem">
-                      <Link to = "/" id = "navbarItem1" className = "navbarItemOne"> Home Page </Link>
-                    </li>
-                    <li className = "navbarItem">
-                      <Link to = "/searchPage" id = "navbarItem2" className = "navbarItemTwo"> Search Page</Link>
-                    </li>
-                    <li className = "navbarItem">
-                      <Link to = "/watchLater" id = "navbarItem3" className = "navbarItemThree"> Watch Later Page </Link>
-                    </li>
-                    <li className = "navbarItem">
-                      <Link to = "/favorites" id = "navbarItem4" className = "navbarItemFour"> Favorites Page </Link>
-                    </li>
-                    <li className = "navbarItem">
-                      <Link to = "/loginRegister" id = "navbarItem5" className = "navbarItemFive"> Login/Register Page </Link>
-                    </li>
-                    <div className = "buttonHolder">
-                        <div className = "themeDark" onClick = { () => this.themeSwitch( THEMES.Dark ) } > Dark </div>
-                        <div className = "themeLight" onClick = { () => this.themeSwitch( THEMES.Light ) } > Light </div>
-                    </div>
-                  </ul>
-                </div>
-              </nav>
-              <br/>
-              <Route path = "/" exact component = { homePage } />
-              <Route path = "/searchPage" component = { searchPage } />
-              <Route path = "/watchLater" component = { watchLater } />
-              <Route path = "/favorites" component = { favoritePage } />
-              <Route path = "/loginRegister" component = { loginRegister } />
+        <div>
+        <nav className = "navigationBar">
+          <Link to = "/" className="navbarItem">
+            Home
+          </Link>
+          <div className="navbar-nav mr-auto">
+            <li className="nav-item">
+              <Link to = "/homePage" className="nav-link">
+                Home Page
+              </Link>
+            </li>
+
+            {currentUser && (
+              <li className="nav-item">
+                <Link to={"/user"} className="nav-link">
+                  User
+                </Link>
+              </li>
+            )}
+          </div>
+
+          {currentUser ? (
+            <div className="navbar-nav ml-auto">
+              <li className="nav-item">
+                <Link to={"/profile"} className="nav-link">
+                  {currentUser.username}
+                </Link>
+              </li>
+              <li className="nav-item">
+                <a href="/login" className="nav-link" onClick={this.logOut}>
+                  LogOut
+                </a>
+              </li>
             </div>
-          </Router>
+          ) : (
+            <div className="navbar-nav ml-auto">
+              <li className="nav-item">
+                <Link to={"/login"} className="nav-link">
+                  Login
+                </Link>
+              </li>
+
+              <li className="nav-item">
+                <Link to={"/register"} className="nav-link">
+                  Sign Up
+                </Link>
+              </li>
+            </div>
+          )}
+        </nav>
+
+        <div className="container mt-3">
+          <Switch>
+            <Route exact path={ ["/", "/home"] } component = { homePage } />
+            <Route exact path="/login" component = { loginPage} />
+            <Route exact path="/register" component={ registerPage } />
+            <Route path="/user" component={BoardUser} />
+          </Switch>
+        </div>
+      </div>
       );
     }
 }

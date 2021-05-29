@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import UserService from "../services/user.service";
 
-export default class Home extends Component {
+export default class BoardUser extends Component {
   constructor(props) {
     super(props);
 
@@ -12,28 +12,30 @@ export default class Home extends Component {
   }
 
   componentDidMount() {
-    UserService.getPublicContent().then(
+    UserService.getUserBoard().then(
       response => {
-        this.setState( {
+        this.setState({
           content: response.data
-        } );
+        });
       },
       error => {
-        this.setState( {
+        this.setState({
           content:
-            ( error.response && error.response.data) ||
+            (error.response &&
+              error.response.data &&
+              error.response.data.message) ||
             error.message ||
             error.toString()
-        } );
+        });
       }
     );
   }
 
   render() {
     return (
-      <div>
-        <header>
-          <h3> { this.state.content } </h3>
+      <div className="container">
+        <header className="jumbotron">
+          <h3>{this.state.content}</h3>
         </header>
       </div>
     );
