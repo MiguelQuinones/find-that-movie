@@ -33,8 +33,9 @@ export default class Home extends Component {
     return (
       <div>
         <header>
-          <h3> { this.state.content } </h3>
+          <h1> { this.state.content } </h1>
         </header>
+        <p> Hello! </p>
       </div>
     );
   }

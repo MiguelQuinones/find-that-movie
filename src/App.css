@@ -4,7 +4,7 @@ body {
 }
 
 /* Styling rules for navigation bar at top of screen */
-ul {
+.navigationBar {
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -83,10 +83,26 @@ li:hover {
 
 .navigationBarDark {
     background-color: #2d3748;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid black;
+    position: fixed;
+    top: 0;
+    width: 100%;
 }
 
 .navigationBarLight {
     background-color: gainsboro;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid black;
+    position: fixed;
+    top: 0;
+    width: 100%;
 }
 
 .navbarItemDark {

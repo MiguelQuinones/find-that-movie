@@ -8,15 +8,15 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const routes = express.Router();
 
-let corsOptions = {
-    orign : "http://localhost:4000"
-};
+// let corsOptions = {
+//     orign : "http://localhost:4000"
+// };
 
 // Import user, watchlist, and favorites models
 const db = require( "./models" );
 
 // Integrate CORS into the app
-app.use( cors( corsOptions ) );
+app.use( cors( ) );
 app.use( bodyParser.json() );
 
 // Connect to the MongoDB database moviedb
@@ -37,5 +37,5 @@ app.get( "/", ( req, res ) => {
     res.json( { message: "Welcome to the application." } );
 } );
 
-require('./app/routes/auth.routes')(app);
-require('./app/routes/user.routes')(app);
+require('./routes/auth.routes')(app);
+require('./routes/user.routes')(app);

@@ -12,6 +12,7 @@ import favoritePage from './favoritePage';
 import loginPage from './loginPage';
 import registerPage from './registerPage';
 import BoardUser from './board-user.component'
+//import '../App.css';
 
 // Styling rules for Light/Dark mode
 const THEME_KEY = "THEME";
@@ -68,38 +69,42 @@ class Navbar extends Component {
       var navbar = document.getElementById( "navbar" );
       if( theme === THEMES.Dark ) {
         navbar.className = "navigationBarDark";
-        for( var darkIndex = 1; darkIndex < 6; darkIndex++ ) {
-          var darkItem = document.getElementById( "navbarItem" + darkIndex );
-          darkItem.className = "navbarItemDark";
+        for( let darkIndex = 1; darkIndex < 7; darkIndex++ ) {
+          let darkItem = document.getElementById( "nav-link" + darkIndex );
+          if( darkItem ) {
+            darkItem.className = "navbarItemDark";
+          }
         }
+        //darkItem.className = "navbarItemDark";
       } else if( theme === THEMES.Light ) {
         navbar.className = "navigationBarLight";
-        for( var lightIndex = 1; lightIndex < 6; lightIndex++ ) {
-          var lightItem =document.getElementById( "navbarItem" + lightIndex );
-          lightItem.className = "navbarItemLight";
+        for( let lightIndex = 1; lightIndex < 7; lightIndex++ ) {
+          let lightItem = document.getElementById( "nav-link" + lightIndex );
+          if( lightItem ) {
+            lightItem.className = "navbarItemLight";
+          }
         }
       }
     }
 
-    // START HERE WHEN RETURNING
     render() {
       const { currentUser } = this.state;
       return (
         <div>
-        <nav className = "navigationBar">
-          <Link to = "/" className="navbarItem">
+        <nav className = "navigationBar" id = "navbar">
+          {/* <Link to = "/" className="navbarItem">
             Home
-          </Link>
+          </Link> */}
           <div className="navbar-nav mr-auto">
-            <li className="nav-item">
-              <Link to = "/homePage" className="nav-link">
+            <li className="navbarItem">
+              <Link to = "/homePage" id = "nav-link1">
                 Home Page
               </Link>
             </li>
 
             {currentUser && (
-              <li className="nav-item">
-                <Link to={"/user"} className="nav-link">
+              <li className="navbarItem">
+                <Link to={"/user"} id ="nav-link2">
                   User
                 </Link>
               </li>
@@ -108,37 +113,44 @@ class Navbar extends Component {
 
           {currentUser ? (
             <div className="navbar-nav ml-auto">
-              <li className="nav-item">
-                <Link to={"/profile"} className="nav-link">
+              <li className="navbarItem">
+                <Link to={"/profile"} id = "nav-link3">
                   {currentUser.username}
                 </Link>
               </li>
-              <li className="nav-item">
-                <a href="/login" className="nav-link" onClick={this.logOut}>
+              <li className="navbarItem">
+                <a href="/login" id = "nav-link4" onClick={this.logOut}>
                   LogOut
                 </a>
               </li>
             </div>
           ) : (
             <div className="navbar-nav ml-auto">
-              <li className="nav-item">
-                <Link to={"/login"} className="nav-link">
+              <li className="navbarItem">
+                <Link to = {"/login"} id = "nav-link5">
                   Login
                 </Link>
               </li>
 
-              <li className="nav-item">
-                <Link to={"/register"} className="nav-link">
-                  Sign Up
+              <li className="navbarItem">
+                <Link to = {"/register"} id = "nav-link6">
+                  Register
                 </Link>
               </li>
             </div>
           )}
+
+          <div className = "buttonHolder">
+            <div className = "themeDark" onClick = { () => this.themeSwitch( THEMES.Dark ) } > Dark </div>
+            <div className = "themeLight" onClick = { () => this.themeSwitch( THEMES.Light ) } > Light </div>
+          </div>
         </nav>
+        <br></br>
+        <br></br>
 
         <div className="container mt-3">
           <Switch>
-            <Route exact path={ ["/", "/home"] } component = { homePage } />
+            <Route exact path={ ["/", "/homePage"] } component = { homePage } />
             <Route exact path="/login" component = { loginPage} />
             <Route exact path="/register" component={ registerPage } />
             <Route path="/user" component={BoardUser} />

@@ -34,7 +34,8 @@ export default class loginPage extends Component {
         } );
     }
 
-    // Call when submitting form -- takes user inputs and sends to server for storage
+    // Call when submitting form -- takes user inputs and sends to server for storage 
+    // START HERE WHEN RETURNING
     onHandleSubmit( event ) {
         event.preventDefault();
 
