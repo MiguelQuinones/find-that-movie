@@ -69,7 +69,7 @@ class Navbar extends Component {
       var navbar = document.getElementById( "navbar" );
       if( theme === THEMES.Dark ) {
         navbar.className = "navigationBarDark";
-        for( let darkIndex = 1; darkIndex < 7; darkIndex++ ) {
+        for( let darkIndex = 1; darkIndex < 8; darkIndex++ ) {
           let darkItem = document.getElementById( "nav-link" + darkIndex );
           if( darkItem ) {
             darkItem.className = "navbarItemDark";
@@ -78,7 +78,7 @@ class Navbar extends Component {
         //darkItem.className = "navbarItemDark";
       } else if( theme === THEMES.Light ) {
         navbar.className = "navigationBarLight";
-        for( let lightIndex = 1; lightIndex < 7; lightIndex++ ) {
+        for( let lightIndex = 1; lightIndex < 8; lightIndex++ ) {
           let lightItem = document.getElementById( "nav-link" + lightIndex );
           if( lightItem ) {
             lightItem.className = "navbarItemLight";
@@ -97,14 +97,19 @@ class Navbar extends Component {
           </Link> */}
           <div className="navbar-nav mr-auto">
             <li className="navbarItem">
-              <Link to = "/homePage" id = "nav-link1">
+              <Link to = "/" id = "nav-link1">
                 Home Page
+              </Link>
+            </li>
+            <li className = "navbarItem">
+              <Link to = "/searchPage" id = "nav-link2">
+                Search Page
               </Link>
             </li>
 
             {currentUser && (
               <li className="navbarItem">
-                <Link to={"/user"} id ="nav-link2">
+                <Link to={"/user"} id ="nav-link3">
                   User
                 </Link>
               </li>
@@ -114,12 +119,12 @@ class Navbar extends Component {
           {currentUser ? (
             <div className="navbar-nav ml-auto">
               <li className="navbarItem">
-                <Link to={"/profile"} id = "nav-link3">
+                <Link to={"/profile"} id = "nav-link4">
                   {currentUser.username}
                 </Link>
               </li>
               <li className="navbarItem">
-                <a href="/login" id = "nav-link4" onClick={this.logOut}>
+                <a href="/login" id = "nav-link5" onClick={this.logOut}>
                   LogOut
                 </a>
               </li>
@@ -127,13 +132,13 @@ class Navbar extends Component {
           ) : (
             <div className="navbar-nav ml-auto">
               <li className="navbarItem">
-                <Link to = {"/login"} id = "nav-link5">
+                <Link to = {"/login"} id = "nav-link6">
                   Login
                 </Link>
               </li>
 
               <li className="navbarItem">
-                <Link to = {"/register"} id = "nav-link6">
+                <Link to = {"/register"} id = "nav-link7">
                   Register
                 </Link>
               </li>
@@ -148,12 +153,13 @@ class Navbar extends Component {
         <br></br>
         <br></br>
 
-        <div className="container mt-3">
+        <div>
           <Switch>
-            <Route exact path={ ["/", "/homePage"] } component = { homePage } />
-            <Route exact path="/login" component = { loginPage} />
-            <Route exact path="/register" component={ registerPage } />
-            <Route path="/user" component={BoardUser} />
+            <Route exact path = "/" component = { homePage } />
+            <Route exact path = "/searchPage" component = { searchPage } />
+            <Route exact path = "/login" component = { loginPage} />
+            <Route exact path = "/register" component={ registerPage } />
+            <Route path = "/user" component = {BoardUser} />
           </Switch>
         </div>
       </div>
