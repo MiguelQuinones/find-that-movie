@@ -18,6 +18,7 @@ const db = require( "./models" );
 // Integrate CORS into the app
 app.use( cors( ) );
 app.use( bodyParser.json() );
+app.use( bodyParser.urlencoded( { extended : true } ) );
 
 // Connect to the MongoDB database moviedb
 mongoose.connect('mongodb://127.0.0.1:27017/moviedb', { useNewUrlParser: true });
@@ -27,6 +28,10 @@ connection.once('open', function() {
     console.log("MongoDB database connection established successfully!");
 })
 
+// Required routes for authentication purposes
+require('./routes/auth.routes')(app);
+require('./routes/user.routes')(app);
+
 const PORT = process.env.PORT || 4000;
 app.listen( PORT, () => {
     console.log("Server is running on Port: " + PORT);
@@ -34,8 +39,5 @@ app.listen( PORT, () => {
 
 // Routing middleware
 app.get( "/", ( req, res ) => {
-    res.json( { message: "Welcome to the application." } );
+    res.json( { message: "Welcome to the application!" } );
 } );
-
-require('./routes/auth.routes')(app);
-require('./routes/user.routes')(app);

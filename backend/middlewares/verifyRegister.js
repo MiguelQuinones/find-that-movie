@@ -14,6 +14,7 @@ function checkDuplicateUsername( req, res, next ) {
       return;
     }
 
+    // If user does exist already, alert visitor
     if ( user ) {
       res.status( 400 ).send( { message: "Failed! Username is already in use!" } );
       return;

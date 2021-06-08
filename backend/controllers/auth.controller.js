@@ -2,8 +2,8 @@ const config = require("../config/auth.config");
 const db = require("../models");
 const User = db.user;
 
-var jwt = require("jsonwebtoken");
-var bcrypt = require("bcryptjs");
+let jwt = require("jsonwebtoken");
+let bcrypt = require("bcryptjs");
 
 // Creates a new user in the database
 exports.signup = ( req, res ) => {
@@ -11,14 +11,17 @@ exports.signup = ( req, res ) => {
     username: req.body.username,
     password: bcrypt.hashSync(req.body.password, 8)
   } );
+  console.log( "Got here in auth.controller.js" );
 
   // Save that new user within the datbase
-  user.save( (err, user) => {
+  user.save( ( err ) => {
     if ( err ) {
       res.status( 500 ).send( { message: err } );
       return;
     }
-  });
+    res.send( { message : "User registered successfully!" } );
+  } );
+  console.log( "User was saved in auth.controller.js" );
 };
 
 // Allows a user to sign in to the database
@@ -50,7 +53,7 @@ exports.signin = (req, res) => {
         } );
       }
 
-      // Generate a token using jsonwebtoken
+      // Generate a token using jsonwebtoken if password is valid
       var token = jwt.sign( { id: user.id }, config.secret, {
         expiresIn: 86400 // 24 hours
       } );

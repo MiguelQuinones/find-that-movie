@@ -1,171 +1,100 @@
-import React, { Component } from "react";
-import Form from "react-validation/build/form";
-import Input from "react-validation/build/input";
-import CheckButton from "react-validation/build/button";
+// This file holds the code for allowing users to register within the application -- ADD MORE WHEN RETURNING TO PROJECT
 
-import AuthService from "../services/auth.service";
+import React, { Component } from 'react';
+import AuthService from '../services/auth.service';
 
-// Display when a field is left empty
 const required = value => {
-  if (!value) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        This field is required!
-      </div>
-    );
-  }
-};
-
-// Validation rules for username
-const verifyUsername = value => {
-  if (value.length < 3 || value.length > 20) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        The username must be between 3 and 20 characters!
-      </div>
-    );
-  }
-};
-
-// Validation rules for password -- ADD MORE LATER
-const verifyPassword = value => {
-  if (value.length < 6 || value.length > 40) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        The password must be between 6 and 40 characters!
-      </div>
-    );
-  }
-};
-
-export default class Register extends Component {
-  constructor(props) {
-    super(props);
-    this.onHandleSubmit = this.onHandleSubmit.bind( this );
-    this.onChangeUsername = this.onChangeUsername.bind( this );
-    this.onChangePassword = this.onChangePassword.bind( this );
-
-    this.state = {
-      username: "",
-      password: "",
-      successful: false,
-      message: ""
-    };
-  }
-
-  onChangeUsername( event ) {
-    this.setState( {
-      username: event.target.value
-    } );
-  }
-
-  onChangePassword( event ) {
-    this.setState( {
-      password: event.target.value
-    } );
-  }
-
-  onHandleSubmit( event ) {
-    event.preventDefault();
-
-    this.setState( {
-      message: "",
-      successful: false
-    } );
-
-    this.form.validateAll();
-
-    if ( this.checkBtn.context._errors.length === 0 ) {
-      AuthService.register(
-        this.state.username,
-        this.state.password
-      ).then(
-        response => {
-          this.setState( {
-            message: response.data.message,
-            successful: true
-          } );
-        },
-        error => {
-          const resMessage =
-            ( error.response &&
-              error.response.data &&
-              error.response.data.message ) ||
-            error.message ||
-            error.toString();
-
-          this.setState( {
-            successful: false,
-            message: resMessage
-          } );
-        }
-      );
+    if( !value ) {
+        document.getElementsByClassName( "errorMessage" ).innerHTML = "Can't leave a field empty!";
     }
-  }
+}
 
-  render() {
-    return (
-      <div>
-        <div>
-          <h1> Register Page </h1>
+export default class registerPage extends Component {
 
-          <Form
-            onSubmit = { this.handleRegister }
-            ref = { c => {
-              this.form = c;
-            } }
-          >
-            { !this.state.successful && (
-              <div>
-                  <input
-                    type = "text"
-                    className = "form-control"
-                    name = "username"
-                    placeholder = "Enter username here"
-                    value = { this.state.username }
-                    onChange = { this.onChangeUsername }
-                    validations = { [ required, verifyUsername ] }
-                  />
+    // Constructor
+    constructor( props ) {
+        super( props );
 
-                  <input
-                    type = "password"
-                    className = "form-control"
-                    name = "password"
-                    placeholder = "Enter password here"
-                    value = { this.state.password }
-                    onChange = { this.onChangePassword }
-                    validations = { [ required, verifyPassword ] }
-                  />
+        // Binding functions
+        this.onChangeUsername = this.onChangeUsername.bind( this );
+        this.onChangePassword = this.onChangePassword.bind( this );
+        this.onHandleSubmit = this.onHandleSubmit.bind( this );
 
-                <div>
-                  <button type = "submit" className = "btn btn-primary btn-block"> Register </button>
+        // Setting default state of values
+        this.state = {
+            username : "",
+            password : ""
+        }
+    }
+
+    // Keep track of the state of the username being entered
+    onChangeUsername( event ) {
+        this.setState( {
+            username : event.target.value
+        } );
+    }
+
+    // Keep track of the state of the password being entered
+    onChangePassword( event ) {
+        this.setState( {
+            password : event.target.value
+        } );
+    }
+
+    // Call when submitting form -- takes user inputs and sends to server for storage
+    onHandleSubmit( event ) {
+        event.preventDefault();
+
+        // Check username to make sure it is valid
+        const username = this.state.username;
+        let verifiedUsername = "";
+        if( !username ) {
+            alert( "Username field cannot be empty!" );
+        } else if( username.length < 3 || username.length > 20 ) {
+            alert( "Username must be longer than 3 characters and shorter than 20 characters!" );
+        } else { verifiedUsername = username; }
+
+        // Check password to make sure it is valid
+        const password = this.state.password;
+        let verifiedPassword = "";
+        if( !password ) {
+            alert( "Password field cannot be empty!" );
+        } else if( password.length < 6 || password.length > 20 ) {
+            alert( "Password must be longer than 6 characters and shorter than 20 characters!" );
+        } else { verifiedPassword = password ;}
+
+        // If both are valid, register user within database -- REMOVE ALERT
+        if( verifiedUsername && verifiedPassword ) {
+            //alert( "Username: " + username + ", Password: " + password );
+            // Use AuthService to send username and password to database -- START HERE WHEN RETURNING
+            console.log( "Sending new user to DB..." );
+            AuthService.register( verifiedUsername, verifiedPassword );
+            console.log( "New user sent!" );
+            
+        }
+    }
+
+    render() {
+        return (
+            <div>
+                <h1> Register </h1>
+                <div className = "formField">
+                    <form className = "form" onSubmit = { this.onHandleSubmit }>
+                        <input type = "text" className = "registerInput" 
+                               placeholder = "Enter username" value = { this.state.username } 
+                               onChange = { this.onChangeUsername }  />
+                        <input type = "password" className = "registerInput" 
+                               placeholder = "Enter password" value = { this.state.password } 
+                               onChange = { this.onChangePassword } />
+                        <button type = "submit" className = "submitLoginButton"> Sign Up </button> 
+                    </form>
                 </div>
-              </div>
-            ) }
+                <br></br>
 
-            { this.state.message && (
-              <div>
-                <div
-                  className = {
-                    this.state.successful
-                      ? "alert alert-success"
-                      : "alert alert-danger"
-                  }
-                  role = "alert"
-                >
-                  { this.state.message }
+                <div className = "errorMessage">
+                    
                 </div>
-              </div>
-            ) }
-            <CheckButton
-              style = { { display: "none" } }
-              ref = { c => {
-                this.checkBtn = c;
-              } }
-            />
-          </Form>
-        </div>
-      </div>
-    );
-  }
+            </div>
+        )
+    }
 }
