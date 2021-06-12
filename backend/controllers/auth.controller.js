@@ -11,7 +11,6 @@ exports.signup = ( req, res ) => {
     username: req.body.username,
     password: bcrypt.hashSync(req.body.password, 8)
   } );
-  console.log( "Got here in auth.controller.js" );
 
   // Save that new user within the datbase
   user.save( ( err ) => {
@@ -21,7 +20,6 @@ exports.signup = ( req, res ) => {
     }
     res.send( { message : "User registered successfully!" } );
   } );
-  console.log( "User was saved in auth.controller.js" );
 };
 
 // Allows a user to sign in to the database

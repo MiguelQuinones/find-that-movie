@@ -1,6 +1,7 @@
 // This file holds the code for allowing users to login to the application -- ADD MORE WHEN RETURNING TO PROJECT
 
 import React, { Component } from 'react';
+import AuthService from '../services/auth.service';
 
 export default class loginPage extends Component {
 
@@ -16,7 +17,8 @@ export default class loginPage extends Component {
         // Setting default state of values
         this.state = {
             username : "",
-            password : ""
+            password : "",
+            message : ""
         }
     }
 
@@ -35,25 +37,26 @@ export default class loginPage extends Component {
     }
 
     // Call when submitting form -- takes user inputs and sends to server for storage 
-    // START HERE WHEN RETURNING
     onHandleSubmit( event ) {
         event.preventDefault();
 
-        // Display username and password to screen for now -- IMPLEMENT ACTUAL PROTOCOLS WHEN RETURNING
-        //alert( "Username: " + this.state.username + ", Password: " + this.state.password );
-
-        // Log user into application -- ADD VALIDATION WHEN RETURNING
-        const username = this.state.username;
-        if( !username ) {
-            alert( "Username field cannot be empty!" );
-        }
-        const password = this.state.password;
-        if( !password ) {
-            alert( "Password field cannot be empty!" );
-        }
-        if( username && password ) {
-            alert( "Username: " + username + ", Password: " + password );
-
+        // Check if either field was left empty -- if not, move on to loggin user in
+        if( this.state.username && this.state.password ) {
+            AuthService.login( this.state.username, this.state.password )
+            .then( () => {
+                this.props.history.push( '/profile' );
+                window.location.reload();
+            },
+            error => {
+                const resMessage = ( 
+                    error.response && error.response.data && error.response.data.message
+                ) || error.message || error.toString();
+                this.setState( {
+                    message : resMessage 
+                } );
+            } )
+        } else {
+        alert( "Fields cannot be left empty!" );
         }
     }
 
@@ -66,7 +69,7 @@ export default class loginPage extends Component {
                         <input type = "text" className = "loginInput" 
                                placeholder = "Enter username" value = { this.state.username } 
                                onChange = { this.onChangeUsername } />
-                        <input type = "text" className = "loginInput" 
+                        <input type = "password" className = "loginInput" 
                                placeholder = "Enter password" value = { this.state.password } 
                                onChange = { this.onChangePassword } />
                         <button type = "submit" className = "submitLoginButton"> Login </button> 

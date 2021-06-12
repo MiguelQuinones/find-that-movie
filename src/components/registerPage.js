@@ -3,12 +3,6 @@
 import React, { Component } from 'react';
 import AuthService from '../services/auth.service';
 
-const required = value => {
-    if( !value ) {
-        document.getElementsByClassName( "errorMessage" ).innerHTML = "Can't leave a field empty!";
-    }
-}
-
 export default class registerPage extends Component {
 
     // Constructor
@@ -23,7 +17,8 @@ export default class registerPage extends Component {
         // Setting default state of values
         this.state = {
             username : "",
-            password : ""
+            password : "",
+            message : ""
         }
     }
 
@@ -63,13 +58,23 @@ export default class registerPage extends Component {
             alert( "Password must be longer than 6 characters and shorter than 20 characters!" );
         } else { verifiedPassword = password ;}
 
-        // If both are valid, register user within database -- REMOVE ALERT
+        // If both are valid, register user within database
         if( verifiedUsername && verifiedPassword ) {
-            //alert( "Username: " + username + ", Password: " + password );
             // Use AuthService to send username and password to database -- START HERE WHEN RETURNING
-            console.log( "Sending new user to DB..." );
-            AuthService.register( verifiedUsername, verifiedPassword );
-            console.log( "New user sent!" );
+            AuthService.register( verifiedUsername, verifiedPassword )
+            .then( response => {
+                this.setState( {
+                    message : response.data.message
+                } );
+            },
+            error => {
+                const resMessage = (
+                    error.response && error.response.data && error.response.data.message
+                ) || error.message || error.toString();
+                this.setState( {
+                    message : resMessage
+                } );
+            } )
             
         }
     }
