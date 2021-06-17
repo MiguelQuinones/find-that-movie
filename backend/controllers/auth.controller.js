@@ -23,17 +23,17 @@ exports.signup = ( req, res ) => {
 };
 
 // Allows a user to sign in to the database
-exports.signin = (req, res) => {
-  User.findOne({
+exports.signin = ( req, res ) => {
+  User.findOne( {
     username: req.body.username
-  })
+  } )
     .exec( ( err, user ) => {
       if ( err ) {
         res.status( 500 ).send( { message: err } );
         return;
       }
 
-      // User cannot be found
+      // If user cannot be found, send alert
       if ( !user ) {
         return res.status( 404 ).send( { message: "User Not found." } );
       }
@@ -44,6 +44,7 @@ exports.signin = (req, res) => {
         user.password
       );
 
+      // If password is invalid, alert user
       if ( !passwordIsValid ) {
         return res.status( 401 ).send( {
           accessToken: null,
@@ -56,10 +57,15 @@ exports.signin = (req, res) => {
         expiresIn: 86400 // 24 hours
       } );
 
-      res.status(200).send({
+      res.status( 200 ).send( {
         id: user._id,
         username: user.username,
         accessToken: token
-      });
-    });
+      } );
+    } );
 };
+
+// Allows a user to save a movie to the watch later list
+exports.watchLater = ( req, res ) => {
+
+}

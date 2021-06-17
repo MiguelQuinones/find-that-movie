@@ -97,7 +97,7 @@ export default class registerPage extends Component {
                 <br></br>
 
                 <div className = "errorMessage">
-                    
+                    <p id = "errorMessage"> { this.state.message } </p>
                 </div>
             </div>
         )

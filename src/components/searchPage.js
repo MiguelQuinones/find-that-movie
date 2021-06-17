@@ -3,7 +3,8 @@
 
 // Necessary imports
 import React, { Component } from 'react';
-import axios from "axios";
+import axios from 'axios';
+import AuthService from '../services/auth.service';
 
 export default class searchPage extends Component {
 
@@ -19,7 +20,8 @@ export default class searchPage extends Component {
         // Setting default state of values
         this.state = {
             title : "",
-            values : []
+            values : [],
+            currentUser : undefined
         }
     }
 
@@ -50,6 +52,14 @@ export default class searchPage extends Component {
 
     // Function to send request to TMDB API and display response to user
     async componentDidMount( title ) {
+        // Check if user is logged in or not -- display additional buttons if they are
+        const user = AuthService.getCurrentUser();
+        if( user ) {
+            this.setState( {
+                currentUser : user 
+            } );
+        }
+
         // Try and catch blocks -- send request to API via Axios, catch any errors that occur
         try {
             const key = process.env.REACT_APP_API_KEY; // Change to REACT_APP_API_KEY later, not working now for some reason
@@ -199,6 +209,7 @@ export default class searchPage extends Component {
     // Function to render form to user and response from API
     render() {
         const values = this.state.values;
+        const currentUser = this.state.currentUser;
         return (
             <div>
                 <h1> Search Page </h1>
@@ -237,9 +248,19 @@ export default class searchPage extends Component {
                                 </div>
                             </div>
                             <div className = "showVideo" style = { { width : "560px", height : "315px", float : "right", marginRight : "18%" } }> </div>
+                            <br></br>
+                            <br></br>
+                            { currentUser && (
+                                <div className = "moreButtons">
+                                    <button type = "submit" className = "submitButton" onClick = { () => AuthService.saveToWatchLater() }> Add to Watch Later List </button>
+                                    <button type = "submit" className = "submitButton" onClick = { () => AuthService.saveToFavorites() }> Add to Favorites Page </button>
+                                </div>
+                            ) }
+                            <br></br>
+                            <br></br>
                         </div>
                     ))}
-                </div>
+                </div> 
                 
             </div>
         );

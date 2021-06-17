@@ -75,6 +75,7 @@ export default class loginPage extends Component {
                         <button type = "submit" className = "submitLoginButton"> Login </button> 
                     </form>
                 </div>
+                <p id = "errorMessage"> { this.state.message } </p>
             </div>
         )
     }

@@ -36,6 +36,21 @@ class AuthService {
   getCurrentUser() {
     return JSON.parse( localStorage.getItem( 'user' ) );
   }
+
+  // Save movie to watch later list 
+  saveToWatchLater( movieTitle ) {
+    alert( "Movie added to watch later list!" );
+    // Use axios to perform action
+    return axios.post( API_URL + "watchLater", {
+      movieTitle
+    } );
+  }
+
+  // Save movie to favorites list
+  saveToFavorites() {
+    alert( "Movie added to favorites list!" );
+    // Use axios to perform action
+  }
 }
 
 export default new AuthService();
