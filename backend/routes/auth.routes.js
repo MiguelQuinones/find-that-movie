@@ -1,5 +1,5 @@
-const { verifyRegister } = require("../middlewares");
-const controller = require("../controllers/auth.controller");
+const { verifyRegister } = require( "../middlewares" );
+const controller = require( "../controllers/auth.controller" );
 
 module.exports = function( app ) {
   app.use( function( req, res, next ) {
@@ -13,6 +13,4 @@ module.exports = function( app ) {
   app.post( "/api/auth/signup", verifyRegister.checkDuplicateUsername, controller.signup );
 
   app.post( "/api/auth/signin", controller.signin );
-
-  app.post( "/api/auth/watchLater" );
 };

@@ -5,6 +5,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import AuthService from '../services/auth.service';
+import UserService from '../services/user.service';
 
 export default class searchPage extends Component {
 
@@ -206,7 +207,7 @@ export default class searchPage extends Component {
         }
     }
 
-    // Function to render form to user and response from API
+    // Function to render form to user and response from API -- START HERE WHEN RETURNING, POTENTIALLY RETURN ID INSTEAD OF TITLE IN FUTURE
     render() {
         const values = this.state.values;
         const currentUser = this.state.currentUser;
@@ -252,8 +253,8 @@ export default class searchPage extends Component {
                             <br></br>
                             { currentUser && (
                                 <div className = "moreButtons">
-                                    <button type = "submit" className = "submitButton" onClick = { () => AuthService.saveToWatchLater() }> Add to Watch Later List </button>
-                                    <button type = "submit" className = "submitButton" onClick = { () => AuthService.saveToFavorites() }> Add to Favorites Page </button>
+                                    <button type = "submit" className = "submitButton" onClick = { () => UserService.addToWatchLater( value.title ) }> Add to Watch Later List </button>
+                                    <button type = "submit" className = "submitButton" onClick = { () => UserService.addToFavorites() }> Add to Favorites Page </button>
                                 </div>
                             ) }
                             <br></br>

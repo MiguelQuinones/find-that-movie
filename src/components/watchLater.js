@@ -1,15 +1,44 @@
 // This page will contain the table of movies marked "Watch Later" by the user
 
-// Necessary imports
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-export default class watchLater extends Component {
-    render() {
-        return (
-            <div>
-                <h1> Watch Later Page </h1>
-                <p>Welcome to the watch later page!</p>
-            </div>
-        )
-    }
+import UserService from "../services/user.service";
+
+export default class WatchLater extends Component {
+  constructor( props ) {
+    super(props);
+
+    this.state = {
+      content: ""
+    };
+  }
+
+  componentDidMount() {
+    UserService.getWatchLater().then(
+      response => {
+        this.setState( {
+          content: response.data
+        } );
+      },
+      error => {
+        this.setState( {
+          content:
+            ( error.response && error.response.data) ||
+            error.message ||
+            error.toString()
+        } );
+      }
+    );
+  }
+
+  render() {
+    return (
+      <div>
+        <header>
+          <h1> { this.state.content } </h1>
+        </header>
+        <p> Hello! </p>
+      </div>
+    );
+  }
 }

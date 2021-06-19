@@ -5,7 +5,7 @@
 import React, { Component } from 'react';
 import { Switch, Route, Link } from 'react-router-dom';
 import AuthService from '../services/auth.service';
-import homePage from './homePage';
+import Home from './homePage';
 import searchPage from './searchPage';
 import profilePage from './profilePage';
 import watchLater from './watchLater';
@@ -163,7 +163,7 @@ class Navbar extends Component {
 
         <div>
           <Switch>
-            <Route exact path = "/" component = { homePage } />
+            <Route exact path = "/" component = { Home } />
             <Route exact path = "/searchPage" component = { searchPage } />
             <Route exact path = "/login" component = { loginPage} />
             <Route exact path = "/register" component = { registerPage } />

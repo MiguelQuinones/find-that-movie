@@ -60,7 +60,7 @@ export default class registerPage extends Component {
 
         // If both are valid, register user within database
         if( verifiedUsername && verifiedPassword ) {
-            // Use AuthService to send username and password to database -- START HERE WHEN RETURNING
+            // Use AuthService to send username and password to database
             AuthService.register( verifiedUsername, verifiedPassword )
             .then( response => {
                 this.setState( {

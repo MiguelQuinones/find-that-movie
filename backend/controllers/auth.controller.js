@@ -1,15 +1,15 @@
-const config = require("../config/auth.config");
-const db = require("../models");
+const config = require( "../config/auth.config" );
+const db = require( "../models" );
 const User = db.user;
 
-let jwt = require("jsonwebtoken");
-let bcrypt = require("bcryptjs");
+let jwt = require( "jsonwebtoken" );
+let bcrypt = require( "bcryptjs" );
 
 // Creates a new user in the database
 exports.signup = ( req, res ) => {
   const user = new User( {
     username: req.body.username,
-    password: bcrypt.hashSync(req.body.password, 8)
+    password: bcrypt.hashSync( req.body.password, 8 )
   } );
 
   // Save that new user within the datbase
@@ -64,8 +64,3 @@ exports.signin = ( req, res ) => {
       } );
     } );
 };
-
-// Allows a user to save a movie to the watch later list
-exports.watchLater = ( req, res ) => {
-
-}
