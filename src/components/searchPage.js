@@ -6,6 +6,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import AuthService from '../services/auth.service';
 import UserService from '../services/user.service';
+//import { userBoard } from '../../backend/controllers/user.controller';
 
 export default class searchPage extends Component {
 
@@ -18,12 +19,31 @@ export default class searchPage extends Component {
         this.onHandleSubmit = this.onHandleSubmit.bind( this );
         this.onComponentDidMount = this.componentDidMount.bind( this );
 
-        // Setting default state of values
-        this.state = {
-            title : "",
-            values : [],
-            currentUser : undefined
+        // Check if user is logged in or not -- display additional buttons if they are
+        const user = AuthService.getCurrentUser();
+        if( user ) {
+            this.state = {
+                title : "",
+                values : [],
+                currentUser : user,
+                message : ""
+            }
+        } else {
+            this.state = {
+                title : "",
+                values : [],
+                currentUser : undefined,
+                message : ""
+            }
         }
+
+        // Setting default state of values
+        // this.state = {
+        //     title : "",
+        //     values : [],
+        //     currentUser : undefined,
+        //     message : ""
+        // }
     }
 
     // Function to handle state of movie value -- constantly updating the value
@@ -47,20 +67,13 @@ export default class searchPage extends Component {
         // Set default state of variable again
         this.setState( {
             title : "",
-            values : []
+            values : [],
+            message : ""
         } );
     }
 
     // Function to send request to TMDB API and display response to user
     async componentDidMount( title ) {
-        // Check if user is logged in or not -- display additional buttons if they are
-        const user = AuthService.getCurrentUser();
-        if( user ) {
-            this.setState( {
-                currentUser : user 
-            } );
-        }
-
         // Try and catch blocks -- send request to API via Axios, catch any errors that occur
         try {
             const key = process.env.REACT_APP_API_KEY; // Change to REACT_APP_API_KEY later, not working now for some reason
@@ -207,10 +220,29 @@ export default class searchPage extends Component {
         }
     }
 
+    // Function for adding a movie to the Watch Later list
+    saveToWatchLater( user, title ) {
+        UserService.addToWatchLater( user, title )
+        .then( response => {
+            this.setState( {
+                message : response.data.message
+            } );
+        },
+        error => {
+            const resMessage = (
+                error.response && error.response.data && error.response.data.message
+            ) || error.message || error.toString();
+            this.setState( {
+                message : resMessage
+            } );
+        })
+    }
+
     // Function to render form to user and response from API -- START HERE WHEN RETURNING, POTENTIALLY RETURN ID INSTEAD OF TITLE IN FUTURE
     render() {
         const values = this.state.values;
         const currentUser = this.state.currentUser;
+        let username = currentUser.username;
         return (
             <div>
                 <h1> Search Page </h1>
@@ -253,12 +285,13 @@ export default class searchPage extends Component {
                             <br></br>
                             { currentUser && (
                                 <div className = "moreButtons">
-                                    <button type = "submit" className = "submitButton" onClick = { () => UserService.addToWatchLater( value.title ) }> Add to Watch Later List </button>
+                                    <button type = "submit" className = "submitButton" onClick = { () => this.saveToWatchLater( username, value.title ) }> Add to Watch Later List </button>
                                     <button type = "submit" className = "submitButton" onClick = { () => UserService.addToFavorites() }> Add to Favorites Page </button>
                                 </div>
                             ) }
                             <br></br>
                             <br></br>
+                            <p id = "message"> { this.state.message } </p>
                         </div>
                     ))}
                 </div> 

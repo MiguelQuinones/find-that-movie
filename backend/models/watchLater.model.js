@@ -1,10 +1,14 @@
 const mongoose = require("mongoose");
 
-const watchLater = mongoose.model(
+const WatchLater = mongoose.model(
   "WatchLater",
-  new mongoose.Schema({
+  new mongoose.Schema( {
+    user : {
+      type : mongoose.Schema.Types.ObjectId,
+      required : true
+    },
     movieTitle: String
   } )
 );
 
-module.exports = watchLater;
+module.exports = WatchLater;

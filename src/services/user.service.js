@@ -22,8 +22,8 @@ class UserService {
   }
 
   // For adding to a Watch Later list
-  addToWatchLater( title ) {
-    return axios.post( API_URL2, { title } );
+  addToWatchLater( user, title ) {
+    return axios.post( API_URL2, { user, title } );
   }
 
   // For allowing a user to add a movie title to their favorites page

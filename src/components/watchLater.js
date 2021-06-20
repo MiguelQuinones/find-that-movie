@@ -9,7 +9,7 @@ export default class WatchLater extends Component {
     super(props);
 
     this.state = {
-      content: ""
+      message : ""
     };
   }
 
@@ -17,12 +17,12 @@ export default class WatchLater extends Component {
     UserService.getWatchLater().then(
       response => {
         this.setState( {
-          content: response.data
+          message: response.data
         } );
       },
       error => {
         this.setState( {
-          content:
+          message:
             ( error.response && error.response.data) ||
             error.message ||
             error.toString()
@@ -35,9 +35,9 @@ export default class WatchLater extends Component {
     return (
       <div>
         <header>
-          <h1> { this.state.content } </h1>
+          <h1> Watch Later List </h1>
         </header>
-        <p> Hello! </p>
+        <p> { this.state.message } </p>
       </div>
     );
   }

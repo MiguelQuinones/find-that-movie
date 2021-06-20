@@ -1,5 +1,5 @@
-const db = require( '../models' );
-const WatchLater = db.watchLater;
+const db = require( '../models/watchLater.model' );
+const WatchLater = db;
 
 // Test route for all access -- users that are either logged in or not logged in
 exports.allAccess = ( req, res ) => {
@@ -11,12 +11,30 @@ exports.userBoard = ( req, res ) => {
     res.status(200).send( "User Content." );
 };
 
-// Retrieves a user's Watch Later list
+// Retrieves a user's Watch Later list -- -- START HERE WHEN RETURNING
 exports.getWatchLater = ( req, res ) => {
-    res.status( 200 ).send( "Watch Later Content" );
+    try {
+        const watchLaterList = WatchLater.find( { user: req.body.user } );
+        res.json( watchLaterList );
+        res.status( 200 ).send( "Successfully retrieved list!" );
+    } 
+    catch( err ) {
+        res.status( 500 ).send( "There was a server error when retrieving the list..." );
+    }
 }
 
-// Route for adding a movie to a user's Watch Later list -- START HERE WHEN RETURNING
+// Route for adding a movie to a user's Watch Later list
 exports.addToWatchLater = ( req, res ) => {
-    res.status( 200 ).send( { message : "Added successfully: " + req.body.title } );
+    try {
+        let watchLater = new WatchLater( {
+            user : req.body.user,
+            movieTitle : req.body.title
+        } );
+        // Add the movie to the Watch Later list
+        watchLater.save();
+        res.status( 200 ).send( "Movie added to Watch Later list!" );
+    } 
+    catch( err ) {
+        res.status( 500 ).send( err );
+    }
 }
