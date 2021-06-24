@@ -11,12 +11,12 @@ exports.userBoard = ( req, res ) => {
     res.status(200).send( "User Content." );
 };
 
-// Retrieves a user's Watch Later list -- -- START HERE WHEN RETURNING
+// Retrieves a user's Watch Later list
 exports.getWatchLater = ( req, res ) => {
     try {
         WatchLater.find().then(
             ( movies ) => {
-                res.status( 200 ).json( "The list: " + movies );
+                res.status( 200 ).json( movies );
             }
         ).catch(
             ( err ) => {
@@ -52,3 +52,19 @@ exports.addToWatchLater = ( req, res ) => {
         res.status( 500 ).send( err );
     }
 };
+
+// Route for deleting a movie from the Watch Later list -- START HERE WHEN RETURNING
+exports.removeFromWatchLater = ( req, res ) => {
+    try {
+        console.log( req.params.id );
+        //let movie = WatchLater.findById( { _id : req.params.id } );
+
+        //console.log( movie );
+
+        WatchLater.findOneAndRemove( { _id: req.params.id } );
+
+        res.json( "Movie removed from list!" );
+    } catch( err ) {
+        res.status( 500 ).send( err );
+    }
+}

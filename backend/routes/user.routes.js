@@ -19,4 +19,7 @@ module.exports = function( app ) {
 
   // Route for adding to the Watch Later list
   app.post( "/api/watchLater", controller.addToWatchLater );
+
+  // Route for removing from the Watch Later list
+  app.delete( "/api/watchLater/:id", controller.removeFromWatchLater );
 };

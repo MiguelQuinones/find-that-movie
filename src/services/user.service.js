@@ -26,6 +26,11 @@ class UserService {
     return axios.post( API_URL2, { user, title } );
   }
 
+  // For removing from the Watch Later list
+  removeFromWatchLater( movieID ) {
+    return axios.delete( API_URL2 + "/" + movieID );
+  }
+
   // For allowing a user to add a movie title to their favorites page
   addToFavorites() {
     alert( "Added to favorites!" );

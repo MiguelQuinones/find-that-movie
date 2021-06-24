@@ -147,3 +147,14 @@ li:hover {
 .displayRight {
     margin-right: 2%
 }
+
+/* Styling for the Watch Later table */
+.tableField{
+    text-align: center;
+}
+
+table, th, td {
+    text-align: center;
+    border: 1px solid black;
+    border-collapse: collapse;
+}

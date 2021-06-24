@@ -235,7 +235,7 @@ export default class searchPage extends Component {
             this.setState( {
                 message : resMessage
             } );
-        })
+        } )
     }
 
     // Function to render form to user and response from API -- START HERE WHEN RETURNING, POTENTIALLY RETURN ID INSTEAD OF TITLE IN FUTURE
