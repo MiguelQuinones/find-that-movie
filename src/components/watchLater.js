@@ -9,9 +9,11 @@ const TableRow = props => (
   <tr>
     <td className = "movieTitle"> { props.movie.movieTitle } </td>
     <td className = "deleteButton"> <button type = "submit" onClick = { () => {
-      UserService.removeFromWatchLater( props.movie._id )
+      UserService.removeFromWatchLater( props.movie._id );
+      //window.location.reload();
     } }> Delete </button> </td>
     <td> { props.movie._id } </td>
+    <td> { props.movie.__v } </td>
   </tr>
 )
 
@@ -32,7 +34,7 @@ export default class WatchLater extends Component {
 
   // Retrieve the user's Watch Later list to display it or display the error if one occurs
   componentDidMount() {
-    UserService.getWatchLater().then(
+    UserService.getWatchLater( this.state.currentUser.id ).then(
       response => {
         this.setState( {
           watchListArray: response.data
@@ -69,20 +71,27 @@ export default class WatchLater extends Component {
         <header>
           <h1> { currentUserName }'s Watch Later List </h1>
         </header>
-        <div className = "tableField">
+        { this.state.watchListArray.length === 0 ? (
+          <p> Watchlist is currently empty. You can add to it by searching for a movie
+              and using the corresponding button!
+          </p>
+        ) : (
+          <p>
         <table>
             <thead>
               <tr>
                 <th> Title </th>
                 <th> Delete </th>
                 <th> ID </th>
+                <th> User ID </th>
               </tr>
             </thead>
             <tbody>
               { this.mapList() }
             </tbody> 
           </table>
-        </div>
+        </p>
+        ) }
         <br></br>
         <br></br>
         <p> { this.state.message } </p>

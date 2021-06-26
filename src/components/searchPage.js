@@ -220,9 +220,9 @@ export default class searchPage extends Component {
         }
     }
 
-    // Function for adding a movie to the Watch Later list
-    saveToWatchLater( user, title ) {
-        UserService.addToWatchLater( user, title )
+    // Function for adding a movie to the Watch Later list -- WORK ON THIS
+    saveToWatchLater( routeID, userID, title ) {
+        UserService.addToWatchLater( routeID, userID, title )
         .then( response => {
             this.setState( {
                 message : response.data.message
@@ -238,11 +238,12 @@ export default class searchPage extends Component {
         } )
     }
 
-    // Function to render form to user and response from API -- START HERE WHEN RETURNING, POTENTIALLY RETURN ID INSTEAD OF TITLE IN FUTURE
+    // Function to render form to user and response from API -- RENDER BELOW BASED ON IF USER IS LOGGED IN OR NOT TO FIX PROBLEM -- routeID and userID are probably not being treated as strings, fix that to get them to show up on backend
     render() {
         const values = this.state.values;
         const currentUser = this.state.currentUser;
-        let username = currentUser.username;
+        const userID = currentUser.id;
+        const routeID = userID;
         return (
             <div>
                 <h1> Search Page </h1>
@@ -285,7 +286,7 @@ export default class searchPage extends Component {
                             <br></br>
                             { currentUser && (
                                 <div className = "moreButtons">
-                                    <button type = "submit" className = "submitButton" onClick = { () => this.saveToWatchLater( username, value.title ) }> Add to Watch Later List </button>
+                                    <button type = "submit" className = "submitButton" onClick = { () => this.saveToWatchLater(  routeID, userID, value.title ) }> Add to Watch Later List </button>
                                     <button type = "submit" className = "submitButton" onClick = { () => UserService.addToFavorites() }> Add to Favorites Page </button>
                                 </div>
                             ) }

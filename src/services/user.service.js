@@ -17,13 +17,13 @@ class UserService {
   }
 
   // For retrieving a user's Watch Later list
-  getWatchLater() {
-    return axios.get( API_URL2 );
+  getWatchLater( userID ) {
+    return axios.get( API_URL2 + "/" + userID );
   }
 
   // For adding to a Watch Later list
-  addToWatchLater( user, title ) {
-    return axios.post( API_URL2, { user, title } );
+  addToWatchLater( routeID, userID, title ) {
+    return axios.post( API_URL2 + "/" + routeID, { userID, title } );
   }
 
   // For removing from the Watch Later list

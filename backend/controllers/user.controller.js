@@ -11,14 +11,16 @@ exports.userBoard = ( req, res ) => {
     res.status(200).send( "User Content." );
 };
 
-// Retrieves a user's Watch Later list
+// Retrieves a user's Watch Later list -- START HERE WHEN RETURNING -- WORK ON FINDING BY USER ID
 exports.getWatchLater = ( req, res ) => {
+    //console.log( req.params.id ); // It does successfully get user ID
     try {
-        WatchLater.find().then(
+        // WatchLater.find( { userID : req.params.id } ) -- WILL NEED TO LOOK LIKE THIS PROBABLY
+        WatchLater.find(  ).then(
             ( movies ) => {
                 res.status( 200 ).json( movies );
             }
-        ).catch(
+        ).catch( 
             ( err ) => {
                 res.status( 400 ).send( "Error occurred..." );
             }
@@ -34,36 +36,35 @@ exports.getWatchLater = ( req, res ) => {
 exports.addToWatchLater = ( req, res ) => {
     try {
         const watchLater = new WatchLater( {
-            user : req.body.user,
+            userID : req.body.userID,
             movieTitle : req.body.title
         } );
-        // Add the movie to the Watch Later list
+        // Save the movie to the Watch Later list
         watchLater.save().then(
             () => {
                 res.status( 200 ).send( { message : "Movie added to Watch List!" } );
             }
         ).catch(
             ( err ) => {
-                res.status( 500 ).send( { message : err } );
+                res.status( 500 ).send( { message : "An error occurred..." } );
             }
         )
     } 
     catch( err ) {
-        res.status( 500 ).send( err );
+        res.status( 500 ).send( { message : err } );
     }
 };
 
-// Route for deleting a movie from the Watch Later list -- START HERE WHEN RETURNING
+// Route for deleting a movie from the Watch Later list
 exports.removeFromWatchLater = ( req, res ) => {
     try {
-        console.log( req.params.id );
-        //let movie = WatchLater.findById( { _id : req.params.id } );
-
-        //console.log( movie );
-
-        WatchLater.findOneAndRemove( { _id: req.params.id } );
-
+        WatchLater.findOneAndRemove(  { _id : req.params.id } , ( err ) => {
+            if( err ) {
+                console.log( err );
+            }
+        } );
         res.json( "Movie removed from list!" );
+
     } catch( err ) {
         res.status( 500 ).send( err );
     }

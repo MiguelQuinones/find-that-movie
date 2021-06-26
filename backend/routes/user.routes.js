@@ -15,10 +15,10 @@ module.exports = function( app ) {
   app.get( "/api/test/user", [ authJwt.verifyToken ], controller.userBoard );
 
   // Route for retrieving the Watch Later list
-  app.get( "/api/watchLater", controller.getWatchLater );
+  app.get( "/api/watchLater/:id", controller.getWatchLater );
 
   // Route for adding to the Watch Later list
-  app.post( "/api/watchLater", controller.addToWatchLater );
+  app.post( "/api/watchLater/:id", controller.addToWatchLater );
 
   // Route for removing from the Watch Later list
   app.delete( "/api/watchLater/:id", controller.removeFromWatchLater );
