@@ -22,8 +22,8 @@ class UserService {
   }
 
   // For adding to a Watch Later list
-  addToWatchLater( routeID, userID, title ) {
-    return axios.post( API_URL2 + "/" + routeID, { userID, title } );
+  addToWatchLater( routeID, userID, title, tagline ) {
+    return axios.post( API_URL2 + "/" + routeID, { userID, title, tagline } );
   }
 
   // For removing from the Watch Later list

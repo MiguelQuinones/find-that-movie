@@ -3,8 +3,9 @@ const mongoose = require( "mongoose" );
 const WatchLater = mongoose.model(
   "WatchLater",
   new mongoose.Schema( {
-    user : String,
-    movieTitle: String
+    userID : String,
+    movieTitle : String,
+    movieTagline : String,
   } )
 );
 

@@ -10,10 +10,11 @@ const TableRow = props => (
     <td className = "movieTitle"> { props.movie.movieTitle } </td>
     <td className = "deleteButton"> <button type = "submit" onClick = { () => {
       UserService.removeFromWatchLater( props.movie._id );
-      //window.location.reload();
+      window.location.reload();
     } }> Delete </button> </td>
     <td> { props.movie._id } </td>
-    <td> { props.movie.__v } </td>
+    <td> { props.movie.movieTagline } </td>
+    <td> { props.movie.userID } </td>
   </tr>
 )
 
@@ -83,6 +84,7 @@ export default class WatchLater extends Component {
                 <th> Title </th>
                 <th> Delete </th>
                 <th> ID </th>
+                <th> Tagline </th>
                 <th> User ID </th>
               </tr>
             </thead>

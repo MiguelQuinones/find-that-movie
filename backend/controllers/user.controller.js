@@ -11,12 +11,11 @@ exports.userBoard = ( req, res ) => {
     res.status(200).send( "User Content." );
 };
 
-// Retrieves a user's Watch Later list -- START HERE WHEN RETURNING -- WORK ON FINDING BY USER ID
+// Retrieves a user's Watch Later list
 exports.getWatchLater = ( req, res ) => {
-    //console.log( req.params.id ); // It does successfully get user ID
     try {
-        // WatchLater.find( { userID : req.params.id } ) -- WILL NEED TO LOOK LIKE THIS PROBABLY
-        WatchLater.find(  ).then(
+        // Retrieve list by filtering for user's ID
+        WatchLater.find( { userID : req.params.id } ).then(
             ( movies ) => {
                 res.status( 200 ).json( movies );
             }
@@ -37,7 +36,8 @@ exports.addToWatchLater = ( req, res ) => {
     try {
         const watchLater = new WatchLater( {
             userID : req.body.userID,
-            movieTitle : req.body.title
+            movieTitle : req.body.title,
+            movieTagline : req.body.tagline,
         } );
         // Save the movie to the Watch Later list
         watchLater.save().then(

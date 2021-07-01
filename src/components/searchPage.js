@@ -221,8 +221,8 @@ export default class searchPage extends Component {
     }
 
     // Function for adding a movie to the Watch Later list -- WORK ON THIS
-    saveToWatchLater( routeID, userID, title ) {
-        UserService.addToWatchLater( routeID, userID, title )
+    saveToWatchLater( routeID, userID, title, tagline ) {
+        UserService.addToWatchLater( routeID, userID, title, tagline )
         .then( response => {
             this.setState( {
                 message : response.data.message
@@ -286,7 +286,7 @@ export default class searchPage extends Component {
                             <br></br>
                             { currentUser && (
                                 <div className = "moreButtons">
-                                    <button type = "submit" className = "submitButton" onClick = { () => this.saveToWatchLater(  routeID, userID, value.title ) }> Add to Watch Later List </button>
+                                    <button type = "submit" className = "submitButton" onClick = { () => this.saveToWatchLater(  routeID, userID.toString(), value.title, value.tagline ) }> Add to Watch Later List </button>
                                     <button type = "submit" className = "submitButton" onClick = { () => UserService.addToFavorites() }> Add to Favorites Page </button>
                                 </div>
                             ) }
