@@ -9,10 +9,8 @@ import Home from './homePage';
 import searchPage from './searchPage';
 import profilePage from './profilePage';
 import watchLater from './watchLater';
-import favoritePage from './favoritePage';
 import loginPage from './loginPage';
 import registerPage from './registerPage';
-import BoardUser from './board-user.component'
 //import '../App.css';
 
 // Styling rules for Light/Dark mode
@@ -38,7 +36,7 @@ class Navbar extends Component {
       // Check to see if user is currently logged in
       const user = AuthService.getCurrentUser();
 
-      // If user is found
+      // If user is logged in, update the state
       if( user ) {
         this.setState( {
           currentUser : user
@@ -76,7 +74,6 @@ class Navbar extends Component {
             darkItem.className = "navbarItemDark";
           }
         }
-        //darkItem.className = "navbarItemDark";
       } else if( theme === THEMES.Light ) {
         navbar.className = "navigationBarLight";
         for( let lightIndex = 1; lightIndex < 10; lightIndex++ ) {
@@ -104,14 +101,6 @@ class Navbar extends Component {
                 Search Page
               </Link>
             </li>
-
-            {currentUser && (
-              <li className="navbarItem">
-                <Link to={"/user"} id ="nav-link3">
-                  User Board
-                </Link>
-              </li>
-            )}
           </div>
 
           {currentUser ? (
@@ -126,13 +115,8 @@ class Navbar extends Component {
                   Watch Later
                 </Link>
               </li>
-              <li className = "navbarItem">
-                <Link to = { "/favorites" } id = "nav-link6">
-                  Favorites Page
-                </Link>
-              </li>
               <li className="navbarItem">
-                <a href="/login" id = "nav-link7" onClick={this.logUserOut}>
+                <a href="/login" id = "nav-link6" onClick={this.logUserOut}>
                   Logout
                 </a>
               </li>
@@ -140,13 +124,13 @@ class Navbar extends Component {
           ) : (
             <div className="navbar-nav ml-auto">
               <li className="navbarItem">
-                <Link to = { "/login" } id = "nav-link8">
+                <Link to = { "/login" } id = "nav-link7">
                   Login
                 </Link>
               </li>
 
               <li className="navbarItem">
-                <Link to = { "/register" } id = "nav-link9">
+                <Link to = { "/register" } id = "nav-link8">
                   Register
                 </Link>
               </li>
@@ -169,8 +153,6 @@ class Navbar extends Component {
             <Route exact path = "/register" component = { registerPage } />
             <Route exact path = "/profile" component = { profilePage } />
             <Route exact path = "/watchLater" component = { watchLater } />
-            <Route exact path = "/favorites" component = { favoritePage } />
-            <Route path = "/user" component = { BoardUser } />
           </Switch>
         </div>
       </div>

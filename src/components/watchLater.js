@@ -14,7 +14,6 @@ const TableRow = props => (
     } }> Delete </button> </td>
     <td> { props.movie._id } </td>
     <td> { props.movie.movieTagline } </td>
-    <td> { props.movie.userID } </td>
   </tr>
 )
 
@@ -22,14 +21,10 @@ export default class WatchLater extends Component {
   constructor( props ) {
     super(props);
 
-    this.removeFromWatchLater = this.removeFromWatchLater.bind( this );
-
-    const user = AuthService.getCurrentUser();
-
     this.state = {
       watchListArray : [],
       message : "",
-      currentUser : user
+      currentUser : AuthService.getCurrentUser()
     };
   }
 
@@ -60,17 +55,11 @@ export default class WatchLater extends Component {
     } );
   }
 
-  // Function for removing a movie from the Watch Later list
-  removeFromWatchLater( movieID ) {
-    alert( movieID );
-  }
-
   render() {
-    const currentUserName = this.state.currentUser.username;
     return (
       <div>
         <header>
-          <h1> { currentUserName }'s Watch Later List </h1>
+          <h1> { this.state.currentUser.username }'s Watch Later List </h1>
         </header>
         { this.state.watchListArray.length === 0 ? (
           <p> Watchlist is currently empty. You can add to it by searching for a movie
@@ -85,7 +74,6 @@ export default class WatchLater extends Component {
                 <th> Delete </th>
                 <th> ID </th>
                 <th> Tagline </th>
-                <th> User ID </th>
               </tr>
             </thead>
             <tbody>
