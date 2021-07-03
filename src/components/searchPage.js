@@ -6,7 +6,6 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import AuthService from '../services/auth.service';
 import UserService from '../services/user.service';
-//import { userBoard } from '../../backend/controllers/user.controller';
 
 export default class searchPage extends Component {
 
@@ -36,14 +35,6 @@ export default class searchPage extends Component {
                 message : ""
             }
         }
-
-        // Setting default state of values
-        // this.state = {
-        //     title : "",
-        //     values : [],
-        //     currentUser : undefined,
-        //     message : ""
-        // }
     }
 
     // Function to handle state of movie value -- constantly updating the value
@@ -242,8 +233,6 @@ export default class searchPage extends Component {
     render() {
         const values = this.state.values;
         const currentUser = this.state.currentUser;
-        const userID = currentUser.id;
-        const routeID = userID;
         return (
             <div>
                 <h1> Search Page </h1>
@@ -286,7 +275,7 @@ export default class searchPage extends Component {
                             <br></br>
                             { currentUser && (
                                 <div className = "moreButtons">
-                                    <button type = "submit" className = "submitButton" onClick = { () => this.saveToWatchLater(  routeID, userID.toString(), value.title, value.tagline ) }> Add to Watch Later List </button>
+                                    <button type = "submit" className = "submitButton" onClick = { () => this.saveToWatchLater(  this.state.currentUser.id, this.state.currentUser.id.toString(), value.title, value.tagline ) }> Add to Watch Later List </button>
                                     <button type = "submit" className = "submitButton" onClick = { () => UserService.addToFavorites() }> Add to Favorites Page </button>
                                 </div>
                             ) }

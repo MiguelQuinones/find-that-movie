@@ -1,5 +1,5 @@
-// This file holds the code for the navbar displayed on each page, essentially acting
-// like a component -- IMPLEMENT ICONS FOR DARK/LIGHT MODE AS WELL AS MORE CSS STYLING FOR SEARCH PAGE WHEN RETURNING
+// This file holds the code for the navbar displayed on each page
+// IMPLEMENT ICONS FOR DARK/LIGHT MODE AS WELL AS MORE CSS STYLING FOR SEARCH PAGE WHEN RETURNING
 
 // Necessary imports
 import React, { Component } from 'react';
@@ -11,7 +11,7 @@ import profilePage from './profilePage';
 import watchLater from './watchLater';
 import loginPage from './loginPage';
 import registerPage from './registerPage';
-//import '../App.css';
+//import 'bootstrap/dist/css/bootstrap.min.css'; -- WORK ON IMPLEMENTING THIS WHEN RETURNING
 
 // Styling rules for Light/Dark mode
 const THEME_KEY = "THEME";
@@ -103,7 +103,7 @@ class Navbar extends Component {
             </li>
           </div>
 
-          {currentUser ? (
+          { currentUser ? (
             <div className="navbar-nav ml-auto">
               <li className="navbarItem">
                 <Link to={ "/profile" } id = "nav-link4">
@@ -116,7 +116,7 @@ class Navbar extends Component {
                 </Link>
               </li>
               <li className="navbarItem">
-                <a href="/login" id = "nav-link6" onClick={this.logUserOut}>
+                <a href="/login" id = "nav-link6" onClick={ this.logUserOut }>
                   Logout
                 </a>
               </li>
@@ -135,7 +135,7 @@ class Navbar extends Component {
                 </Link>
               </li>
             </div>
-          )}
+          ) }
 
           <div className = "buttonHolder">
             <div className = "themeDark" onClick = { () => this.themeSwitch( THEMES.Dark ) } > Dark </div>
