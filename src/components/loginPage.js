@@ -62,20 +62,43 @@ export default class loginPage extends Component {
 
     render() {
         return (
-            <div>
-                <h1> Login </h1>
-                <div className = "formField">
-                    <form className = "form" onSubmit = { this.onHandleSubmit }>
-                        <input type = "text" className = "loginInput" 
-                               placeholder = "Enter username" value = { this.state.username } 
-                               onChange = { this.onChangeUsername } />
-                        <input type = "password" className = "loginInput" 
-                               placeholder = "Enter password" value = { this.state.password } 
-                               onChange = { this.onChangePassword } />
-                        <button type = "submit" className = "submitLoginButton"> Login </button> 
+            <div className = "col-md-12">
+                <div className = "card card-container">
+                    <img src = "//ssl.gstatic.com/accounts/ui/avatar_2x.png"
+                         alt = "profile-img"
+                         className = "profile-img-card"
+                    />
+                    <form onSubmit = { this.onHandleSubmit }>
+                        <div className = "form-group">
+                            <input type = "text"
+                                   className = "form-control"
+                                   name = "username"
+                                   placeholder = "Enter username"
+                                   value = { this.state.username }
+                                   onChange = { this.onChangeUsername }
+                            />
+                        </div>
+                        <div className = "form-group">
+                            <input type = "password"
+                                   className = "form-control"
+                                   name = "password"
+                                   placeholder = "Enter password"
+                                   value = { this.state.password }
+                                   onChange = { this.onChangePassword }
+                            />
+                        </div>
+                        <div className = "form-group">
+                            <button className = "btn btn-primary"> Login </button>
+                        </div>
+                        { this.state.message && (
+                            <div className = "form-group">
+                                <div className = "alert alert-danger" role = "alert">
+                                    { this.state.message }
+                                </div>
+                            </div>
+                        ) }
                     </form>
                 </div>
-                <p id = "errorMessage"> { this.state.message } </p>
             </div>
         )
     }

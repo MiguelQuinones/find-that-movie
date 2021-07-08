@@ -11,7 +11,7 @@ import profilePage from './profilePage';
 import watchLater from './watchLater';
 import loginPage from './loginPage';
 import registerPage from './registerPage';
-//import 'bootstrap/dist/css/bootstrap.min.css'; -- WORK ON IMPLEMENTING THIS WHEN RETURNING
+//import 'bootstrap/dist/css/bootstrap.min.css'; //-- WORK ON IMPLEMENTING THIS WHEN RETURNING
 
 // Styling rules for Light/Dark mode
 const THEME_KEY = "THEME";
@@ -67,37 +67,40 @@ class Navbar extends Component {
       // Change theme of navbar to match
       var navbar = document.getElementById( "navbar" );
       if( theme === THEMES.Dark ) {
-        navbar.className = "navigationBarDark";
-        for( let darkIndex = 1; darkIndex < 10; darkIndex++ ) {
-          let darkItem = document.getElementById( "nav-link" + darkIndex );
-          if( darkItem ) {
-            darkItem.className = "navbarItemDark";
-          }
-        }
+        navbar.className = "navbar fixed-top navbar-expand navbar-dark bg-dark";
+        // for( let darkIndex = 1; darkIndex < 10; darkIndex++ ) {
+        //   let darkItem = document.getElementById( "nav-link" + darkIndex );
+        //   if( darkItem ) {
+        //     darkItem.className = "navbarItemDark";
+        //   }
+        // }
       } else if( theme === THEMES.Light ) {
-        navbar.className = "navigationBarLight";
-        for( let lightIndex = 1; lightIndex < 10; lightIndex++ ) {
-          let lightItem = document.getElementById( "nav-link" + lightIndex );
-          if( lightItem ) {
-            lightItem.className = "navbarItemLight";
-          }
-        }
+        navbar.className = "navbar fixed-top navbar-expand navbar-light bg-light";
+        // for( let lightIndex = 1; lightIndex < 10; lightIndex++ ) {
+        //   let lightItem = document.getElementById( "nav-link" + lightIndex );
+        //   if( lightItem ) {
+        //     lightItem.className = "navbarItemLight";
+        //   }
+        // }
       }
     }
 
     render() {
       const { currentUser } = this.state;
       return (
-        <div>
-        <nav className = "navigationBar" id = "navbar">
-          <div className="navbar-nav mr-auto">
-            <li className="navbarItem">
-              <Link to = "/" id = "nav-link1">
+      <div>
+        <nav className = "navbar fixed-top navbar-expand navbar-dark bg-dark" id = "navbar">
+          <Link to = { "/" } className = "navbar-brand">
+            Navbar
+          </Link>
+          <div className = "navbar-nav mr-auto">
+            <li className = "nav-item">
+              <Link to = "/"  className = "nav-link" id = "nav-link1">
                 Home Page
               </Link>
             </li>
-            <li className = "navbarItem">
-              <Link to = "/searchPage" id = "nav-link2">
+            <li className = "nav-item">
+              <Link to = "/searchPage" className = "nav-link" id = "nav-link2">
                 Search Page
               </Link>
             </li>
@@ -105,47 +108,48 @@ class Navbar extends Component {
 
           { currentUser ? (
             <div className="navbar-nav ml-auto">
-              <li className="navbarItem">
-                <Link to={ "/profile" } id = "nav-link4">
+              <li className="nav-item">
+                <Link to = { "/profile" } className = "nav-link" id = "nav-link4">
                   { currentUser.username }'s Page
                 </Link>
               </li>
-              <li className = "navbarItem">
-                <Link to = { "/watchLater" } id = "nav-link5">
+              <li className = "nav-item">
+                <Link to = { "/watchLater" } className = "nav-link" id = "nav-link5">
                   Watch Later
                 </Link>
               </li>
-              <li className="navbarItem">
-                <a href="/login" id = "nav-link6" onClick={ this.logUserOut }>
+              <li className="nav-item">
+                <a href="/login" className = "nav-link" id = "nav-link6" onClick={ this.logUserOut }>
                   Logout
                 </a>
               </li>
             </div>
           ) : (
-            <div className="navbar-nav ml-auto">
-              <li className="navbarItem">
-                <Link to = { "/login" } id = "nav-link7">
+            <div className = "navbar-nav ml-auto">
+              <li className = "nav-item">
+                <Link to = { "/login" } className = "nav-link" id = "nav-link7">
                   Login
                 </Link>
               </li>
 
-              <li className="navbarItem">
-                <Link to = { "/register" } id = "nav-link8">
+              <li className="nav-item">
+                <Link to = { "/register" } className = "nav-link" id = "nav-link8">
                   Register
                 </Link>
               </li>
             </div>
           ) }
 
-          <div className = "buttonHolder">
-            <div className = "themeDark" onClick = { () => this.themeSwitch( THEMES.Dark ) } > Dark </div>
-            <div className = "themeLight" onClick = { () => this.themeSwitch( THEMES.Light ) } > Light </div>
+          <div className = "navbar-nav ms-auto">
+            <li className = "nav-link" onClick = { () => this.themeSwitch( THEMES.Dark ) } > Dark </li>
+            <li className = "nav-link" onClick = { () => this.themeSwitch( THEMES.Light ) } > Light </li>
           </div>
         </nav>
+
         <br></br>
         <br></br>
 
-        <div>
+        <div className = "container mt-3">
           <Switch>
             <Route exact path = "/" component = { Home } />
             <Route exact path = "/searchPage" component = { searchPage } />
@@ -156,8 +160,8 @@ class Navbar extends Component {
           </Switch>
         </div>
       </div>
-      );
-    }
+    );
+  }
 }
 
 export default Navbar;
