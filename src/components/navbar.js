@@ -65,24 +65,12 @@ class Navbar extends Component {
       this.saveSettings( theme );
 
       // Change theme of navbar to match
-      var navbar = document.getElementById( "navbar" );
-      if( theme === THEMES.Dark ) {
-        navbar.className = "navbar fixed-top navbar-expand navbar-dark bg-dark";
-        // for( let darkIndex = 1; darkIndex < 10; darkIndex++ ) {
-        //   let darkItem = document.getElementById( "nav-link" + darkIndex );
-        //   if( darkItem ) {
-        //     darkItem.className = "navbarItemDark";
-        //   }
-        // }
-      } else if( theme === THEMES.Light ) {
-        navbar.className = "navbar fixed-top navbar-expand navbar-light bg-light";
-        // for( let lightIndex = 1; lightIndex < 10; lightIndex++ ) {
-        //   let lightItem = document.getElementById( "nav-link" + lightIndex );
-        //   if( lightItem ) {
-        //     lightItem.className = "navbarItemLight";
-        //   }
-        // }
-      }
+      // var navbar = document.getElementById( "navbar" );
+      // if( theme === THEMES.Dark ) {
+      //   navbar.className = "navbar fixed-top navbar-expand navbar-dark bg-dark";
+      // } else if( theme === THEMES.Light ) {
+      //   navbar.className = "navbar fixed-top navbar-expand navbar-light bg-light";
+      // }
     }
 
     render() {

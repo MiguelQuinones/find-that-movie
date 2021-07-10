@@ -56,7 +56,9 @@ export default class loginPage extends Component {
                 } );
             } )
         } else {
-        alert( "Fields cannot be left empty!" );
+        this.setState( {
+            message : "Fields can't be left empty!"
+        } );
         }
     }
 
@@ -64,12 +66,14 @@ export default class loginPage extends Component {
         return (
             <div className = "col-md-12">
                 <div className = "card card-container">
+                    <h1 className = "card-title"> Login Page </h1>
                     <img src = "//ssl.gstatic.com/accounts/ui/avatar_2x.png"
                          alt = "profile-img"
-                         className = "profile-img-card"
+                         className = "card-img-profile"
                     />
                     <form onSubmit = { this.onHandleSubmit }>
                         <div className = "form-group">
+                            <label htmlFor = "username"> Username </label>
                             <input type = "text"
                                    className = "form-control"
                                    name = "username"
@@ -79,6 +83,7 @@ export default class loginPage extends Component {
                             />
                         </div>
                         <div className = "form-group">
+                            <label htmlFor = "password"> Password </label>
                             <input type = "password"
                                    className = "form-control"
                                    name = "password"
@@ -87,9 +92,11 @@ export default class loginPage extends Component {
                                    onChange = { this.onChangePassword }
                             />
                         </div>
-                        <div className = "form-group">
+                        <br></br>
+                        <div className = "d-grid gap-2">
                             <button className = "btn btn-primary"> Login </button>
                         </div>
+                        <br></br>
                         { this.state.message && (
                             <div className = "form-group">
                                 <div className = "alert alert-danger" role = "alert">

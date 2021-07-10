@@ -18,7 +18,10 @@ export default class registerPage extends Component {
         this.state = {
             username : "",
             password : "",
-            message : ""
+            message : "",
+            usernameMessage : "",
+            passwordMessage : "",
+            successful : false
         }
     }
 
@@ -40,22 +43,29 @@ export default class registerPage extends Component {
     onHandleSubmit( event ) {
         event.preventDefault();
 
+        this.setState( {
+            message : "",
+            usernameMessage : "",
+            passwordMessage : "",
+            successful : false
+        } );
+
         // Check username to make sure it is valid
         const username = this.state.username;
         let verifiedUsername = "";
         if( !username ) {
-            alert( "Username field cannot be empty!" );
+            this.setState( { usernameMessage : "Username field cannot be empty!" } );
         } else if( username.length < 3 || username.length > 20 ) {
-            alert( "Username must be longer than 3 characters and shorter than 20 characters!" );
+            this.setState( { usernameMessage : "Username must be longer than 3 characters and shorter than 20 characters!" } );
         } else { verifiedUsername = username; }
 
         // Check password to make sure it is valid
         const password = this.state.password;
         let verifiedPassword = "";
         if( !password ) {
-            alert( "Password field cannot be empty!" );
+            this.setState( { passwordMessage : "Password field cannot be empty!" } );
         } else if( password.length < 6 || password.length > 20 ) {
-            alert( "Password must be longer than 6 characters and shorter than 20 characters!" );
+            this.setState( { passwordMessage : "Password must be longer than 6 characters and shorter than 20 characters!" } );
         } else { verifiedPassword = password ;}
 
         // If both are valid, register user within database
@@ -64,7 +74,8 @@ export default class registerPage extends Component {
             AuthService.register( verifiedUsername, verifiedPassword )
             .then( response => {
                 this.setState( {
-                    message : response.data.message
+                    message : response.data.message,
+                    successful : true
                 } );
             },
             error => {
@@ -72,7 +83,8 @@ export default class registerPage extends Component {
                     error.response && error.response.data && error.response.data.message
                 ) || error.message || error.toString();
                 this.setState( {
-                    message : resMessage
+                    message : resMessage,
+                    successful : false
                 } );
             } )
             
@@ -81,23 +93,67 @@ export default class registerPage extends Component {
 
     render() {
         return (
-            <div>
-                <h1> Register </h1>
-                <div className = "formField">
-                    <form className = "form" onSubmit = { this.onHandleSubmit }>
-                        <input type = "text" className = "registerInput" 
-                               placeholder = "Enter username" value = { this.state.username } 
-                               onChange = { this.onChangeUsername }  />
-                        <input type = "password" className = "registerInput" 
-                               placeholder = "Enter password" value = { this.state.password } 
-                               onChange = { this.onChangePassword } />
-                        <button type = "submit" className = "submitLoginButton"> Sign Up </button> 
-                    </form>
-                </div>
-                <br></br>
+            <div className = "col-md-12">
+                <div className = "card card-container">
+                    <h1 className = "card-title"> Register Page </h1>
+                    <img src = "//ssl.gstatic.com/accounts/ui/avatar_2x.png"
+                         alt = "profile-img"
+                         className = "card-img-profile"
+                    />
+                    <form onSubmit = { this.onHandleSubmit }>
+                        <div className = "form-group">
+                            <label htmlFor = "username"> Username </label>
+                            <input type = "text"
+                                   className = "form-control"
+                                   name = "username"
+                                   placeholder = "Enter username"
+                                   value = { this.state.username }
+                                   onChange = { this.onChangeUsername }
+                            />
+                        </div>
+                        { this.state.usernameMessage && (
+                            <div className = "form-group">
+                                <div className = "alert alert-danger" role = "alert">
+                                    { this.state.usernameMessage }
+                                </div>
+                            </div>
+                        ) }
+                        <div className = "form-group">
+                            <label htmlFor = "password"> Password </label>
+                            <input type = "password"
+                                   className = "form-control"
+                                   name = "password"
+                                   placeholder = "Enter password"
+                                   value = { this.state.password }
+                                   onChange = { this.onChangePassword }
+                            />
+                        </div>
+                        { this.state.passwordMessage && (
+                            <div className = "form-group">
+                                <div className = "alert alert-danger" role = "alert">
+                                    { this.state.passwordMessage }
+                                </div>
+                            </div>
+                        ) }
 
-                <div className = "errorMessage">
-                    <p id = "errorMessage"> { this.state.message } </p>
+                        <br></br>
+
+                        <div className = "d-grid gap-2">
+                            <button className = "btn btn-primary"> Sign Up </button>
+                        </div>
+
+                        <br></br>
+
+                        { this.state.message && (
+                            <div className = "form-group">
+                                <div className = {
+                                    this.state.successful ? "alert alert-success" : "alert alert-danger"
+                                } role = "alert">
+                                    { this.state.message }
+                                </div>
+                            </div>
+                        ) }
+                    </form>
                 </div>
             </div>
         )
