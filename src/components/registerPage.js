@@ -102,7 +102,7 @@ export default class registerPage extends Component {
                     />
                     <form onSubmit = { this.onHandleSubmit }>
                         <div className = "form-group">
-                            <label htmlFor = "username"> Username </label>
+                            <label htmlFor = "username" > Username <span className = "form-text"> -- must be between 3 and 20 characters long </span></label>
                             <input type = "text"
                                    className = "form-control"
                                    name = "username"
@@ -119,7 +119,7 @@ export default class registerPage extends Component {
                             </div>
                         ) }
                         <div className = "form-group">
-                            <label htmlFor = "password"> Password </label>
+                            <label htmlFor = "password"> Password <span className = "form-text"> -- must be between 6 and 20 characters long </span></label>
                             <input type = "password"
                                    className = "form-control"
                                    name = "password"
