@@ -129,8 +129,8 @@ class Navbar extends Component {
           ) }
 
           <div className = "navbar-nav ms-auto">
-            <li className = "nav-link" onClick = { () => this.themeSwitch( THEMES.Dark ) } > Dark </li>
-            <li className = "nav-link" onClick = { () => this.themeSwitch( THEMES.Light ) } > Light </li>
+            <li className = "nav-link" id = "themeSwitch" onClick = { () => this.themeSwitch( THEMES.Dark ) } > Dark </li>
+            <li className = "nav-link" id = "themeSwitch" onClick = { () => this.themeSwitch( THEMES.Light ) } > Light </li>
           </div>
         </nav>
 

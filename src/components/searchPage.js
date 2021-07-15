@@ -25,14 +25,16 @@ export default class searchPage extends Component {
                 title : "",
                 values : [],
                 currentUser : user,
-                message : ""
+                message : "",
+                successful : false
             }
         } else {
             this.state = {
                 title : "",
                 values : [],
                 currentUser : undefined,
-                message : ""
+                message : "",
+                successful : false
             }
         }
     }
@@ -59,7 +61,8 @@ export default class searchPage extends Component {
         this.setState( {
             title : "",
             values : [],
-            message : ""
+            message : "",
+            successful : false
         } );
     }
 
@@ -216,7 +219,8 @@ export default class searchPage extends Component {
         UserService.addToWatchLater( routeID, userID, title, tagline )
         .then( response => {
             this.setState( {
-                message : response.data.message
+                message : response.data.message,
+                successful : true
             } );
         },
         error => {
@@ -224,7 +228,8 @@ export default class searchPage extends Component {
                 error.response && error.response.data && error.response.data.message
             ) || error.message || error.toString();
             this.setState( {
-                message : resMessage
+                message : resMessage,
+                successful : false
             } );
         } )
     }
@@ -238,28 +243,30 @@ export default class searchPage extends Component {
                 <h1> Search Page </h1>
                 <div className = "formField">
                     <form className = "form" onSubmit = { this.onHandleSubmit }>
-                        <input type = "text" className = "input" 
-                               placeholder = "Enter movie here!" value = { this.state.title } 
-                               onChange = { this.onChangeMovieTitle } />
-                        <button type = "submit" className = "btn btn-primary" > 
-                            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="16" fill="currentColor" className="bi bi-search" viewBox="0 0 16 16">
-                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                            </svg>
-                        </button>
+                        <div class="input-group mb-3">
+                            <input type = "text" className = "form-control" placeholder = "Enter movie title here!" 
+                                   value = { this.state.title} onChange = { this.onChangeMovieTitle } 
+                                   aria-label="Movie's title" aria-describedby="button-addon2"/>
+                            <button className = "btn btn-primary" type = "button" id = "button-addon2"> 
+                                <svg xmlns="http://www.w3.org/2000/svg" width = "50" height = "16" fill = "currentColor" className = "bi bi-search" viewBox = "0 0 16 16">
+                                <path d = "M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                </svg> 
+                            </button>
+                        </div>
                     </form>
                 </div>
 
-                <div className = "resultsField">
+                <div className = "container">
                     { values.map( value => (
                         <div className = "results" key = { value.id } >
-                            <div className = "displayTotal"> 
-                                <div className = "displayLeft">
-                                    <p className = "title"> <span className = "titleSpan" style = { { fontSize : "35px", fontWeight : "bold" } }> { value.title } </span> </p>
+                            <div className = "row"> 
+                                <div className = "col">
+                                    <p className = "title" style = { { float : 'right', marginRight : '47%' } }> <span className = "titleSpan" style = { { fontSize : "35px", fontWeight : "bold" } }> { value.title } </span> </p>
                                     <p className = "showPoster"> <img src= { "https://image.tmdb.org/t/p/w400" + value.poster } alt = "Poster" /> </p>
-                                    <p className = "tagline"> <span className = "taglineSpan" style = { { fontSize : "25px" } }> <i> { value.tagline } </i> </span> </p>
+                                    <p className = "tagline" style = { { float : 'right', marginRight : '60%' } }> <span className = "taglineSpan" style = { { fontSize : "25px" } }> <i> { value.tagline } </i> </span> </p>
                                 </div>
-                                <br></br>
-                                <div className = "displayRight">
+
+                                <div className = "col">
                                     <p className = "plot"> <span className = "plotSpan" style = { { fontSize : "20px", fontWeight : "bold" } }> Plot: </span> { value.plot } </p>
                                     <p className = "genres"> <span className = "genresSpan" style = { { fontSize : "20px", fontWeight : "bold" } }> Genres: </span> { value.genres } </p>
                                     <p className = "actors"> <span className = "actorsSpan" style = { { fontSize : "20px", fontWeight : "bold" } }> Actors: </span> { value.actors } </p>
@@ -268,20 +275,28 @@ export default class searchPage extends Component {
                                     <p className = "revenue"> <span className = "revenueSpan" style = { { fontSize : "20px", fontWeight : "bold" } }> Total Revenue: </span> { value.revenue } </p>
                                     <p className = "runtime"> <span className = "runtimeSpan" style = { { fontSize : "20px", fontWeight : "bold" } }> Movie Runtime: </span> { value.runtime } </p>
                                     <p className = "rating"> <span className = "ratingSpan" style = { { fontSize : "20px", fontWeight : "bold" } }> Movie Rating: </span> { value.rating } </p>
+                                    <p className = "showVideo" style = { { width : "560px", height : "315px", float : "right", marginRight : "18%" } }> </p>
                                 </div>
                             </div>
-                            <div className = "showVideo" style = { { width : "560px", height : "315px", float : "right", marginRight : "18%" } }> </div>
+
                             <br></br>
                             <br></br>
                             { currentUser && (
                                 <div className = "moreButtons">
-                                    <button type = "submit" className = "submitButton" onClick = { () => this.saveToWatchLater(  this.state.currentUser.id, this.state.currentUser.id.toString(), value.title, value.tagline ) }> Add to Watch Later List </button>
-                                    <button type = "submit" className = "submitButton" onClick = { () => UserService.addToFavorites() }> Add to Favorites Page </button>
+                                    <button type = "submit" className = "btn btn-secondary" onClick = { () => this.saveToWatchLater(  this.state.currentUser.id, this.state.currentUser.id.toString(), value.title, value.tagline ) }> Add to Watch Later List </button>
                                 </div>
                             ) }
                             <br></br>
                             <br></br>
-                            <p id = "message"> { this.state.message } </p>
+                            { this.state.message && (
+                                <div className = "form-group">
+                                    <div className = {
+                                        this.state.successful ? "alert alert-success" : "alert alert-danger"
+                                        } role = "alert">
+                                            { this.state.message }
+                                    </div>
+                                </div>
+                            ) }
                         </div>
                     ))}
                 </div> 

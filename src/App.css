@@ -202,3 +202,7 @@ label {
 .card-title {
     text-align: center;
 }
+
+#themeSwitch {
+    cursor : pointer;
+}
