@@ -33,7 +33,7 @@ exports.addToWatchLater = ( req, res ) => {
         const watchLater = new WatchLater( {
             userID : req.body.userID,
             movieTitle : req.body.title,
-            movieTagline : req.body.tagline,
+            moviePoster : req.body.posterURL,
         } );
         // Save the movie to the Watch Later list
         watchLater.save().then(

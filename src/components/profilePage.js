@@ -31,6 +31,10 @@ export default class profilePage extends Component {
                         <strong> Id: </strong> { " " }
                         { currentUser.id }
                     </p>
+                    <p>
+                        <strong> Delete Profile? </strong> { " " }
+                        <button className = "button btn-secondary"> Delete </button>
+                    </p>
                 </div>
             </div>
         )

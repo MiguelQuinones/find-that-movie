@@ -8,12 +8,11 @@ import AuthService from "../services/auth.service";
 const TableRow = props => (
   <tr>
     <td className = "movieTitle"> { props.movie.movieTitle } </td>
+    <td> <a href= { "https://image.tmdb.org/t/p/w400" + props.movie.moviePoster }> Link </a> </td>
     <td className = "deleteButton"> <button type = "submit" onClick = { () => {
       UserService.removeFromWatchLater( props.movie._id );
       window.location.reload();
-    } }> Delete </button> </td>
-    <td> { props.movie._id } </td>
-    <td> { props.movie.movieTagline } </td>
+    } }> Remove </button> </td>
   </tr>
 )
 
@@ -62,21 +61,20 @@ export default class WatchLater extends Component {
           <h1> { this.state.currentUser.username }'s Watch Later List </h1>
         </header>
         { this.state.watchListArray.length === 0 ? (
-          <p> Watchlist is currently empty. You can add to it by searching for a movie
+          <p style = { { textAlign : "center" } }> Watchlist is currently empty. You can add to it by searching for a movie
               and using the corresponding button!
           </p>
         ) : (
           <p>
-        <table>
-            <thead>
+        <table className = "table table-striped table-bordered border-dark table-hover">
+            <thead className = "thead-dark">
               <tr>
-                <th> Title </th>
-                <th> Delete </th>
-                <th> ID </th>
-                <th> Tagline </th>
+                <th scope = "col" style = { { textAlign : "center" } }> Title </th>
+                <th scope = "col" style = { { textAlign : "center" } }> Poster Link </th>
+                <th scope = "col" style = { { textAlign : "center" } }> Remove from List </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody style = { { textAlign : "center" } }>
               { this.mapList() }
             </tbody> 
           </table>

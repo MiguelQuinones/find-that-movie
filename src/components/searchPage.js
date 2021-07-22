@@ -214,9 +214,9 @@ export default class searchPage extends Component {
         }
     }
 
-    // Function for adding a movie to the Watch Later list -- WORK ON THIS
-    saveToWatchLater( routeID, userID, title, tagline ) {
-        UserService.addToWatchLater( routeID, userID, title, tagline )
+    // Function for adding a movie to the Watch Later list
+    saveToWatchLater( routeID, userID, title, posterURL ) {
+        UserService.addToWatchLater( routeID, userID, title, posterURL )
         .then( response => {
             this.setState( {
                 message : response.data.message,
@@ -282,8 +282,8 @@ export default class searchPage extends Component {
                             <br></br>
                             <br></br>
                             { currentUser && (
-                                <div className = "moreButtons">
-                                    <button type = "submit" className = "btn btn-secondary" onClick = { () => this.saveToWatchLater(  this.state.currentUser.id, this.state.currentUser.id.toString(), value.title, value.tagline ) }> Add to Watch Later List </button>
+                                <div className = "ms-auto" style = { { float : "right", marginRight : "34%" } }>
+                                    <button type = "submit" className = "btn btn-secondary" onClick = { () => this.saveToWatchLater(  this.state.currentUser.id, this.state.currentUser.id.toString(), value.title, value.poster ) }> Add to Watch Later List </button>
                                 </div>
                             ) }
                             <br></br>
@@ -292,13 +292,13 @@ export default class searchPage extends Component {
                                 <div className = "form-group">
                                     <div className = {
                                         this.state.successful ? "alert alert-success" : "alert alert-danger"
-                                        } role = "alert">
+                                        } style = { { textAlign : "center" } } role = "alert">
                                             { this.state.message }
                                     </div>
                                 </div>
                             ) }
                         </div>
-                    ))}
+                    ) ) }
                 </div> 
                 
             </div>
