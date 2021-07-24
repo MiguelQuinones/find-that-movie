@@ -29,26 +29,42 @@ exports.getWatchLater = ( req, res ) => {
 
 // Route for adding a movie to a user's Watch Later list
 exports.addToWatchLater = ( req, res ) => {
-    try {
-        const watchLater = new WatchLater( {
-            userID : req.body.userID,
-            movieTitle : req.body.title,
-            moviePoster : req.body.posterURL,
-        } );
-        // Save the movie to the Watch Later list
-        watchLater.save().then(
-            () => {
-                res.status( 200 ).send( { message : "Movie added to Watch List!" } );
-            }
-        ).catch(
-            ( err ) => {
-                res.status( 500 ).send( { message : "An error occurred..." } );
-            }
-        )
-    } 
-    catch( err ) {
-        res.status( 500 ).send( { message : err } );
-    }
+    // Check if movie is already in watchlist first
+    WatchLater.findOne( { movieTitle : req.body.title } ).exec( ( err, movie ) => {
+        if( err ) {
+            res.status( 500 ).send( { message : err } );
+            return;
+        }
+
+        // Movie is already in watchlist so alert the user
+        if( movie ) {
+            res.status( 400 ).send( { message : "This movie is already in your watchlist!" } );
+            return;
+        }
+
+        // Movie does not already exist so we add it to the watchlist
+        try {
+            const watchLater = new WatchLater( {
+                userID : req.body.userID,
+                movieTitle : req.body.title,
+                moviePoster : req.body.posterURL,
+            } );
+            // Check if movie is already in watch list -- if not, save it
+            watchLater.save().then(
+                () => {
+                    res.status( 200 ).send( { message : "Movie added to Watch List!" } );
+                }
+            ).catch(
+                ( err ) => {
+                    res.status( 500 ).send( { message : "An error occurred..." } );
+                }
+            )
+        } 
+        catch( err ) {
+            res.status( 500 ).send( { message : err } );
+        }
+
+    } );
 };
 
 // Route for deleting a movie from the Watch Later list

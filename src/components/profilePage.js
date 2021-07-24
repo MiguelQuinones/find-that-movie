@@ -33,7 +33,7 @@ export default class profilePage extends Component {
                     </p>
                     <p>
                         <strong> Delete Profile? </strong> { " " }
-                        <button className = "button btn-secondary"> Delete </button>
+                        <button className = "button btn-secondary"> Delete -- Need to Implement </button>
                     </p>
                 </div>
             </div>
