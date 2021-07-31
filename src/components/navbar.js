@@ -62,6 +62,21 @@ class Navbar extends Component {
     themeSwitch( theme ) {
       document.body.style.backgroundColor = theme;
       document.body.style.color = theme === THEMES.Dark ? THEMES.Light : THEMES.Dark;
+      if( theme === THEMES.Light ) {
+        document.querySelectorAll( 'h1' ).forEach( ( input ) => {
+          input.className = "title-light"
+        } );
+        document.querySelectorAll( ".card.card-block.mx-2" ).forEach( ( input ) => {
+          input.className = "card card-block mx-2 card-light";
+        } );
+      } else {
+        document.querySelectorAll( 'h1' ).forEach( ( input ) => {
+          input.className = "title-dark"
+        } );
+        document.querySelectorAll( ".card.card-block.mx-2" ).forEach( ( input ) => {
+          input.className = "card card-block mx-2 card-dark";
+        } );
+      }
       this.saveSettings( theme );
 
       // Change theme of navbar to match

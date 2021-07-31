@@ -199,8 +199,22 @@ label {
     border-radius: 50%;
 }
 
-.card-title {
+.title-light {
     text-align: center;
+    color : black
+}
+
+.title-dark {
+    text-align: center;
+    color: white;
+}
+
+.card-light {
+    background-color: white!important;
+}
+
+.card-dark {
+    background-color: black!important;
 }
 
 #themeSwitch {
