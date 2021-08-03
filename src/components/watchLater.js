@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import UserService from "../services/user.service";
 import AuthService from "../services/auth.service";
 
-// Fill in info for table row
+// Fill in info for table row -- REMOVE THIS 
 const TableRow = props => (
   <tr>
     <td className = "movieTitle"> { props.movie.movieTitle } </td>

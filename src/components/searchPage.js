@@ -73,7 +73,7 @@ export default class searchPage extends Component {
             const key = process.env.REACT_APP_API_KEY; // Change to REACT_APP_API_KEY later, not working now for some reason
 
             // Search for the given movie title within the TMDB API to retrieve its unique ID for more detailed requests
-            let response = await axios.get( "https://api.themoviedb.org/3/search/movie?api_key=" + key + "&query=" + title )
+            let response = await axios.get( "https://api.themoviedb.org/3/search/movie?api_key=" + key + "&query=" + title );
             const id = response.data.results[0].id;
 
             // Using the movie ID retrieved from previous call, query for more details about the given movie
@@ -240,10 +240,10 @@ export default class searchPage extends Component {
         const currentUser = this.state.currentUser;
         return (
             <div>
-                <h1> Search Page </h1>
+                <h1> Search For <span className = "text-info"> Movies </span> </h1>
                 <div className = "formField">
                     <form className = "form" onSubmit = { this.onHandleSubmit }>
-                        <div class="input-group mb-3">
+                        <div className = "input-group mb-3">
                             <input type = "text" className = "form-control" placeholder = "Enter movie title here!" 
                                    value = { this.state.title} onChange = { this.onChangeMovieTitle } 
                                    aria-label="Movie's title" aria-describedby="button-addon2"/>

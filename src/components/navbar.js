@@ -11,7 +11,6 @@ import profilePage from './profilePage';
 import watchLater from './watchLater';
 import loginPage from './loginPage';
 import registerPage from './registerPage';
-//import 'bootstrap/dist/css/bootstrap.min.css'; //-- WORK ON IMPLEMENTING THIS WHEN RETURNING
 
 // Styling rules for Light/Dark mode
 const THEME_KEY = "THEME";

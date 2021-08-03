@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
 import UserService from "../services/user.service";
+import CarouselSlides from "../components/carousel";
 
 export default class Home extends Component {
   constructor(props) {
@@ -11,6 +12,7 @@ export default class Home extends Component {
     };
   }
 
+  // Remove function below later
   componentDidMount() {
     UserService.getPublicContent().then(
       response => {
@@ -31,12 +33,12 @@ export default class Home extends Component {
 
   render() {
     return (
-      <div>
-        <header>
-          <h1> { this.state.content } </h1>
-        </header>
-        <p> Hello! </p>
-      </div>
+      <>
+        <h1 className = "mb-3">
+          Upcoming <span className = "text-info"> Movies </span>
+        </h1>
+        <CarouselSlides/>
+      </>
     );
   }
 }
