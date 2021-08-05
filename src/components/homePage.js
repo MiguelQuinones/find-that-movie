@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 
-import UserService from "../services/user.service";
 import CarouselSlides from "../components/carousel";
 
 export default class Home extends Component {
@@ -10,25 +9,6 @@ export default class Home extends Component {
     this.state = {
       content: ""
     };
-  }
-
-  // Remove function below later
-  componentDidMount() {
-    UserService.getPublicContent().then(
-      response => {
-        this.setState( {
-          content: response.data
-        } );
-      },
-      error => {
-        this.setState( {
-          content:
-            ( error.response && error.response.data) ||
-            error.message ||
-            error.toString()
-        } );
-      }
-    );
   }
 
   render() {
