@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Carousel from "react-bootstrap/Carousel";
 import axios from "axios";
 
-export default class CarouselSlides extends Component {
+export default class PlayingNowSlides extends Component {
     constructor( props ) {
         super( props );
 
@@ -34,7 +34,9 @@ export default class CarouselSlides extends Component {
             const key = process.env.REACT_APP_API_KEY;
 
             // Send request to API to get upcoming movies
-            let response = await axios.get( "https://api.themoviedb.org/3/movie/upcoming?api_key=" + key + "&language=en-US&page=1" );
+            let response = await axios.get( "https://api.themoviedb.org/3/movie/now_playing?api_key=" + key + "&language=en-US&page=1" );
+            console.log( "Movies Now Playing: " );
+            console.log( response );
 
             // Store movie info for carousel slides
             this.setState( {
@@ -62,11 +64,11 @@ export default class CarouselSlides extends Component {
         }
     }
 
-    // Renders 8 slides based on list of upcoming movies from API
+    // Render 8 slides based on movies currently in theaters from API
     render() {
         return(
             <div className = "container" style = { { display : 'block', width : 800, padding : 30 } }>
-                <h1> Upcoming <span className = "text-info"> Movies </span> </h1>
+                <h1> Currently Playing <span className = "text-info"> Movies </span> </h1>
                 <br></br>
                 <Carousel nextLabel = "" prevLabel = "" fade = "true">
                     <Carousel.Item>
