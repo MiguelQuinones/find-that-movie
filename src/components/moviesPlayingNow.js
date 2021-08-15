@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Carousel from "react-bootstrap/Carousel";
+//import Carousel from "react-bootstrap/Carousel";
 import axios from "axios";
 
 export default class PlayingNowSlides extends Component {
@@ -67,66 +67,101 @@ export default class PlayingNowSlides extends Component {
     // Render 8 slides based on movies currently in theaters from API
     render() {
         return(
-            <div className = "container" style = { { display : 'block', width : 800, padding : 30 } }>
-                <h1> Currently Playing <span className = "text-info"> Movies </span> </h1>
-                <br></br>
-                <Carousel nextLabel = "" prevLabel = "" fade = "true">
-                    <Carousel.Item>
-                        <img className = "d-block w-100" src = { "https://image.tmdb.org/t/p/w780" + this.state.firstMoviePoster } alt = "Slide"/>
-                        <Carousel.Caption>
-                            <h3> { this.state.firstMovieTitle } </h3>
-                        </Carousel.Caption>
-                    </Carousel.Item>
+            // <div className = "container" style = { { display : 'block', width : 800, padding : 30 } }>
+            //     <h1> Currently Playing <span className = "text-info"> Movies </span> </h1>
+            //     <br></br>
+            //     <Carousel nextLabel = "" prevLabel = "" fade = "true">
+            //         <Carousel.Item>
+            //             <img className = "d-block w-100" src = { "https://image.tmdb.org/t/p/w780" + this.state.firstMoviePoster } alt = "Slide"/>
+            //             <Carousel.Caption>
+            //                 <h3> { this.state.firstMovieTitle } </h3>
+            //             </Carousel.Caption>
+            //         </Carousel.Item>
 
-                    <Carousel.Item>
-                        <img className = "d-block w-100" src = { "https://image.tmdb.org/t/p/w780" + this.state.secondMoviePoster } alt="Slide"/>
-                        <Carousel.Caption>
-                            <h3> { this.state.secondMovieTitle } </h3>
-                        </Carousel.Caption>
-                    </Carousel.Item>
+            //         <Carousel.Item>
+            //             <img className = "d-block w-100" src = { "https://image.tmdb.org/t/p/w780" + this.state.secondMoviePoster } alt="Slide"/>
+            //             <Carousel.Caption>
+            //                 <h3> { this.state.secondMovieTitle } </h3>
+            //             </Carousel.Caption>
+            //         </Carousel.Item>
 
-                    <Carousel.Item>
-                        <img className = "d-block w-100" src = { "https://image.tmdb.org/t/p/w780" + this.state.thirdMoviePoster } alt = "Slide"/>
-                        <Carousel.Caption>
-                            <h3> { this.state.thirdMovieTitle } </h3>
-                        </Carousel.Caption>
-                    </Carousel.Item>
+            //         <Carousel.Item>
+            //             <img className = "d-block w-100" src = { "https://image.tmdb.org/t/p/w780" + this.state.thirdMoviePoster } alt = "Slide"/>
+            //             <Carousel.Caption>
+            //                 <h3> { this.state.thirdMovieTitle } </h3>
+            //             </Carousel.Caption>
+            //         </Carousel.Item>
 
-                    <Carousel.Item>
-                        <img className = "d-block w-100" src = { "https://image.tmdb.org/t/p/w780" + this.state.fourthMoviePoster } alt = "Slide"/>
-                        <Carousel.Caption>
-                            <h3> { this.state.fourthMovieTitle } </h3>
-                        </Carousel.Caption>
-                    </Carousel.Item>
+            //         <Carousel.Item>
+            //             <img className = "d-block w-100" src = { "https://image.tmdb.org/t/p/w780" + this.state.fourthMoviePoster } alt = "Slide"/>
+            //             <Carousel.Caption>
+            //                 <h3> { this.state.fourthMovieTitle } </h3>
+            //             </Carousel.Caption>
+            //         </Carousel.Item>
 
-                    <Carousel.Item>
-                        <img className = "d-block w-100" src = { "https://image.tmdb.org/t/p/w780" + this.state.fifthMoviePoster } alt = "Slide"/>
-                        <Carousel.Caption>
-                            <h3> { this.state.fifthMovieTitle } </h3>
-                        </Carousel.Caption>
-                    </Carousel.Item>
+            //         <Carousel.Item>
+            //             <img className = "d-block w-100" src = { "https://image.tmdb.org/t/p/w780" + this.state.fifthMoviePoster } alt = "Slide"/>
+            //             <Carousel.Caption>
+            //                 <h3> { this.state.fifthMovieTitle } </h3>
+            //             </Carousel.Caption>
+            //         </Carousel.Item>
 
-                    <Carousel.Item>
-                        <img className = "d-block w-100" src = { "https://image.tmdb.org/t/p/w780" + this.state.sixthMoviePoster } alt = "Slide"/>
-                        <Carousel.Caption>
-                            <h3> { this.state.sixthMovieTitle } </h3>
-                        </Carousel.Caption>
-                    </Carousel.Item>
+            //         <Carousel.Item>
+            //             <img className = "d-block w-100" src = { "https://image.tmdb.org/t/p/w780" + this.state.sixthMoviePoster } alt = "Slide"/>
+            //             <Carousel.Caption>
+            //                 <h3> { this.state.sixthMovieTitle } </h3>
+            //             </Carousel.Caption>
+            //         </Carousel.Item>
 
-                    <Carousel.Item>
-                        <img className = "d-block w-100" src = { "https://image.tmdb.org/t/p/w780" + this.state.seventhMoviePoster } alt = "Slide"/>
-                        <Carousel.Caption>
-                            <h3> { this.state.seventhMovieTitle } </h3>
-                        </Carousel.Caption>
-                    </Carousel.Item>
+            //         <Carousel.Item>
+            //             <img className = "d-block w-100" src = { "https://image.tmdb.org/t/p/w780" + this.state.seventhMoviePoster } alt = "Slide"/>
+            //             <Carousel.Caption>
+            //                 <h3> { this.state.seventhMovieTitle } </h3>
+            //             </Carousel.Caption>
+            //         </Carousel.Item>
 
-                    <Carousel.Item>
-                        <img className = "d-block w-100" src = { "https://image.tmdb.org/t/p/w780" + this.state.eigthMoviePoster } alt = "Slide"/>
-                        <Carousel.Caption>
-                            <h3> { this.state.eigthMovieTitle } </h3>
-                        </Carousel.Caption>
-                    </Carousel.Item>
-                </Carousel>
+            //         <Carousel.Item>
+            //             <img className = "d-block w-100" src = { "https://image.tmdb.org/t/p/w780" + this.state.eigthMoviePoster } alt = "Slide"/>
+            //             <Carousel.Caption>
+            //                 <h3> { this.state.eigthMovieTitle } </h3>
+            //             </Carousel.Caption>
+            //         </Carousel.Item>
+            //     </Carousel>
+            // </div>
+            <div className = "container" style = { { textAlign : "center" } }>
+                <div className = "row">
+                    <div className = "col-lg-4">
+                        Why
+                    </div>
+                    <div className = "col-lg-4">
+                        Hello 
+                    </div>
+                    <div className = "col-lg-4">
+                        There
+                    </div>
+                </div>
+                <div className = "row">
+                    <div className = "col-lg-4">
+                        Why
+                    </div>
+                    <div className = "col-lg-4">
+                        Hello
+                    </div>
+                    <div className = "col-lg-4">
+                        There
+                    </div>
+                </div>
+                <div className = "row">
+                    <div className = "col-lg-4">
+                        Why
+                    </div>
+                    <div className = "col-lg-4">
+                        Hello
+                    </div>
+                    <div className = "col-lg-4">
+                        There
+                    </div>
+                </div>
             </div>
         );
     }

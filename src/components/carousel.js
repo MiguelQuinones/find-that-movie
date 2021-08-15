@@ -65,7 +65,7 @@ export default class CarouselSlides extends Component {
     // Renders 8 slides based on list of upcoming movies from API
     render() {
         return(
-            <div className = "container" style = { { display : 'block', width : 800, padding : 30 } }>
+            <div className = "container" style = { { width : "100vw" } }>
                 <h1> Upcoming <span className = "text-info"> Movies </span> </h1>
                 <br></br>
                 <Carousel nextLabel = "" prevLabel = "" fade = "true">
