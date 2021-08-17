@@ -49,7 +49,7 @@ export default class PlayingNowSlides extends Component {
                             </Card.Body>
                         </Card>
                     </Col>
-                ))}
+                ) ) }
             </Row>
         );
     }
