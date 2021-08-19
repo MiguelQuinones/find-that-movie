@@ -9,6 +9,8 @@ import UserService from '../services/user.service';
 import Card from 'react-bootstrap/Card';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
+import SearchedMoviePage from './searchedMoviePage';
 
 export default class searchPage extends Component {
 
@@ -186,6 +188,7 @@ export default class searchPage extends Component {
     }
 
     // Function to dynamically generate YouTube video for given movie using code from their video player API
+    // REMOVE LATER
     generateVideo( video ) {
         // Add video for trailer to page by embedding it
         const showVideo = document.getElementsByClassName( "showVideo" );
@@ -275,6 +278,9 @@ export default class searchPage extends Component {
                                     <Card.Body>
                                         <Card.Title style = { { textAlign : "center" } }> { movie.title } </Card.Title>
                                         <Card.Subtitle> { movie.tagline } </Card.Subtitle>
+                                        <div className = "d-grid gap-2">
+                                            <Button varaint = "primary" size = "lg" href = { `searchedMoviePage/${ movie.id }` }> More Info </Button>
+                                        </div>
                                     </Card.Body>
                                 </Card>
                             </Col>

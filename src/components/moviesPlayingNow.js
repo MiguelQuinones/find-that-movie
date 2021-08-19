@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Card from "react-bootstrap/Card";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Button from "react-bootstrap/Button";
 import axios from "axios";
 
 export default class PlayingNowSlides extends Component {
@@ -46,6 +47,9 @@ export default class PlayingNowSlides extends Component {
                             <Card.Img variant = "bottom" src = { "https://image.tmdb.org/t/p/w500" + movie.poster_path } />
                             <Card.Body>
                                 <Card.Title style = { { textAlign : "center" } }> { movie.title } </Card.Title>
+                                <div className = "d-grid gap-2">
+                                    <Button varaint = "primary" size = "lg" href = { `searchedMoviePage/${ movie.id }` }> Detailed Info </Button>
+                                </div>
                             </Card.Body>
                         </Card>
                     </Col>

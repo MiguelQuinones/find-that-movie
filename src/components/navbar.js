@@ -11,6 +11,7 @@ import profilePage from './profilePage';
 import watchLater from './watchLater';
 import loginPage from './loginPage';
 import registerPage from './registerPage';
+import SearchedMoviePage from './searchedMoviePage';
 
 // Styling rules for Light/Dark mode
 const THEME_KEY = "THEME";
@@ -172,6 +173,7 @@ class Navbar extends Component {
             <Route exact path = "/register" component = { registerPage } />
             <Route exact path = "/profile" component = { profilePage } />
             <Route exact path = "/watchLater" component = { watchLater } />
+            <Route exact path = "/searchedMoviePage/:id" component = { SearchedMoviePage } />
           </Switch>
         </div>
       </div>
