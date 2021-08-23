@@ -132,15 +132,15 @@ export default class searchPage extends Component {
             // // Get release date from JSON and make it readable -- split into an array
             // const readableReleaseDate = movieData.release_date.split( '-' );
             // const year = readableReleaseDate[ 0 ];
-            // // Array of months to be used
+            // Array of months to be used
             // const months = [ undefined, "January", "February", "March", "April", "May",
             //                "June", "July", "August", "September", "October", "November",
             //                "December" ];
             // const monthIndex = parseInt( readableReleaseDate[ 1 ] );
             // const month = months[ monthIndex ];
-            // // Get day from array and turn it into an int
+            // Get day from array and turn it into an int
             // const day = parseInt( readableReleaseDate[ 2 ] );
-            // // Put everything together to make it readable to the user
+            // Put everything together to make it readable to the user
             // const fullDate = month + " " + day + ", " + year;
 
             // // Get revenue from JSON data and add commas to it to make it readable
