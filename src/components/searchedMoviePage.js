@@ -5,6 +5,7 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
 
+// TURN VIDEOLINKS AND VIDEONAMES INTO A DICTIONARY -- REFER TO BOOKMARKED PAGE
 export default class SearchedMoviePage extends Component {
     constructor( props ) {
         super( props );
@@ -181,7 +182,7 @@ export default class SearchedMoviePage extends Component {
                 for( let index = 1; index < videoLinks.length; index++ ) {
                     var links = videoLinks[ index ];
                     moreLinks += "https://www.youtube.com/watch?v=" + links + " ";
-                    var names = videoNames[ index ] + ", ";
+                    var names = videoNames[ index ] + "\n ";
                     moreNames += names;
                 }
                 this.setState( {
@@ -205,7 +206,7 @@ export default class SearchedMoviePage extends Component {
         const revenue = this.state.movieRevenue;
         const runtime = this.state.movieRuntime;
         const videoLinks = this.state.movieVideoLinks;
-        const videoNames = this.state.movieNames;
+        const videoNames = this.state.movieVideoNames;
         return(
             <div className = "container">
                 <Card>
@@ -241,9 +242,9 @@ export default class SearchedMoviePage extends Component {
                                 <Card.Text> <h6> { "$" + revenue } </h6> </Card.Text>
                                 <Card.Text style = { { fontWeight : "bold", textDecoration : "underline" } }> <h2> Runtime: </h2> </Card.Text>
                                 <Card.Text> <h6> { runtime } </h6> </Card.Text>
-                                <Card.Text style = { { fontWeight : "bold", textDecoration : "underline" } }> <h2> Links to Trailers and Videos: </h2> </Card.Text>
+                                <Card.Text style = { { fontWeight : "bold", textDecoration : "underline" } }> <h2> Trailers and Videos: </h2> </Card.Text>
                                 <Card.Text id = "movieTrailer"> </Card.Text>
-                                <Card.Text> <a> { videoLinks } </a> </Card.Text>
+                                <Card.Text> <a> { videoNames } </a> </Card.Text>
                             </Card.Body>
                         </Col>
                     </Row>
