@@ -21,7 +21,8 @@ export default class SearchedMoviePage extends Component {
             movieRevenue : "",
             movieRuntime : "",
             movieVideoLinks : [],
-            movieVideoNames : []
+            movieVideoNames : [],
+            movieVideos : {}
         }
     }
 
@@ -164,17 +165,30 @@ export default class SearchedMoviePage extends Component {
             // Get video links from movieInfo to link to associated trailers and videos
             let videoLinks = [];
             let videoNames = [];
+            let dictionary = {};
             for( let videoIndex = 0; videoIndex < this.state.movieInfo.videos.results.length; videoIndex++ ) {
                 var link = this.state.movieInfo.videos.results[ videoIndex ].key;
-                videoLinks.push( link );
+                //videoLinks.push( link );
                 var name = this.state.movieInfo.videos.results[ videoIndex ].name;
-                videoNames.push( name );
+                //videoNames.push( name );
+                dictionary[ link ] = name;
             }
-            console.log( "videoLinks content: " + videoLinks );
-            console.log( "videoNames content: " + videoNames );
+            
+            this.setState( {
+                movieVideos : dictionary
+            } );
+            for( var dictKey in this.state.movieVideos ) {
+                console.log( "Name and Link: " );
+                console.log( dictKey + " : " + this.state.movieVideos[ dictKey ] );
+            }
             // Generate a video for the first link, list the rest of the links underneath for users
             // that want to see more
-            this.generateVideo( videoLinks[ 0 ] );
+            // for( let dictIndex = 0; dictIndex < Object.keys( this.state.movieVideos ).length; dictIndex++ ) {
+            //     this.generateVideo( Object.keys( this.state.movieVideos )[ dictIndex ] );
+            // }
+            let firstVideo = Object.keys( this.state.movieVideos )[ 0 ];
+            this.generateVideo( firstVideo );
+            console.log( "Total videos: " + Object.keys( this.state.movieVideos ).length );
             let moreLinks = "";
             let moreNames = "";
             // If more than one video exists for a movie store the links and names of the others
@@ -243,8 +257,8 @@ export default class SearchedMoviePage extends Component {
                                 <Card.Text style = { { fontWeight : "bold", textDecoration : "underline" } }> <h2> Runtime: </h2> </Card.Text>
                                 <Card.Text> <h6> { runtime } </h6> </Card.Text>
                                 <Card.Text style = { { fontWeight : "bold", textDecoration : "underline" } }> <h2> Trailers and Videos: </h2> </Card.Text>
-                                <Card.Text id = "movieTrailer"> </Card.Text>
-                                <Card.Text> <a> { videoNames } </a> </Card.Text>
+                                <Card.Text id = "movieTrailer" style = { { width : "560px", height : "315px" } }> </Card.Text>
+                                <Card.Link href = { videoLinks }> { videoNames } </Card.Link>
                             </Card.Body>
                         </Col>
                     </Row>
