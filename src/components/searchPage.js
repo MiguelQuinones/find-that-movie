@@ -10,7 +10,6 @@ import Card from 'react-bootstrap/Card';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
-import SearchedMoviePage from './searchedMoviePage';
 
 export default class searchPage extends Component {
 
@@ -184,45 +183,6 @@ export default class searchPage extends Component {
         }
         catch( error ) {
             console.error( "An error has occurred.", error );
-        }
-    }
-
-    // Function to dynamically generate YouTube video for given movie using code from their video player API
-    // REMOVE LATER
-    generateVideo( video ) {
-        // Add video for trailer to page by embedding it
-        const showVideo = document.getElementsByClassName( "showVideo" );
-        const youtube = showVideo[ 0 ];
-        const videoId = video;
-
-        // Find YouTube thumbnail using given id
-        const img = document.createElement( "img" );
-        img.setAttribute( "src", "http://i.ytimg.com/vi/"
-                        + videoId + "/hqdefault.jpg" );
-        img.setAttribute( "class", "thumb" );
-
-
-        // Overlay the Play icon to make it look like a video player
-        const circle = document.createElement( "div" );
-        circle.setAttribute( "class","circle" );
-
-        youtube.appendChild( img );
-        youtube.appendChild( circle );
-
-        // Attach an onclick event to the YouTube Thumbnail
-        youtube.onclick = function() {
-            // Create an iFrame with autoplay set to true
-            const iframe = document.createElement( "iframe" );
-            iframe.setAttribute( "src",
-                "https://www.youtube.com/embed/" + videoId
-                + "?autoplay=1&autohide=1&border=0&wmode=opaque&enablejsapi=1" );
-
-            // The height and width of the iFrame should be the same as parent
-            iframe.style.width  = this.style.width;
-            iframe.style.height = this.style.height;
-
-            // Replace the YouTube thumbnail with YouTube HTML5 Player
-            this.parentNode.replaceChild( iframe, this );    
         }
     }
 

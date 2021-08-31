@@ -20,9 +20,7 @@ export default class SearchedMoviePage extends Component {
             movieReleaseDate : "",
             movieRevenue : "",
             movieRuntime : "",
-            movieVideoLinks : [],
-            movieVideoNames : [],
-            movieVideos : {}
+            movieVideoKey : ""
         }
     }
 
@@ -68,11 +66,9 @@ export default class SearchedMoviePage extends Component {
         try {
             const key = process.env.REACT_APP_API_KEY;
             const movieId = this.props.match.params.id;
-            console.log( "ID is: " + this.props.match.params.id );
 
             // Send detailed request to API using given movie ID
             let response = await axios.get( "https://api.themoviedb.org/3/movie/" + movieId + "?api_key=" + key + "&append_to_response=credits,release_dates,videos" );
-            console.log( response );
             // Save necessary info from response to state
             this.setState( {
                 movieInfo : response.data
@@ -81,15 +77,25 @@ export default class SearchedMoviePage extends Component {
 
             // Get array of associated genres from movieInfo
             let genres = "";
-            for( let genreIndex = 0; genreIndex < this.state.movieInfo.genres.length - 1; genreIndex++ ) {
-                const genreTitle = this.state.movieInfo.genres[ genreIndex ].name + ", ";
-                genres += genreTitle;
+            let genreTitle = "";
+            for( let genreIndex = 0; genreIndex < this.state.movieInfo.genres.length; genreIndex++ ) {
+                if( this.state.movieInfo.genres.length === 1 ) {
+                    genreTitle = this.state.movieInfo.genres[ genreIndex ].name;
+                    genres = genreTitle
+                } else {
+                    if( this.state.movieInfo.genres[ genreIndex ] !== this.state.movieInfo.genres[ this.state.movieInfo.genres.length - 1 ] ) {
+                        genreTitle = this.state.movieInfo.genres[ genreIndex ].name + ", ";
+                        genres += genreTitle;
+                    }
+                }
              }
-            // Add "and" preceding last genre for formatting purposes
-            genres += "and " + this.state.movieInfo.genres[ this.state.movieInfo.genres.length - 1 ].name;
-            // Save the formated list of genres to the state
+             // Create completed list and split on "," for formatting purposes
+            let completeGenres = genres.split( "," );
+            if( completeGenres.length > 1 ) {
+                completeGenres += "and " + this.state.movieInfo.genres[ this.state.movieInfo.genres.length - 1 ].name;
+            }
             this.setState( {
-                movieGenres : genres
+                movieGenres : completeGenres
             } );
 
             // Get array of associated actors from movieInfo
@@ -107,25 +113,27 @@ export default class SearchedMoviePage extends Component {
             let director = "";
             for( let directorIndex = 0; directorIndex < this.state.movieInfo.credits.crew.length; directorIndex++ ) {
                 if( this.state.movieInfo.credits.crew[ directorIndex ].job === "Director" ) {
-                    var movieDirector = this.state.movieInfo.credits.crew[ directorIndex ].name;
+                    director = this.state.movieInfo.credits.crew[ directorIndex ].name;
                 }
-                director = movieDirector;
+                this.setState( {
+                    movieDirector : director
+                } );
             }
-            this.setState( {
-                movieDirector : director
-            } );
 
             // Get the US rating of the movie from movieInfo
-            let rating = "";
+            let foundRating = ""
             for( let ratingIndex = 0; ratingIndex < this.state.movieInfo.release_dates.results.length; ratingIndex++ ) {
                 if( this.state.movieInfo.release_dates.results[ ratingIndex ].iso_3166_1 === "US" ) {
-                    var movieRating = this.state.movieInfo.release_dates.results[ ratingIndex ].release_dates[ 0 ].certification;
+                    if( this.state.movieInfo.release_dates.results[ ratingIndex ].release_dates[ 0 ].certification !== "" ) {
+                        foundRating = this.state.movieInfo.release_dates.results[ ratingIndex ].release_dates[ 0 ].certification
+                    } else {
+                        foundRating = this.state.movieInfo.release_dates.results[ ratingIndex ].release_dates[ 1 ].certification
+                    }
                 }
-                rating = movieRating;
+                this.setState( {
+                    movieRating : foundRating
+                } );
             }
-            this.setState( {
-                movieRating : rating
-            } );
 
             // Get the release date of the movie from movieInfo and then make it readable to users
             let releaseDate = this.state.movieInfo.release_date.split( '-' );
@@ -162,48 +170,19 @@ export default class SearchedMoviePage extends Component {
                 movieRuntime : readableRuntime
             } );
 
-            // Get video links from movieInfo to link to associated trailers and videos
-            let videoLinks = [];
-            let videoNames = [];
-            let dictionary = {};
+            // Get first video from movieInfo that is listed as an offical trailer
             for( let videoIndex = 0; videoIndex < this.state.movieInfo.videos.results.length; videoIndex++ ) {
-                var link = this.state.movieInfo.videos.results[ videoIndex ].key;
-                //videoLinks.push( link );
-                var name = this.state.movieInfo.videos.results[ videoIndex ].name;
-                //videoNames.push( name );
-                dictionary[ link ] = name;
-            }
-            
-            this.setState( {
-                movieVideos : dictionary
-            } );
-            for( var dictKey in this.state.movieVideos ) {
-                console.log( "Name and Link: " );
-                console.log( dictKey + " : " + this.state.movieVideos[ dictKey ] );
-            }
-            // Generate a video for the first link, list the rest of the links underneath for users
-            // that want to see more
-            // for( let dictIndex = 0; dictIndex < Object.keys( this.state.movieVideos ).length; dictIndex++ ) {
-            //     this.generateVideo( Object.keys( this.state.movieVideos )[ dictIndex ] );
-            // }
-            let firstVideo = Object.keys( this.state.movieVideos )[ 0 ];
-            this.generateVideo( firstVideo );
-            console.log( "Total videos: " + Object.keys( this.state.movieVideos ).length );
-            let moreLinks = "";
-            let moreNames = "";
-            // If more than one video exists for a movie store the links and names of the others
-            if( videoLinks.length > 1 ) {
-                for( let index = 1; index < videoLinks.length; index++ ) {
-                    var links = videoLinks[ index ];
-                    moreLinks += "https://www.youtube.com/watch?v=" + links + " ";
-                    var names = videoNames[ index ] + "\n ";
-                    moreNames += names;
+                // Break out of the loop after finding first matching result
+                if( this.state.movieInfo.videos.results[ videoIndex ].official === true && this.state.movieInfo.videos.results[ videoIndex ].type === "Trailer"  ) {
+                    this.setState( {
+                        movieVideoKey : this.state.movieInfo.videos.results[ videoIndex ].key
+                    } );
+                    break;
                 }
-                this.setState( {
-                    movieVideoLinks : moreLinks,
-                    movieVideoNames : moreNames
-                } );
             }
+
+            // Grab the video from YouTube and display to user
+            this.generateVideo( this.state.movieVideoKey );
         }
         catch( error ) {
             console.error( "An error occurred: " + error );
@@ -219,8 +198,6 @@ export default class SearchedMoviePage extends Component {
         const rating = this.state.movieRating;
         const revenue = this.state.movieRevenue;
         const runtime = this.state.movieRuntime;
-        const videoLinks = this.state.movieVideoLinks;
-        const videoNames = this.state.movieVideoNames;
         return(
             <div className = "container">
                 <Card>
@@ -256,9 +233,7 @@ export default class SearchedMoviePage extends Component {
                                 <Card.Text> <h6> { "$" + revenue } </h6> </Card.Text>
                                 <Card.Text style = { { fontWeight : "bold", textDecoration : "underline" } }> <h2> Runtime: </h2> </Card.Text>
                                 <Card.Text> <h6> { runtime } </h6> </Card.Text>
-                                <Card.Text style = { { fontWeight : "bold", textDecoration : "underline" } }> <h2> Trailers and Videos: </h2> </Card.Text>
                                 <Card.Text id = "movieTrailer" style = { { width : "560px", height : "315px" } }> </Card.Text>
-                                <Card.Link href = { videoLinks }> { videoNames } </Card.Link>
                             </Card.Body>
                         </Col>
                     </Row>
