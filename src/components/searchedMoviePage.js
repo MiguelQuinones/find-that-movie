@@ -4,23 +4,45 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
+import AuthService from "../services/auth.service.js";
+import UserService from "../services/user.service.js";
 
 // TURN VIDEOLINKS AND VIDEONAMES INTO A DICTIONARY -- REFER TO BOOKMARKED PAGE
 export default class SearchedMoviePage extends Component {
     constructor( props ) {
         super( props );
 
-        this.state = {
-            message : "",
-            movieInfo : [],
-            movieGenres : "",
-            movieActors : "",
-            movieDirector : "",
-            movieRating : "",
-            movieReleaseDate : "",
-            movieRevenue : "",
-            movieRuntime : "",
-            movieVideoKey : ""
+        const user = AuthService.getCurrentUser();
+        if( user ) {
+            this.state = {
+                currentUser : user,
+                message : "",
+                successful : false,
+                movieInfo : [],
+                movieGenres : "",
+                movieActors : "",
+                movieDirector : "",
+                movieRating : "",
+                movieReleaseDate : "",
+                movieRevenue : "",
+                movieRuntime : "",
+                movieVideoKey : ""
+            }
+        } else {
+            this.state = {
+                currentUser : undefined,
+                message : "",
+                successful : false,
+                movieInfo : [],
+                movieGenres : "",
+                movieActors : "",
+                movieDirector : "",
+                movieRating : "",
+                movieReleaseDate : "",
+                movieRevenue : "",
+                movieRuntime : "",
+                movieVideoKey : ""
+            }
         }
     }
 
@@ -59,6 +81,26 @@ export default class SearchedMoviePage extends Component {
             // Replace the YouTube thumbnail with YouTube HTML5 Player
             this.parentNode.replaceChild( iframe, this );    
         }
+    }
+
+    // Function for adding a movie to the Watch Later list
+    saveToWatchLater( routeID, userID, title, posterURL ) {
+        UserService.addToWatchLater( routeID, userID, title, posterURL )
+        .then( response => {
+            this.setState( {
+                message : response.data.message,
+                successful : true
+            } );
+        },
+        error => {
+            const resMessage = (
+                error.response && error.response.data && error.response.data.message
+            ) || error.message || error.toString();
+            this.setState( {
+                message : resMessage,
+                successful : false
+            } );
+        } )
     }
 
     // Get detailed movie info from TMDB API
@@ -198,15 +240,31 @@ export default class SearchedMoviePage extends Component {
         const rating = this.state.movieRating;
         const revenue = this.state.movieRevenue;
         const runtime = this.state.movieRuntime;
+        const currentUser = this.state.currentUser;
         return(
             <div className = "container">
                 <Card>
                     <Row>
+                    <Button variant = "primary" size = "lg" href = { "/" }> Go Back Home </Button>
+                    &nbsp;&nbsp;&nbsp;
+                    { currentUser && (
+                        <Button variant = "secondary" size = "lg" 
+                            onClick = { () => this.saveToWatchLater(  this.state.currentUser.id, this.state.currentUser.id.toString(), movie.title, movie.poster_path ) }> 
+                            Add to Watch Later List 
+                        </Button>
+                    ) }
+
+                    { this.state.message && (
+                        <div>
+                            <div className = {
+                                this.state.successful ? "alert alert-success" : "alert alert-danger"
+                                } style = { { textAlign : "center" } } role = "alert">
+                                    { this.state.message }
+                            </div>
+                        </div>
+                    ) }
                         <Col lg = "6">
                             <Card.Body>
-                                <Button variant = "primary" size = "lg" href = { "/" }> Go Back Home </Button>
-                                <br></br>
-                                <br></br>
                                 <Card.Title> <h1 className = "text-center" > { movie.title } </h1> </Card.Title>
                                 <Card.Img src = { "https://image.tmdb.org/t/p/w780" + movie.poster_path } ></Card.Img>
                                 <br></br>
@@ -216,9 +274,6 @@ export default class SearchedMoviePage extends Component {
                         </Col>
                         <Col lg = "6">
                             <Card.Body>
-                                <br></br>
-                                <br></br>
-                                <br></br>
                                 <Card.Text style = { { fontWeight : "bold", textDecoration : "underline" } }> <h2> Plot: </h2> </Card.Text>
                                 <Card.Text> <h6> { movie.overview } </h6> </Card.Text>
                                 <Card.Text style = { { fontWeight : "bold", textDecoration : "underline" } }> <h2> Genres: </h2> </Card.Text>
