@@ -50,12 +50,12 @@ class Navbar extends Component {
     }
     // Saves chosen theme to web storage to persist across pages
     saveSettings( value ) {
-      window.localStorage.setItem( THEME_KEY, value );
+      window.localStorage.setItem( "THEME_KEYS", value );
     }
 
     // Retrieve saved theme from web storage -- if no theme has been saved yet, default to light theme
     getSettings() {
-      return window.localStorage.getItem( THEME_KEY ) ?? THEMES.Light;
+      return window.localStorage.getItem( "THEME_KEYS" );
     }
 
     // Changes theme depending on which one user wants to use
@@ -66,6 +66,9 @@ class Navbar extends Component {
         document.querySelectorAll( 'h1' ).forEach( ( input ) => {
           input.className = "title-light"
         } );
+        document.querySelectorAll( ".card" ).forEach( ( input ) => {
+          input.className = "card card-light";
+        } );
         document.querySelectorAll( ".card.card-block.mx-2" ).forEach( ( input ) => {
           input.className = "card card-block mx-2 card-light";
         } );
@@ -73,19 +76,14 @@ class Navbar extends Component {
         document.querySelectorAll( 'h1' ).forEach( ( input ) => {
           input.className = "title-dark"
         } );
+        document.querySelectorAll( ".card" ).forEach( ( input ) => {
+          input.className = "card card-dark";
+        } );
         document.querySelectorAll( ".card.card-block.mx-2" ).forEach( ( input ) => {
           input.className = "card card-block mx-2 card-dark";
         } );
       }
       this.saveSettings( theme );
-
-      // Change theme of navbar to match
-      // var navbar = document.getElementById( "navbar" );
-      // if( theme === THEMES.Dark ) {
-      //   navbar.className = "navbar fixed-top navbar-expand navbar-dark bg-dark";
-      // } else if( theme === THEMES.Light ) {
-      //   navbar.className = "navbar fixed-top navbar-expand navbar-light bg-light";
-      // }
     }
 
     render() {

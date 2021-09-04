@@ -48,6 +48,7 @@ exports.addToWatchLater = ( req, res ) => {
                 userID : req.body.userID,
                 movieTitle : req.body.title,
                 moviePoster : req.body.posterURL,
+                movieID : req.body.movieID
             } );
             // Check if movie is already in watch list -- if not, save it
             watchLater.save().then(

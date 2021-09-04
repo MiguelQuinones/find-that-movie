@@ -84,8 +84,8 @@ export default class SearchedMoviePage extends Component {
     }
 
     // Function for adding a movie to the Watch Later list
-    saveToWatchLater( routeID, userID, title, posterURL ) {
-        UserService.addToWatchLater( routeID, userID, title, posterURL )
+    saveToWatchLater( routeID, userID, title, posterURL, movieID ) {
+        UserService.addToWatchLater( routeID, userID, title, posterURL, movieID )
         .then( response => {
             this.setState( {
                 message : response.data.message,
@@ -245,24 +245,32 @@ export default class SearchedMoviePage extends Component {
             <div className = "container">
                 <Card>
                     <Row>
-                    <Button variant = "primary" size = "lg" href = { "/" }> Go Back Home </Button>
-                    &nbsp;&nbsp;&nbsp;
-                    { currentUser && (
-                        <Button variant = "secondary" size = "lg" 
-                            onClick = { () => this.saveToWatchLater(  this.state.currentUser.id, this.state.currentUser.id.toString(), movie.title, movie.poster_path ) }> 
-                            Add to Watch Later List 
-                        </Button>
-                    ) }
-
-                    { this.state.message && (
                         <div>
-                            <div className = {
-                                this.state.successful ? "alert alert-success" : "alert alert-danger"
-                                } style = { { textAlign : "center" } } role = "alert">
-                                    { this.state.message }
-                            </div>
+                            <Button variant = "primary" size = "lg" href = { "/" }> Go Back Home </Button>
+                            &nbsp;&nbsp;&nbsp;
+                            { currentUser && (
+                                <Button variant = "secondary" size = "lg" 
+                                    onClick = { () => this.saveToWatchLater(  this.state.currentUser.id, this.state.currentUser.id.toString(), movie.title, movie.poster_path, movie.id ) }> 
+                                    Add to Watch Later List 
+                                </Button>
+                            ) }
                         </div>
-                    ) }
+                    </Row>
+                    <br></br>
+                    <Row>
+                        <div>
+                            { this.state.message && (
+                                <div>
+                                    <div className = {
+                                        this.state.successful ? "alert alert-success" : "alert alert-danger"
+                                        } style = { { textAlign : "center" } } role = "alert">
+                                            { this.state.message }
+                                    </div>
+                                </div>
+                            ) }
+                        </div>
+                    </Row>
+                    <Row>
                         <Col lg = "6">
                             <Card.Body>
                                 <Card.Title> <h1 className = "text-center" > { movie.title } </h1> </Card.Title>

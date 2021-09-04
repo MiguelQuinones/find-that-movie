@@ -6,6 +6,7 @@ const WatchLater = mongoose.model(
     userID : String,
     movieTitle : String,
     moviePoster : String,
+    movieID : String
   } )
 );
 

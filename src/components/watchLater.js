@@ -3,6 +3,7 @@
 import React, { Component } from "react";
 import UserService from "../services/user.service";
 import AuthService from "../services/auth.service";
+import Button from "react-bootstrap/Button";
 
 // Fill in info for table row -- REMOVE THIS 
 const TableRow = props => (
@@ -66,16 +67,19 @@ export default class WatchLater extends Component {
           </div>
         ) : (
           <div className = "d-flex flex-row flex-nowrap overflow-auto">
+            {/* Turn this into an actual card */}
             { movieData.map( data => (
               <div className = "results" key = { data.id }>
                 <div className = "card card-block mx-2" style = { { minWidth : "300px" } }>
                   <h1> { data.movieTitle } </h1>
                   <img src = { "https://image.tmdb.org/t/p/w400" + data.moviePoster } alt = "Movie Poster"></img>
                   <br></br>
-                  <button type = "submit" className = "btn btn-primary" onClick = { () => {
+                  <Button varaint = "primary" size = "lg" href = { `searchedMoviePage/${ data.movieID }` }> More Info </Button>
+                  <br></br>
+                  <Button variant = "secondary" size = "lg" onClick = { () => {
                     UserService.removeFromWatchLater( data._id);
                     window.location.reload();
-                  } }> Remove from List </button> 
+                  } }> Remove from List </Button> 
                 </div>
               </div>
             ) ) }
