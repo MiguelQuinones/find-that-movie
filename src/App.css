@@ -1,163 +1,17 @@
-/* Styling for body
+
+:root {
+    --blue: rgb( 26, 57, 87 );
+    --white: rgb( 236, 236, 236 );
+}
 body {
     text-align: center;
+    font-family: "Ubuntu", sans-serif;
+    background: var(--background-color);
+    color: var(--text-color);
+    font-weight: var(--font-weight);
+    transition: background 0.3s ease-in-out, color 0.6s ease-in-out;
 }
 
- Styling rules for navigation bar at top of screen 
-.navigationBar {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    border: 1px solid black;
-    background-color: gainsboro;
-    position: fixed;
-    top: 0;
-    width: 100%;
-}
-  
-.navbarItem {
-    float: left;
-    border-right:1px solid black;
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-}
-
- Specific styling for the text within the navbar tabs 
-li a {
-    text-decoration: none;
-    color: #000;
-}
-  
-li:hover {
-    background-color: grey;
-}
-
- Styling for Dark/Light themes 
-.buttonHolder {
-    display: flex;
-    float: right;
-    margin-right: 2%;
-    margin-top: 0.5%;
-}
-  
-.themeLight {
-    height: 25px;
-    width: 60px;
-    border-radius: 10%;
-    padding: 2px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    background-color: gainsboro;
-    color: #1a202c;
-    border-top-right-radius: 50px;
-    border-bottom-right-radius: 50px;
-}
-  
-.themeDark {
-    height: 25px;
-    width: 60px;
-    border-radius: 10%;
-    padding: 2px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    background-color: #2d3748;
-    color: #e2e8f0;
-    border-top-left-radius: 50px;
-    border-bottom-left-radius: 50px;
-}
-  
-.themeLight:hover {
-    background-color: #e2e8f0;
-}
-  
-.themeDark:hover {
-    background-color: #1a202c;
-}
-
-.navigationBarDark {
-    background-color: #2d3748;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    border: 1px solid black;
-    position: fixed;
-    top: 0;
-    width: 100%;
-}
-
-.navigationBarLight {
-    background-color: gainsboro;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    border: 1px solid black;
-    position: fixed;
-    top: 0;
-    width: 100%;
-}
-
-.navbarItemDark {
-    color: white;
-}
-
-.navbarItemLight {
-    color: black;
-}
-
- Styling for input field 
-.input {
-    border-top-left-radius: 15px;
-    border-bottom-left-radius: 15px;
-}
-
- Styling for submit button 
-.submitButton {
-    background-color: #eee;
-    border: 1px solid black;
-    color: #333;
-    border-bottom-right-radius: 15px;
-    border-top-right-radius: 15px;
-    cursor: pointer;
-}
-
- Styling for both input and submit fields 
-.input, .submitButton {
-    display: inline-block;
-    padding: 2px 5px;
-    font-size: 20px;
-    -webkit-appearance: none;
-}
-
- Styling for title, poster, and tagline portion of search page 
-.displayLeft {
-    float: left;
-    margin-left: 2%;
-}
-
- Styling for right side of page, which has rest of returned information 
-.displayRight {
-    margin-right: 2%
-}
-
- Styling for the Watch Later table 
-.tableField{
-    text-align: center;
-}
-
-table, th, td {
-    text-align: center;
-    border: 1px solid black;
-    border-collapse: collapse;
-} */
 h1 {
     text-align: center;
 }
@@ -169,6 +23,41 @@ h1 {
 label {
     display: block;
     margin-top: 10px;
+}
+
+body.light {
+    --background-color: var(--white);
+    --text-color: var(--blue);
+    --font-weight: 400;
+}
+  
+body.dark {
+    --background-color: var(--blue);
+    --text-color: var(--white);
+    --font-weight: 500;
+}
+
+#darkMode {
+    background: transparent url( "logo.svg" ) no-repeat center;
+    background-size: 30px 30px;
+    width: 45px;
+    height: 45px;
+    filter: grayscale(100%);
+    border: none;
+    border-radius: 50%;
+    transition: background-color 0.3s ease-in-out, filter 0.3s ease-in-out;
+}
+
+#darkMode:hover,
+#darkMode:focus {
+    filter: none;
+    background-color: black;
+    cursor: pointer;
+}
+
+#darkMode.clicked {
+    filter: none !important;
+    background-color: black;
 }
   
 .card-container.card {

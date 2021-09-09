@@ -1,5 +1,4 @@
 // This file holds the code for the navbar displayed on each page
-// IMPLEMENT ICONS FOR DARK/LIGHT MODE AS WELL AS MORE CSS STYLING FOR SEARCH PAGE WHEN RETURNING
 
 // Necessary imports
 import React, { Component } from 'react';
@@ -12,15 +11,16 @@ import watchLater from './watchLater';
 import loginPage from './loginPage';
 import registerPage from './registerPage';
 import SearchedMoviePage from './searchedMoviePage';
+import DarkMode from './darkMode';
 
 // Styling rules for Light/Dark mode
-const THEME_KEY = "THEME";
-const LIGHT_THEME_HEX = "#E2E8F0";
-const DARK_THEME_HEX = "#1A202C";
-const THEMES = {
-  Light: LIGHT_THEME_HEX,
-  Dark: DARK_THEME_HEX
-};
+// const THEME_KEY = "THEME";
+// const LIGHT_THEME_HEX = "#E2E8F0";
+// const DARK_THEME_HEX = "#1A202C";
+// const THEMES = {
+//   Light: LIGHT_THEME_HEX,
+//   Dark: DARK_THEME_HEX
+// };
 
 class Navbar extends Component {
     constructor( props ) {
@@ -49,42 +49,42 @@ class Navbar extends Component {
       AuthService.logout()
     }
     // Saves chosen theme to web storage to persist across pages
-    saveSettings( value ) {
-      window.localStorage.setItem( "THEME_KEYS", value );
-    }
+    // saveSettings( value ) {
+    //   window.localStorage.setItem( "THEME", value );
+    // }
 
-    // Retrieve saved theme from web storage -- if no theme has been saved yet, default to light theme
-    getSettings() {
-      return window.localStorage.getItem( "THEME_KEYS" );
-    }
+    // // Retrieve saved theme from web storage -- if no theme has been saved yet, default to light theme
+    // if( localStorage ) {
+    //   return window.localStorage.getItem( THEME_KEY );
+    // }
 
-    // Changes theme depending on which one user wants to use
-    themeSwitch( theme ) {
-      document.body.style.backgroundColor = theme;
-      document.body.style.color = theme === THEMES.Dark ? THEMES.Light : THEMES.Dark;
-      if( theme === THEMES.Light ) {
-        document.querySelectorAll( 'h1' ).forEach( ( input ) => {
-          input.className = "title-light"
-        } );
-        document.querySelectorAll( ".card" ).forEach( ( input ) => {
-          input.className = "card card-light";
-        } );
-        document.querySelectorAll( ".card.card-block.mx-2" ).forEach( ( input ) => {
-          input.className = "card card-block mx-2 card-light";
-        } );
-      } else {
-        document.querySelectorAll( 'h1' ).forEach( ( input ) => {
-          input.className = "title-dark"
-        } );
-        document.querySelectorAll( ".card" ).forEach( ( input ) => {
-          input.className = "card card-dark";
-        } );
-        document.querySelectorAll( ".card.card-block.mx-2" ).forEach( ( input ) => {
-          input.className = "card card-block mx-2 card-dark";
-        } );
-      }
-      this.saveSettings( theme );
-    }
+    // // Changes theme depending on which one user wants to use
+    // themeSwitch( theme ) {
+    //   document.body.style.backgroundColor = theme;
+    //   document.body.style.color = theme === THEMES.Dark ? THEMES.Light : THEMES.Dark;
+    //   if( theme === THEMES.Light ) {
+    //     document.querySelectorAll( 'h1' ).forEach( ( input ) => {
+    //       input.className = "title-light"
+    //     } );
+    //     document.querySelectorAll( ".card" ).forEach( ( input ) => {
+    //       input.className = "card card-light";
+    //     } );
+    //     document.querySelectorAll( ".card.card-block.mx-2" ).forEach( ( input ) => {
+    //       input.className = "card card-block mx-2 card-light";
+    //     } );
+    //   } else {
+    //     document.querySelectorAll( 'h1' ).forEach( ( input ) => {
+    //       input.className = "title-dark"
+    //     } );
+    //     document.querySelectorAll( ".card" ).forEach( ( input ) => {
+    //       input.className = "card card-dark";
+    //     } );
+    //     document.querySelectorAll( ".card.card-block.mx-2" ).forEach( ( input ) => {
+    //       input.className = "card card-block mx-2 card-dark";
+    //     } );
+    //   }
+    //   this.saveSettings( theme );
+    // }
 
     render() {
       const { currentUser } = this.state;
@@ -146,7 +146,7 @@ class Navbar extends Component {
             </div>
           ) }
 
-          <div className = "navbar-nav ms-auto">
+          {/* <div className = "navbar-nav ms-auto">
             <button className = "btn btn-outline-dark active" onClick = { () => this.themeSwitch( THEMES.Dark ) }>
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sun" viewBox="0 0 16 16">
                 <path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
@@ -157,6 +157,9 @@ class Navbar extends Component {
                 <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
               </svg>
             </button>
+          </div> */}
+          <div className = "navbar-nav ms-auto">
+            <DarkMode />
           </div>
         </nav>
 
