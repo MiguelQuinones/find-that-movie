@@ -1,6 +1,5 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
-//import "../styles/DarkMode.css";
 
 const DarkMode = () => {
   let clickedClass = "clicked";

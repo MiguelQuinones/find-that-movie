@@ -11,7 +11,6 @@ import watchLater from './watchLater';
 import loginPage from './loginPage';
 import registerPage from './registerPage';
 import SearchedMoviePage from './searchedMoviePage';
-import DarkMode from './darkMode';
 
 // Styling rules for Light/Dark mode
 // const THEME_KEY = "THEME";
@@ -158,9 +157,9 @@ class Navbar extends Component {
               </svg>
             </button>
           </div> */}
-          <div className = "navbar-nav ms-auto">
+          {/* <div className = "navbar-nav ms-auto">
             <DarkMode />
-          </div>
+          </div> */}
         </nav>
 
         <br></br>
