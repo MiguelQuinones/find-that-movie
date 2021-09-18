@@ -1,10 +1,4 @@
-
 const WatchLater = require( '../models/watchLater.model');
-
-// Test route for all access -- users that are either logged in or not logged in
-exports.allAccess = ( req, res ) => {
-    res.status( 200 ).send( "Public Content." );
-};
 
 // Retrieves a user's Watch Later list
 exports.getWatchLater = ( req, res ) => {

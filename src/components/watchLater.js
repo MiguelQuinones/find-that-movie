@@ -5,18 +5,6 @@ import UserService from "../services/user.service";
 import AuthService from "../services/auth.service";
 import Button from "react-bootstrap/Button";
 
-// Fill in info for table row -- REMOVE THIS 
-const TableRow = props => (
-  <tr>
-    <td className = "movieTitle"> { props.movie.movieTitle } </td>
-    <td> <a href= { "https://image.tmdb.org/t/p/w400" + props.movie.moviePoster }> Link </a> </td>
-    <td className = "deleteButton"> <button type = "submit" onClick = { () => {
-      UserService.removeFromWatchLater( props.movie._id );
-      window.location.reload();
-    } }> Remove </button> </td>
-  </tr>
-)
-
 export default class WatchLater extends Component {
   constructor( props ) {
     super(props);
@@ -47,18 +35,11 @@ export default class WatchLater extends Component {
     );
   }
 
-  // Function for mapping the Watch Later list to a table
-  mapList() {
-    return this.state.watchListArray.map( ( currentMovie, index ) => {
-      return < TableRow movie = { currentMovie } key = { index } />;
-    } );
-  }
-
   render() {
     const movieData = this.state.watchListArray;
     return (
       <div className = "col-md-12">
-        <h1 className = "title"> { this.state.currentUser.username }'s Watchlist </h1>
+        <h1 className = "title"> Your Watchlist </h1>
         { this.state.watchListArray.length === 0 ? (
           <div>
             <p style = { { textAlign : "center" } }> Watchlist is currently empty. You can add to it by searching for a movie and using the 

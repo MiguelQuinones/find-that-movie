@@ -1,4 +1,4 @@
-// This file holds the code for allowing users to login to the application -- ADD MORE WHEN RETURNING TO PROJECT
+// This file holds the code for allowing users to login to the application
 
 import React, { Component } from 'react';
 import AuthService from '../services/auth.service';
@@ -44,7 +44,7 @@ export default class loginPage extends Component {
         if( this.state.username && this.state.password ) {
             AuthService.login( this.state.username, this.state.password )
             .then( () => {
-                this.props.history.push( '/profile' );
+                this.props.history.push( '/' );
                 window.location.reload();
             },
             error => {

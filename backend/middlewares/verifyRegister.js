@@ -1,7 +1,7 @@
 /* This file holds the code that verifies if a username being used to
    register an account has already been taken or not */
 
-const db = require("../models");
+const db = require( "../models" );
 const User = db.user;
 
 function checkDuplicateUsername( req, res, next ) {

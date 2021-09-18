@@ -7,11 +7,11 @@ import axios from "axios";
 import AuthService from "../services/auth.service.js";
 import UserService from "../services/user.service.js";
 
-// TURN VIDEOLINKS AND VIDEONAMES INTO A DICTIONARY -- REFER TO BOOKMARKED PAGE
 export default class SearchedMoviePage extends Component {
     constructor( props ) {
         super( props );
 
+        // Check if user is logged in or not for further functionality
         const user = AuthService.getCurrentUser();
         if( user ) {
             this.state = {
@@ -46,6 +46,7 @@ export default class SearchedMoviePage extends Component {
         }
     }
 
+    // Function to generate a YouTube video to be displayed on the page
     generateVideo( video ) {
         // Add video for trailer to page by embedding it
         const showVideo = document.getElementById( "movieTrailer" );

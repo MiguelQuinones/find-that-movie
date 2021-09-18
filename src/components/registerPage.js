@@ -1,5 +1,4 @@
-// This file holds the code for allowing users to register within the application -- ADD MORE WHEN RETURNING TO PROJECT
-
+// This file holds the code for allowing users to register within the application
 import React, { Component } from 'react';
 import AuthService from '../services/auth.service';
 

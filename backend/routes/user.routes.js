@@ -1,5 +1,5 @@
-const { authJwt } = require("../middlewares");
-const controller = require("../controllers/user.controller");
+const { authJwt } = require( "../middlewares" );
+const controller = require( "../controllers/user.controller" );
 
 module.exports = function( app ) {
   app.use( function( req, res, next ) {
@@ -9,8 +9,6 @@ module.exports = function( app ) {
     );
     next();
   } );
-
-  app.get( "/api/test/all", controller.allAccess );
 
   // Route for retrieving the Watch Later list
   app.get( "/api/watchLater/:id", [ authJwt.verifyToken ], controller.getWatchLater );

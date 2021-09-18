@@ -10,6 +10,7 @@ module.exports = function( app ) {
     next();
   } );
 
+  // Routes for user authorization -- registering an account and logging into an account
   app.post( "/api/auth/signup", verifyRegister.checkDuplicateUsername, controller.signup );
 
   app.post( "/api/auth/signin", controller.signin );

@@ -1,17 +1,10 @@
 import React, { Component } from "react";
-
 import CarouselSlides from "./carousel";
 import PlayingNowSlides from "./moviesPlayingNow";
 
 export default class Home extends Component {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      content: ""
-    };
-  }
-
+  // Render components below for homepage that visitors will first see
   render() {
     return (
       <>

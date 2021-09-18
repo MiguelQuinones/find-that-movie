@@ -1,5 +1,6 @@
 const mongoose = require( "mongoose" );
 
+// Mongoose model for movies added to a user's Watch Later list
 const WatchLater = mongoose.model(
   "WatchLater",
   new mongoose.Schema( {
