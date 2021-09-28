@@ -1,5 +1,6 @@
 module.exports = {
     HOST: "localhost",
-    PORT: 27017,
+    PASS: "GingerSpike2021",
+    CLUSTER : "cluster0",
     DB: "moviedb"
   };

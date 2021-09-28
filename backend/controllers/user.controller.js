@@ -4,7 +4,6 @@ const WatchLater = require( '../models/watchLater.model');
 exports.getWatchLater = ( req, res ) => {
     try {
         // Retrieve list by filtering for user's ID
-        // Could try using JSON.parse( localStorage.getItem( "user" ) ) instead if I wanted to remove the user's ID from the watchLater route
         WatchLater.find( { userID : req.params.id } ).then(
             ( movies ) => {
                 res.status( 200 ).json( movies );
