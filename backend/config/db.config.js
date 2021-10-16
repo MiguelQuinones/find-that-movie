@@ -1,5 +1,5 @@
 module.exports = {
-    HOST: "localhost",
+    HOST: "Miguel",
     PASS: "GingerSpike2021",
     CLUSTER : "cluster0",
     DB: "moviedb"

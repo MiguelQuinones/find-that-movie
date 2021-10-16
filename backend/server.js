@@ -15,17 +15,10 @@ app.use( bodyParser.json() );
 app.use( bodyParser.urlencoded( { extended : true } ) );
 
 // Connect to the MongoDB database moviedb
-const connection = `mongodb+srv://Miguel:GingerSpike2021@cluster0.bivnr.mongodb.net/moviedb?retryWrites=true&w=majority`;
+const connection = `mongodb+srv://${ dbConfig.HOST }:${ dbConfig.PASS }@${ dbConfig.CLUSTER }.bivnr.mongodb.net/${ dbConfig.DB }?retryWrites=true&w=majority`;
 mongoose.connect( connection, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false } )
     .then( () => console.log( "Database Connected Successfully" ) )
     .catch( err => console.log( err ) );
-
-// mongoose.connect( 'mongodb://127.0.0.1:27017/moviedb', { useNewUrlParser: true });
-// const connection = mongoose.connection;
-
-// connection.once( 'open', function() {
-//     console.log( "MongoDB database connection established successfully!" );
-// })
 
 // Required routes for authentication and user interaction purposes
 require( './routes/auth.routes' )( app );
